@@ -16,7 +16,7 @@ public class UserRepository : IUserRepository
         _dbContext = dbContext;
     }
     
-    public async Task<OperationResult<User>> GetUserById(int id)
+    public async Task<OperationResult<User>> GetUserByIdAsync(int id)
     {
         var user = await _dbContext.Users
             .FirstOrDefaultAsync(u => u.Id == id);
@@ -27,7 +27,7 @@ public class UserRepository : IUserRepository
         return OperationResult<User>.Success(DatabaseUser.Map(user));
     }
 
-    public async Task<OperationResult<User>> CreateUser(User user, User? creator = null)
+    public async Task<OperationResult<User>> CreateUserAsync(User user, User? creator = null)
     {
         var roleResult = TryCreateRole(user, creator!);
 
@@ -56,7 +56,7 @@ public class UserRepository : IUserRepository
         }
     }
 
-    public async Task<OperationResult<User>> UpdateUser(User user, User creatorUser)
+    public async Task<OperationResult<User>> UpdateUserAsync(User user, User creatorUser)
     {
         var dbUser = await _dbContext.Users
             .FirstOrDefaultAsync(u => u.Id == user.Id);
@@ -80,7 +80,7 @@ public class UserRepository : IUserRepository
         return OperationResult<User>.Success(DatabaseUser.Map(dbUser));
     }
 
-    public async Task<OperationResult> DeleteUser(int id)
+    public async Task<OperationResult> DeleteUserAsync(int id)
     {
         var user = await _dbContext.Users
             .FirstOrDefaultAsync(u => u!.Id == id);
@@ -102,7 +102,7 @@ public class UserRepository : IUserRepository
         }
     }
 
-    public async Task<OperationResult<User>> Authorize(string email, string password)
+    public async Task<OperationResult<User>> AuthorizeAsync(string email, string password)
     {
         var dbUser = await _dbContext.Users
             .FirstOrDefaultAsync(u => u!.Email == email);
@@ -115,7 +115,7 @@ public class UserRepository : IUserRepository
         return OperationResult<User>.Fail("Такого пользователя не существует")!;
     }
 
-    public async Task<OperationResult<List<UserRole>>> GetRoles()
+    public async Task<OperationResult<List<UserRole>>> GetRolesAsync()
     {
         var roles = await _dbContext.Roles
             .AsNoTracking()
@@ -130,7 +130,7 @@ public class UserRepository : IUserRepository
         return OperationResult<List<UserRole>>.Success(roles);
     }
 
-    public async Task<OperationResult<User>> GetUserByEmail(string email)
+    public async Task<OperationResult<User>> GetUserByEmailAsync(string email)
     {
         var user = await _dbContext.Users
             .FirstOrDefaultAsync(u => u.Email == email);

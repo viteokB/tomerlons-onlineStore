@@ -1,10 +1,13 @@
 ﻿using OnlineStore.Core;
+using OnlineStore.Core.Common;
 
 namespace OnlineStore.Services.Login;
 
 public interface IUserService
 {
-    User Login(string username, string password);
+    Task<OperationResult<User>> Login(string email, string password);
     
-    User Register(string username, string password, string role);
+    Task<OperationResult<User>> Register(string email, string password, string role);
+    
+    Task<OperationResult<List<UserRole>>> GetUserRoles();
 }

@@ -4,15 +4,17 @@ namespace OnlineStore.Core.Interfaces;
 
 public interface IUserRepository
 {
-    public Task<OperationResult<User>> GetUserById(int id);
+    public Task<OperationResult<User>> GetUserByIdAsync(int id);
 
-    public Task<OperationResult<User>> CreateUser(User user, User? creator = null);
+    public Task<OperationResult<User>> GetUserByEmailAsync(string email);
+
+    public Task<OperationResult<User>> CreateUserAsync(User user, User? creator = null);
     
-    public Task<OperationResult<User>> UpdateUser(User user, User creatorUser);
+    public Task<OperationResult<User>> UpdateUserAsync(User user, User creatorUser);
     
-    public Task<OperationResult> DeleteUser(int id);
+    public Task<OperationResult> DeleteUserAsync(int id);
     
-    public Task<OperationResult<User>> Authorize(string email, string password);
+    public Task<OperationResult<User>> AuthorizeAsync(string email, string password);
     
-    public Task<OperationResult<List<UserRole>>> GetRoles();
+    public Task<OperationResult<List<UserRole>>> GetRolesAsync();
 }
