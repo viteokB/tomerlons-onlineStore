@@ -7,4 +7,8 @@
         <RootNamespace>Presentation</RootNamespace>
     </PropertyGroup>
 
+    <ItemGroup>
+      <ProjectReference Include="..\OnlineStore.Services\OnlineStore.Services.csproj" />
+    </ItemGroup>
+
 </Project>

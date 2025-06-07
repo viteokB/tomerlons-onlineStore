@@ -12,7 +12,12 @@ public class OnlineStoreDbContext : DbContext
     public OnlineStoreDbContext(DbContextOptions<OnlineStoreDbContext> options)
         : base(options)
     {
-        
+        Database.EnsureCreated();
+    }
+
+    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+    {
+        optionsBuilder.UseSqlite("Filename=OnlineStore.db");
     }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)

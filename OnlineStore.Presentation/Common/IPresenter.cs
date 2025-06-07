@@ -5,7 +5,7 @@ public interface IPresenter
     void Run();
 }
 
-public interface IPresetner<in TArg>
+public interface IPresenter<in TArg>
 {
     void Run(TArg arg);
 }
