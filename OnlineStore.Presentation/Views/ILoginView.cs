@@ -1,4 +1,5 @@
-﻿using Presentation.Common;
+﻿using System.ComponentModel.DataAnnotations;
+using Presentation.Common;
 
 namespace Presentation.Views;
 
@@ -8,7 +9,7 @@ public interface ILoginView : IView
     
     public string Password { get; set; }
 
-    public event Action Login;
+    public event Func<Task> LoginAsync;
     
     void ShowError(string message);
 }

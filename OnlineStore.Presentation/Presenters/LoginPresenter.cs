@@ -16,7 +16,7 @@ public class LoginPresenter : BasePresenter<ILoginView>
         _userService = userService;
         _mainPresenterFactory = mainPresenterFactory;
 
-        view.Login += () => Login(view.Email, view.Password);
+        view.LoginAsync += async () => await Login(view.Email, view.Password);
     }
 
     private async Task Login(string email, string password)
@@ -30,7 +30,8 @@ public class LoginPresenter : BasePresenter<ILoginView>
             _view.ShowError(user.Message!);
         else
         {
-            _mainPresenterFactory.CreatePresenter().Run();
+            _mainPresenterFactory.CreatePresenter()
+                .Run();
         }
     }
 }

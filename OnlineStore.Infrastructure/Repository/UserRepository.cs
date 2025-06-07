@@ -107,12 +107,17 @@ public class UserRepository : IUserRepository
         var dbUser = await _dbContext.Users
             .FirstOrDefaultAsync(u => u!.Email == email);
 
+        if (dbUser == null)
+        {
+            return OperationResult<User>.Fail("Ошибка авторизации");
+        }
+
         if (dbUser!.HashedPassword == password)
         {
             return OperationResult<User>.Success(DatabaseUser.Map(dbUser));
         }
 
-        return OperationResult<User>.Fail("Такого пользователя не существует")!;
+        return OperationResult<User>.Fail("Ошибка авторизации");
     }
 
     public async Task<OperationResult<List<UserRole>>> GetRolesAsync()

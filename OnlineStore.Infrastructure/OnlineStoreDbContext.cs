@@ -3,7 +3,7 @@ using OnlineStore.Repository.Models;
 
 namespace OnlineStore.Repository;
 
-public class OnlineStoreDbContext : DbContext
+public sealed class OnlineStoreDbContext : DbContext
 {
     public DbSet<DatabaseRole> Roles { get; set; }
     
@@ -13,11 +13,6 @@ public class OnlineStoreDbContext : DbContext
         : base(options)
     {
         Database.EnsureCreated();
-    }
-
-    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-    {
-        optionsBuilder.UseSqlite("Filename=OnlineStore.db");
     }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
