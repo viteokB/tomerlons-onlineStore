@@ -18,6 +18,7 @@ public class RegisterPresenter : BasePresenter<IRegisterView, List<string>>
         _userService = userService;
         _navigationService = navigationService;
         
+        View.ModalResult = ModalResult.None;
         View.IsValidRepeatedPassword += () => ValidateRepeatedPassword(View.Password, View.RepeatedPassword);
         View.IsValidEmail += () => ValidateEmail(View.Email);
         View.IsValidRole += () => ValidateRole(View.Role);
@@ -89,7 +90,8 @@ public class RegisterPresenter : BasePresenter<IRegisterView, List<string>>
         else
         {
             View.ShowGoodInfo($"Регистрация пользователя '{email}' - выполнена успешно");
-            OpenLoginForm();
+            View.ModalResult = ModalResult.Yes;
+            View.Close();
         }
     }
 

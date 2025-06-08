@@ -6,8 +6,6 @@ namespace OnlineStore.UI.Forms;
 public partial class RegisterForm : Form, IRegisterView
 {
     #region Fields
-    
-    private readonly ApplicationContext _context;
 
     public List<string> UserRolesList
     {
@@ -53,10 +51,9 @@ public partial class RegisterForm : Form, IRegisterView
     
     #endregion
 
-    public RegisterForm(ApplicationContext applicationContext)
+    public RegisterForm()
     {
         InitializeComponent();
-        _context = applicationContext;
     }
     
     public void ShowError(string message)

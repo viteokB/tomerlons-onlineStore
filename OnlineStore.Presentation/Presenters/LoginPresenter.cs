@@ -17,9 +17,9 @@ public class LoginPresenter : BasePresenter<ILoginView>
     {
         _userService = userService;
         _navigationService = navigationService;
-        
-        view.LoginAsync += async () => await Login(view.Email, view.Password);
-        view.OpenRegisterForm += OpenRegisterForm;
+        View.ModalResult = ModalResult.None;
+        View.LoginAsync += async () => await Login(view.Email, view.Password);
+        View.OpenRegisterForm += OpenRegisterForm;
     }
 
     private async Task Login(string email, string password)
@@ -36,8 +36,9 @@ public class LoginPresenter : BasePresenter<ILoginView>
         }
         else
         {
-            View.ModalResult = ModalResult.Ok;
+            View.ModalResult = ModalResult.Yes;
             _navigationService.NavigateToMain();
+            View.Close();
         }
     }
 

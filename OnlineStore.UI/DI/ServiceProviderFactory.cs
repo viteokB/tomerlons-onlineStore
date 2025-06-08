@@ -49,9 +49,9 @@ public static class ServiceProviderFactory
         services.AddSingleton<INavigationService, NavigationService>();
     
         // Регистрация View
-        services.AddScoped<ILoginView, LoginForm>();
-        services.AddScoped<IMainView, MainForm>();
-        services.AddScoped<IRegisterView, RegisterForm>();
+        services.AddTransient<ILoginView, LoginForm>();
+        services.AddTransient<IMainView, MainForm>();
+        services.AddTransient<IRegisterView, RegisterForm>();
         
         services.AddTransient<LoginPresenter>();
         services.AddTransient<RegisterPresenter>();
