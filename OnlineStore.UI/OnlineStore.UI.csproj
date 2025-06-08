@@ -18,6 +18,12 @@
       <Compile Update="Forms\RegisterForm.cs">
         <SubType>Form</SubType>
       </Compile>
+      <Compile Update="Forms\AuthorForm.cs">
+        <SubType>Form</SubType>
+      </Compile>
+      <Compile Update="Forms\AuthorForm.cs">
+        <SubType>Form</SubType>
+      </Compile>
     </ItemGroup>
 
     <ItemGroup>
@@ -39,6 +45,9 @@
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </None>
       <None Update="OnlineStore.db">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+      <None Update="Images\myPhoto.jpg">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </None>
     </ItemGroup>

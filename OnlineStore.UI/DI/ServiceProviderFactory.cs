@@ -52,10 +52,12 @@ public static class ServiceProviderFactory
         services.AddTransient<ILoginView, LoginForm>();
         services.AddTransient<IMainView, MainForm>();
         services.AddTransient<IRegisterView, RegisterForm>();
+        services.AddTransient<IAuthorView, AuthorForm>();
         
         services.AddTransient<LoginPresenter>();
         services.AddTransient<RegisterPresenter>();
         services.AddTransient<MainPresenter>();
+        services.AddTransient<AuthorPresenter>();
         
         // Регистрация фабрик презентеров
         services.AddTransient<Func<LoginPresenter>>(provider => 
@@ -66,5 +68,8 @@ public static class ServiceProviderFactory
 
         services.AddTransient<Func<MainPresenter>>(provider => 
             provider.GetRequiredService<MainPresenter>);
+
+        services.AddTransient<Func<AuthorPresenter>>(provider =>
+            provider.GetRequiredService<AuthorPresenter>);
     }
 }

@@ -1,4 +1,5 @@
-﻿using Presentation.Views;
+﻿using OnlineStore.Core;
+using Presentation.Views;
 
 namespace OnlineStore.UI.Forms;
 
@@ -20,14 +21,17 @@ public partial class MainForm : Form, IMainView
 
     public event Action? OpenModalLoginDialog;
     public event Action? OpenModalRegisterDialog;
+    
+    public User User { get; set; }
+
     public void ShowError(string message)
     {
-        throw new NotImplementedException();
+        MessageBox.Show(this, message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
     }
 
     public void ShowMessage(string message)
     {
-        throw new NotImplementedException();
+        MessageBox.Show(this, message, "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
     }
 
     private void button1_Click(object sender, EventArgs e)
