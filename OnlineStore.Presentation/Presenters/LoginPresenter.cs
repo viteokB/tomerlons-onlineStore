@@ -1,6 +1,8 @@
-﻿using Microsoft.VisualBasic.CompilerServices;
+﻿using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.VisualBasic.CompilerServices;
 using OnlineStore.Services.Login;
 using Presentation.Common;
+using Presentation.NavigationService;
 using Presentation.Views;
 
 namespace Presentation.Presenters;
@@ -8,17 +10,15 @@ namespace Presentation.Presenters;
 public class LoginPresenter : BasePresenter<ILoginView>
 {
     private readonly IUserService _userService;
-    private readonly IPresenterFactoryMethod<MainPresenter> _mainPresenterFactory;
-    private readonly IPresenterFactoryMethod<RegisterPresenter> _registerPresenterFactory;
+    private readonly INavigationService _navigationService;
+
 
     public LoginPresenter(ILoginView view, IUserService userService,
-        IPresenterFactoryMethod<MainPresenter> mainPresenterFactory,
-        IPresenterFactoryMethod<RegisterPresenter> registerPresenterFactory) : base(view)
+        INavigationService navigationService) : base(view)
     {
         _userService = userService;
-        _mainPresenterFactory = mainPresenterFactory;
-        _registerPresenterFactory = registerPresenterFactory;
-
+        _navigationService = navigationService;
+        
         view.LoginAsync += async () => await Login(view.Email, view.Password);
         view.OpenRegisterForm += OpenRegisterForm;
     }
@@ -34,16 +34,21 @@ public class LoginPresenter : BasePresenter<ILoginView>
             _view.ShowError(user.Message!);
         else
         {
-            _mainPresenterFactory
-                .CreatePresenter()
-                .Run();
+            _navigationService.NavigateToMain();
         }
     }
 
-    private void OpenRegisterForm()
+    private async void OpenRegisterForm()
     {
-        _registerPresenterFactory
-            .CreatePresenter()
-            .Run();
+        var userRoles = await _userService.GetUserRoles();
+
+        if (!userRoles.IsSuccess)
+            throw new ApplicationException("Приложение не может получить список всех ролей пользователя");
+        
+        _navigationService
+            .NavigateToRegister(
+                userRoles.Data
+                .Select(u => u.Name)
+                .ToList());
     }
 }

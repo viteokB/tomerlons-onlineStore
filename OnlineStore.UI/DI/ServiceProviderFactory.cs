@@ -4,6 +4,7 @@ using OnlineStore.Repository;
 using OnlineStore.Services.Login;
 using OnlineStore.UI.Forms;
 using Presentation.Common;
+using Presentation.NavigationService;
 using Presentation.PresenterFactoryMethods;
 using Presentation.Presenters;
 using Presentation.Views;
@@ -47,16 +48,25 @@ public static class ServiceProviderFactory
         this IServiceCollection services, 
         IConfiguration configuration)
     {
-        // Views
+        services.AddSingleton<INavigationService, NavigationService>();
+    
+        // Регистрация View
         services.AddScoped<ILoginView, LoginForm>();
         services.AddScoped<IMainView, MainForm>();
         services.AddScoped<IRegisterView, RegisterForm>();
-
-        // Presenters походу не надо
         
-        // PresenterFactoryMethods
-        services.AddSingleton<IPresenterFactoryMethod<LoginPresenter>, LoginPresenterFactoryMethod>();
-        services.AddSingleton<IPresenterFactoryMethod<MainPresenter>, MainPresenterFactoryMethod>();
-        services.AddSingleton<IPresenterFactoryMethod<RegisterPresenter>, RegisterPresenterFactoryMethod>();
+        services.AddTransient<LoginPresenter>();
+        services.AddTransient<RegisterPresenter>();
+        services.AddTransient<MainPresenter>();
+        
+        // Регистрация фабрик презентеров
+        services.AddTransient<Func<LoginPresenter>>(provider => 
+            provider.GetRequiredService<LoginPresenter>);
+
+        services.AddTransient<Func<RegisterPresenter>>(provider => 
+            provider.GetRequiredService<RegisterPresenter>);
+
+        services.AddTransient<Func<MainPresenter>>(provider => 
+            provider.GetRequiredService<MainPresenter>);
     }
 }

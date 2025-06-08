@@ -1,7 +1,9 @@
 using System.Diagnostics;
 using Microsoft.Extensions.DependencyInjection;
 using OnlineStore.UI.DI;
+using OnlineStore.UI.Forms;
 using Presentation.Common;
+using Presentation.NavigationService;
 using Presentation.Presenters;
 
 namespace OnlineStore.UI;
@@ -19,10 +21,8 @@ static class Program
         ApplicationConfiguration.Initialize();
         
         var serviceProvider = ServiceProviderFactory.CreateServiceProvider();
-        
-        var loginFactoryMethod = serviceProvider.GetService<IPresenterFactoryMethod<LoginPresenter>>();
-        
-        loginFactoryMethod?.CreatePresenter()
-            .Run();
+        var navigationService = serviceProvider.GetService<INavigationService>();
+        navigationService
+            .NavigateToLogin();
     }
 }
