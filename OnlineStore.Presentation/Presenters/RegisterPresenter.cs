@@ -70,7 +70,7 @@ public class RegisterPresenter : BasePresenter<IRegisterView, List<string>>
 
     private bool ValidateRole(string role)
     {
-        if (string.IsNullOrEmpty(role))
+        if (string.IsNullOrEmpty(role) || !View.UserRolesList.Contains(role))
         {
             View.ShowError("Роль должна быть выбрана");
             return false;
@@ -81,7 +81,7 @@ public class RegisterPresenter : BasePresenter<IRegisterView, List<string>>
 
     private async Task RegisterAsync(string role, string email, string password)
     {
-        var register = await _userService.Register(role, email, password);
+        var register = await _userService.Register(email, password, role);
 
         if (!register.IsSuccess)
         {

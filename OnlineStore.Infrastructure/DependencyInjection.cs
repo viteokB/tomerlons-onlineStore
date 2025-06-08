@@ -1,7 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using OnlineStore.Core.Interfaces;
+using OnlineStore.Repository.Migrations;
 using OnlineStore.Repository.Repository;
 
 namespace OnlineStore.Repository;

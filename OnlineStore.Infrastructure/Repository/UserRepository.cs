@@ -36,6 +36,13 @@ public class UserRepository : IUserRepository
             return OperationResult<User>.Fail(roleResult.Message)!;
         }
         
+        var userExisit = await GetUserByEmailAsync(user.Email);
+
+        if (userExisit.IsSuccess)
+        {
+            return OperationResult<User>.Fail($"Пользователь с таким email уже существует")!;
+        }
+        
         try
         {
             await _dbContext.Users.AddAsync(new DatabaseUser()
@@ -105,6 +112,7 @@ public class UserRepository : IUserRepository
     public async Task<OperationResult<User>> AuthorizeAsync(string email, string password)
     {
         var dbUser = await _dbContext.Users
+            .Include(u => u.Role)
             .FirstOrDefaultAsync(u => u!.Email == email);
 
         if (dbUser == null)

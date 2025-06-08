@@ -22,7 +22,7 @@ public partial class RegisterForm : Form, IRegisterView
     
     public string Role
     {
-        get => roleComboBox.SelectedText;
+        get => roleComboBox.Text;
     }
     
     public string Email

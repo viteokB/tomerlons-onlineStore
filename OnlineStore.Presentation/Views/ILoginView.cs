@@ -14,4 +14,6 @@ public interface ILoginView : IModalView
     public event Action  OpenRegisterForm;
     
     void ShowError(string message);
+    
+    void ShowInformation(string message);
 }

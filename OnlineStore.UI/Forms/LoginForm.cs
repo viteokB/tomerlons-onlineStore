@@ -32,6 +32,11 @@ public partial class LoginForm : BaseModalForm, ILoginView
         MessageBox.Show(this, message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
     }
 
+    public void ShowInformation(string message)
+    {
+        MessageBox.Show(this, message, "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
+    }
+
     private async void LoginButton_Click(object sender, EventArgs e)
     {
         try

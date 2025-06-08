@@ -12,7 +12,7 @@ public sealed class OnlineStoreDbContext : DbContext
     public OnlineStoreDbContext(DbContextOptions<OnlineStoreDbContext> options)
         : base(options)
     {
-        Database.EnsureCreated();
+        
     }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)

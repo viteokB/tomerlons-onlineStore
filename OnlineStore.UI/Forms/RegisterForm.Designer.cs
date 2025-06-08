@@ -48,16 +48,16 @@ partial class RegisterForm
         // 
         // roleComboBox
         // 
-        roleComboBox.Font = new System.Drawing.Font("Arial Rounded MT Bold", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)0));
+        roleComboBox.Font = new System.Drawing.Font("Trebuchet MS", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)204));
         roleComboBox.FormattingEnabled = true;
         roleComboBox.Location = new System.Drawing.Point(85, 126);
         roleComboBox.Name = "roleComboBox";
-        roleComboBox.Size = new System.Drawing.Size(166, 28);
+        roleComboBox.Size = new System.Drawing.Size(166, 31);
         roleComboBox.TabIndex = 0;
         // 
         // emailTextBox
         // 
-        emailTextBox.Font = new System.Drawing.Font("Arial Rounded MT Bold", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)0));
+        emailTextBox.Font = new System.Drawing.Font("Trebuchet MS", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)204));
         emailTextBox.Location = new System.Drawing.Point(85, 188);
         emailTextBox.Name = "emailTextBox";
         emailTextBox.Size = new System.Drawing.Size(166, 27);
@@ -65,9 +65,10 @@ partial class RegisterForm
         // 
         // passwordTextBox
         // 
-        passwordTextBox.Font = new System.Drawing.Font("Arial Rounded MT Bold", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)0));
+        passwordTextBox.Font = new System.Drawing.Font("Trebuchet MS", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)0));
         passwordTextBox.Location = new System.Drawing.Point(85, 250);
         passwordTextBox.Name = "passwordTextBox";
+        passwordTextBox.PasswordChar = '*';
         passwordTextBox.Size = new System.Drawing.Size(166, 27);
         passwordTextBox.TabIndex = 2;
         // 
@@ -87,7 +88,7 @@ partial class RegisterForm
         // 
         // label1
         // 
-        label1.Font = new System.Drawing.Font("Arial Rounded MT Bold", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)0));
+        label1.Font = new System.Drawing.Font("Trebuchet MS", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)0));
         label1.ForeColor = System.Drawing.SystemColors.Desktop;
         label1.Location = new System.Drawing.Point(85, 95);
         label1.Name = "label1";
@@ -131,9 +132,10 @@ partial class RegisterForm
         // 
         // repeatPasswordTextBox
         // 
-        repeatPasswordTextBox.Font = new System.Drawing.Font("Arial Rounded MT Bold", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)0));
+        repeatPasswordTextBox.Font = new System.Drawing.Font("Trebuchet MS", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)0));
         repeatPasswordTextBox.Location = new System.Drawing.Point(85, 313);
         repeatPasswordTextBox.Name = "repeatPasswordTextBox";
+        repeatPasswordTextBox.PasswordChar = '*';
         repeatPasswordTextBox.Size = new System.Drawing.Size(166, 27);
         repeatPasswordTextBox.TabIndex = 3;
         // 

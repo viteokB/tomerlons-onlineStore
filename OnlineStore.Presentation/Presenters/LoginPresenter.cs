@@ -36,8 +36,8 @@ public class LoginPresenter : BasePresenter<ILoginView>
         }
         else
         {
+            View.ShowInformation("Авторизация успешна");
             View.ModalResult = ModalResult.Yes;
-            _navigationService.NavigateToMain();
             View.Close();
         }
     }
