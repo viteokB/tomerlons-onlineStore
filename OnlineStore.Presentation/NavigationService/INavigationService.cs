@@ -1,8 +1,10 @@
-﻿namespace Presentation.NavigationService;
+﻿using Presentation.Common;
+
+namespace Presentation.NavigationService;
 
 public interface INavigationService
 {
-    void NavigateToLogin();
-    void NavigateToRegister(List<string> roles);
+    ModalResult NavigateToLogin();
+    ModalResult NavigateToRegister(List<string> roles);
     void NavigateToMain();
 }

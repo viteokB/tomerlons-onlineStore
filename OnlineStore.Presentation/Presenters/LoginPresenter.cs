@@ -11,8 +11,7 @@ public class LoginPresenter : BasePresenter<ILoginView>
 {
     private readonly IUserService _userService;
     private readonly INavigationService _navigationService;
-
-
+    
     public LoginPresenter(ILoginView view, IUserService userService,
         INavigationService navigationService) : base(view)
     {
@@ -26,14 +25,18 @@ public class LoginPresenter : BasePresenter<ILoginView>
     private async Task Login(string email, string password)
     {
         if(string.IsNullOrEmpty(email) || string.IsNullOrEmpty(password))
-            _view.ShowError("Email and password обязательны");
+            View.ShowError("Email and password обязательны");
         
         var user = await _userService.Login(email, password);
-        
-        if(!user.IsSuccess)
-            _view.ShowError(user.Message!);
+
+        if (!user.IsSuccess)
+        {
+            View.ShowError(user.Message!);
+            View.ModalResult = ModalResult.No;
+        }
         else
         {
+            View.ModalResult = ModalResult.Ok;
             _navigationService.NavigateToMain();
         }
     }

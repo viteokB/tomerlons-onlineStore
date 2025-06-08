@@ -3,7 +3,7 @@ using Presentation.Common;
 
 namespace Presentation.Views;
 
-public interface ILoginView : IView
+public interface ILoginView : IModalView
 {
     public string Email { get; set; }
     

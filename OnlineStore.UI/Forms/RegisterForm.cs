@@ -1,4 +1,5 @@
-﻿using Presentation.Views;
+﻿using Presentation.Common;
+using Presentation.Views;
 
 namespace OnlineStore.UI.Forms;
 
@@ -97,4 +98,6 @@ public partial class RegisterForm : Form, IRegisterView
     {
         OpenLoginForm?.Invoke();
     }
+
+    public ModalResult ModalResult { get; set; }
 }

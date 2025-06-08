@@ -23,6 +23,6 @@ static class Program
         var serviceProvider = ServiceProviderFactory.CreateServiceProvider();
         var navigationService = serviceProvider.GetService<INavigationService>();
         navigationService
-            .NavigateToLogin();
+            .NavigateToMain();
     }
 }

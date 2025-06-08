@@ -1,4 +1,5 @@
-﻿using Presentation.Presenters;
+﻿using Presentation.Common;
+using Presentation.Presenters;
 
 namespace Presentation.NavigationService;
 
@@ -18,10 +19,20 @@ public class NavigationService : INavigationService
         _mainPresenterFactory = mainPresenterFactory;
     }
 
-    public void NavigateToLogin() 
-        => _loginPresenterFactory().Run();
-    public void NavigateToRegister(List<string> roles)
-        => _registerPresenterFactory().Run(roles);
+    public ModalResult NavigateToLogin()
+    {
+        var presenter = _loginPresenterFactory();
+        presenter.Run();
+        return presenter.View.ModalResult;
+    }
+
+    public ModalResult NavigateToRegister(List<string> roles)
+    {
+        var presenter = _registerPresenterFactory();
+        presenter.Run(roles);
+        return presenter.View.ModalResult;
+    }
+    
     public void NavigateToMain()
         => _mainPresenterFactory().Run();
 }

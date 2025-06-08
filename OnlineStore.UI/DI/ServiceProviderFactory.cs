@@ -3,9 +3,7 @@ using Microsoft.Extensions.DependencyInjection;
 using OnlineStore.Repository;
 using OnlineStore.Services.Login;
 using OnlineStore.UI.Forms;
-using Presentation.Common;
 using Presentation.NavigationService;
-using Presentation.PresenterFactoryMethods;
 using Presentation.Presenters;
 using Presentation.Views;
 

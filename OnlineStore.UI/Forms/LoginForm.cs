@@ -1,11 +1,11 @@
-﻿using Presentation.Views;
+﻿using OnlineStore.UI.Forms.Common;
+using Presentation.Common;
+using Presentation.Views;
 
 namespace OnlineStore.UI.Forms;
 
-public partial class LoginForm : Form, ILoginView
+public partial class LoginForm : BaseModalForm, ILoginView
 {
-    private readonly ApplicationContext _context;
-    
     public string Email
     {
         get => emailTextBox.Text.Trim();
@@ -22,16 +22,9 @@ public partial class LoginForm : Form, ILoginView
     
     public event Action OpenRegisterForm;
 
-    public LoginForm(ApplicationContext applicationContext)
+    public LoginForm()
     {
         InitializeComponent();
-        _context = applicationContext;
-    }
-
-    public new void Show()
-    {
-        _context.MainForm = this;
-        Application.Run(_context);
     }
 
     public void ShowError(string message)
@@ -66,4 +59,6 @@ public partial class LoginForm : Form, ILoginView
     {
         OpenRegisterForm.Invoke();
     }
+
+    public ModalResult ModalResult { get; set; }
 }

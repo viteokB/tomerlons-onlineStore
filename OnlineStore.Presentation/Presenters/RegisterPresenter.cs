@@ -18,11 +18,11 @@ public class RegisterPresenter : BasePresenter<IRegisterView, List<string>>
         _userService = userService;
         _navigationService = navigationService;
         
-        _view.IsValidRepeatedPassword += () => ValidateRepeatedPassword(_view.Password, _view.RepeatedPassword);
-        _view.IsValidEmail += () => ValidateEmail(_view.Email);
-        _view.IsValidRole += () => ValidateRole(_view.Role);
-        _view.OpenLoginForm += OpenLoginForm;
-        _view.RegisterAsync += async () => await RegisterAsync(_view.Role, _view.Email, _view.Password);
+        View.IsValidRepeatedPassword += () => ValidateRepeatedPassword(View.Password, View.RepeatedPassword);
+        View.IsValidEmail += () => ValidateEmail(View.Email);
+        View.IsValidRole += () => ValidateRole(View.Role);
+        View.OpenLoginForm += OpenLoginForm;
+        View.RegisterAsync += async () => await RegisterAsync(View.Role, View.Email, View.Password);
     }
     
     private void OpenLoginForm()
@@ -35,12 +35,12 @@ public class RegisterPresenter : BasePresenter<IRegisterView, List<string>>
     {
         if (string.IsNullOrEmpty(password) || string.IsNullOrEmpty(repeatedPassword))
         {
-            _view.ShowError("Пароль и/или повторенный пароль не должны быть пустыми");
+            View.ShowError("Пароль и/или повторенный пароль не должны быть пустыми");
             return false;
         }
         else if (password != repeatedPassword)
         {
-            _view.ShowError("Пароль и повторенный пароль должны быть равны");
+            View.ShowError("Пароль и повторенный пароль должны быть равны");
             return false;
         }
         
@@ -51,7 +51,7 @@ public class RegisterPresenter : BasePresenter<IRegisterView, List<string>>
     {
         if (string.IsNullOrWhiteSpace(email))
         {
-            _view.ShowError("Email не может быть пустым");
+            View.ShowError("Email не может быть пустым");
             return false;
         }
 
@@ -61,7 +61,7 @@ public class RegisterPresenter : BasePresenter<IRegisterView, List<string>>
     
         if (!isValid)
         {
-            _view.ShowError("Некорректный формат email");
+            View.ShowError("Некорректный формат email");
         }
     
         return isValid;
@@ -71,7 +71,7 @@ public class RegisterPresenter : BasePresenter<IRegisterView, List<string>>
     {
         if (string.IsNullOrEmpty(role))
         {
-            _view.ShowError("Роль должна быть выбрана");
+            View.ShowError("Роль должна быть выбрана");
             return false;
         }
 
@@ -84,18 +84,18 @@ public class RegisterPresenter : BasePresenter<IRegisterView, List<string>>
 
         if (!register.IsSuccess)
         {
-            _view.ShowError(register.Message!);
+            View.ShowError(register.Message!);
         }
         else
         {
-            _view.ShowGoodInfo($"Регистрация пользователя '{email}' - выполнена успешно");
+            View.ShowGoodInfo($"Регистрация пользователя '{email}' - выполнена успешно");
             OpenLoginForm();
         }
     }
 
     public override void Run(List<string> arg)
     {
-        _view.UserRolesList = arg;
-        _view.Show();
+        View.UserRolesList = arg;
+        View.Show();
     }
 }

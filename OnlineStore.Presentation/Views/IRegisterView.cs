@@ -2,7 +2,7 @@
 
 namespace Presentation.Views;
 
-public interface IRegisterView : IView
+public interface IRegisterView : IModalView
 {
     public List<string> UserRolesList { get; set; }
     
