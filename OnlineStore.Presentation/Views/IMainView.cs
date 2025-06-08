@@ -9,6 +9,8 @@ public interface IMainView : IView
     
     public event Action  OpenModalRegisterDialog;
     
+    public event Action  OpenModalAuthorDialog;
+    
     public User User { get; set; }
     
     void ShowError(string message);

@@ -23,6 +23,7 @@ public class MainPresenter : BasePresenter<IMainView>
     {
         View.OpenModalLoginDialog += OnOpenModalLoginDialog;
         View.OpenModalRegisterDialog += OnOpenModalRegisterDialog;
+        View.OpenModalAuthorDialog += OnOpenModalAuthorDialog;
     }
 
     private void OnOpenModalLoginDialog()
@@ -33,6 +34,11 @@ public class MainPresenter : BasePresenter<IMainView>
         {
             View.ShowMessage("Вход выполнен успешно!");
         }
+    }
+
+    private void OnOpenModalAuthorDialog()
+    {
+        var result = _navigationService.NavigateToAuthor();
     }
 
     private async void OnOpenModalRegisterDialog()

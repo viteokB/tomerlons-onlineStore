@@ -21,7 +21,8 @@ public partial class MainForm : Form, IMainView
 
     public event Action? OpenModalLoginDialog;
     public event Action? OpenModalRegisterDialog;
-    
+    public event Action? OpenModalAuthorDialog;
+
     public User User { get; set; }
 
     public void ShowError(string message)
@@ -42,5 +43,10 @@ public partial class MainForm : Form, IMainView
     private void button2_Click(object sender, EventArgs e)
     {
         OpenModalRegisterDialog?.Invoke();
+    }
+
+    private void button3_Click(object sender, EventArgs e)
+    {
+        OpenModalAuthorDialog?.Invoke();
     }
 }

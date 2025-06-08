@@ -33,29 +33,29 @@ partial class AuthorForm
     {
         System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(AuthorForm));
         splitContainer1 = new System.Windows.Forms.SplitContainer();
-        splitContainer2 = new System.Windows.Forms.SplitContainer();
         splitContainer3 = new System.Windows.Forms.SplitContainer();
         label1 = new System.Windows.Forms.Label();
-        label2 = new System.Windows.Forms.Label();
         pictureBox1 = new System.Windows.Forms.PictureBox();
+        splitContainer2 = new System.Windows.Forms.SplitContainer();
+        label2 = new System.Windows.Forms.Label();
         splitContainer4 = new System.Windows.Forms.SplitContainer();
+        label4 = new System.Windows.Forms.Label();
         splitContainer5 = new System.Windows.Forms.SplitContainer();
         label3 = new System.Windows.Forms.Label();
-        label4 = new System.Windows.Forms.Label();
         label5 = new System.Windows.Forms.Label();
         ((System.ComponentModel.ISupportInitialize)splitContainer1).BeginInit();
         splitContainer1.Panel1.SuspendLayout();
         splitContainer1.Panel2.SuspendLayout();
         splitContainer1.SuspendLayout();
-        ((System.ComponentModel.ISupportInitialize)splitContainer2).BeginInit();
-        splitContainer2.Panel1.SuspendLayout();
-        splitContainer2.Panel2.SuspendLayout();
-        splitContainer2.SuspendLayout();
         ((System.ComponentModel.ISupportInitialize)splitContainer3).BeginInit();
         splitContainer3.Panel1.SuspendLayout();
         splitContainer3.Panel2.SuspendLayout();
         splitContainer3.SuspendLayout();
         ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
+        ((System.ComponentModel.ISupportInitialize)splitContainer2).BeginInit();
+        splitContainer2.Panel1.SuspendLayout();
+        splitContainer2.Panel2.SuspendLayout();
+        splitContainer2.SuspendLayout();
         ((System.ComponentModel.ISupportInitialize)splitContainer4).BeginInit();
         splitContainer4.Panel1.SuspendLayout();
         splitContainer4.Panel2.SuspendLayout();
@@ -82,24 +82,6 @@ partial class AuthorForm
         splitContainer1.Size = new System.Drawing.Size(800, 450);
         splitContainer1.SplitterDistance = 280;
         splitContainer1.TabIndex = 0;
-        // 
-        // splitContainer2
-        // 
-        splitContainer2.Dock = System.Windows.Forms.DockStyle.Fill;
-        splitContainer2.Location = new System.Drawing.Point(0, 0);
-        splitContainer2.Name = "splitContainer2";
-        splitContainer2.Orientation = System.Windows.Forms.Orientation.Horizontal;
-        // 
-        // splitContainer2.Panel1
-        // 
-        splitContainer2.Panel1.Controls.Add(label2);
-        // 
-        // splitContainer2.Panel2
-        // 
-        splitContainer2.Panel2.Controls.Add(splitContainer4);
-        splitContainer2.Size = new System.Drawing.Size(516, 450);
-        splitContainer2.SplitterDistance = 62;
-        splitContainer2.TabIndex = 0;
         // 
         // splitContainer3
         // 
@@ -132,6 +114,35 @@ partial class AuthorForm
         label1.Text = "Фото автора";
         label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
         // 
+        // pictureBox1
+        // 
+        pictureBox1.Dock = System.Windows.Forms.DockStyle.Fill;
+        pictureBox1.Image = ((System.Drawing.Image)resources.GetObject("pictureBox1.Image"));
+        pictureBox1.Location = new System.Drawing.Point(0, 0);
+        pictureBox1.Name = "pictureBox1";
+        pictureBox1.Size = new System.Drawing.Size(280, 383);
+        pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
+        pictureBox1.TabIndex = 0;
+        pictureBox1.TabStop = false;
+        // 
+        // splitContainer2
+        // 
+        splitContainer2.Dock = System.Windows.Forms.DockStyle.Fill;
+        splitContainer2.Location = new System.Drawing.Point(0, 0);
+        splitContainer2.Name = "splitContainer2";
+        splitContainer2.Orientation = System.Windows.Forms.Orientation.Horizontal;
+        // 
+        // splitContainer2.Panel1
+        // 
+        splitContainer2.Panel1.Controls.Add(label2);
+        // 
+        // splitContainer2.Panel2
+        // 
+        splitContainer2.Panel2.Controls.Add(splitContainer4);
+        splitContainer2.Size = new System.Drawing.Size(516, 450);
+        splitContainer2.SplitterDistance = 62;
+        splitContainer2.TabIndex = 0;
+        // 
         // label2
         // 
         label2.BackColor = System.Drawing.Color.BlueViolet;
@@ -144,16 +155,6 @@ partial class AuthorForm
         label2.TabIndex = 0;
         label2.Text = "О авторе";
         label2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-        // 
-        // pictureBox1
-        // 
-        pictureBox1.Dock = System.Windows.Forms.DockStyle.Fill;
-        pictureBox1.Image = ((System.Drawing.Image)resources.GetObject("pictureBox1.Image"));
-        pictureBox1.Location = new System.Drawing.Point(0, 0);
-        pictureBox1.Name = "pictureBox1";
-        pictureBox1.Size = new System.Drawing.Size(280, 383);
-        pictureBox1.TabIndex = 0;
-        pictureBox1.TabStop = false;
         // 
         // splitContainer4
         // 
@@ -172,6 +173,17 @@ partial class AuthorForm
         splitContainer4.Size = new System.Drawing.Size(516, 384);
         splitContainer4.SplitterDistance = 140;
         splitContainer4.TabIndex = 0;
+        // 
+        // label4
+        // 
+        label4.Dock = System.Windows.Forms.DockStyle.Fill;
+        label4.Font = new System.Drawing.Font("Trebuchet MS", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)204));
+        label4.ForeColor = System.Drawing.SystemColors.Desktop;
+        label4.Location = new System.Drawing.Point(0, 0);
+        label4.Name = "label4";
+        label4.Size = new System.Drawing.Size(516, 140);
+        label4.TabIndex = 0;
+        label4.Text = "    Привет, я Томерлон\r\n    Мой контакт в телеграмм @tomerlon7187";
         // 
         // splitContainer5
         // 
@@ -204,17 +216,6 @@ partial class AuthorForm
         label3.Text = "О приложении";
         label3.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
         // 
-        // label4
-        // 
-        label4.Dock = System.Windows.Forms.DockStyle.Fill;
-        label4.Font = new System.Drawing.Font("Trebuchet MS", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)204));
-        label4.ForeColor = System.Drawing.SystemColors.Desktop;
-        label4.Location = new System.Drawing.Point(0, 0);
-        label4.Name = "label4";
-        label4.Size = new System.Drawing.Size(516, 140);
-        label4.TabIndex = 0;
-        label4.Text = "    Привет, я Томерлон\r\n    Мой контакт в телеграмм @tomerlon7187";
-        // 
         // label5
         // 
         label5.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -238,15 +239,16 @@ partial class AuthorForm
         splitContainer1.Panel2.ResumeLayout(false);
         ((System.ComponentModel.ISupportInitialize)splitContainer1).EndInit();
         splitContainer1.ResumeLayout(false);
+        splitContainer3.Panel1.ResumeLayout(false);
+        splitContainer3.Panel2.ResumeLayout(false);
+        splitContainer3.Panel2.PerformLayout();
+        ((System.ComponentModel.ISupportInitialize)splitContainer3).EndInit();
+        splitContainer3.ResumeLayout(false);
+        ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
         splitContainer2.Panel1.ResumeLayout(false);
         splitContainer2.Panel2.ResumeLayout(false);
         ((System.ComponentModel.ISupportInitialize)splitContainer2).EndInit();
         splitContainer2.ResumeLayout(false);
-        splitContainer3.Panel1.ResumeLayout(false);
-        splitContainer3.Panel2.ResumeLayout(false);
-        ((System.ComponentModel.ISupportInitialize)splitContainer3).EndInit();
-        splitContainer3.ResumeLayout(false);
-        ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
         splitContainer4.Panel1.ResumeLayout(false);
         splitContainer4.Panel2.ResumeLayout(false);
         ((System.ComponentModel.ISupportInitialize)splitContainer4).EndInit();
