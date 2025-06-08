@@ -50,11 +50,13 @@ public static class ServiceProviderFactory
         // Views
         services.AddScoped<ILoginView, LoginForm>();
         services.AddScoped<IMainView, MainForm>();
+        services.AddScoped<IRegisterView, RegisterForm>();
 
         // Presenters походу не надо
         
         // PresenterFactoryMethods
         services.AddSingleton<IPresenterFactoryMethod<LoginPresenter>, LoginPresenterFactoryMethod>();
         services.AddSingleton<IPresenterFactoryMethod<MainPresenter>, MainPresenterFactoryMethod>();
+        services.AddSingleton<IPresenterFactoryMethod<RegisterPresenter>, RegisterPresenterFactoryMethod>();
     }
 }

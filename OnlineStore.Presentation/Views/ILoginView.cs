@@ -10,6 +10,8 @@ public interface ILoginView : IView
     public string Password { get; set; }
 
     public event Func<Task> LoginAsync;
+
+    public event Action  OpenRegisterForm;
     
     void ShowError(string message);
 }

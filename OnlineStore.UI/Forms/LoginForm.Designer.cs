@@ -38,19 +38,20 @@ partial class LoginForm
         label2 = new System.Windows.Forms.Label();
         label3 = new System.Windows.Forms.Label();
         label4 = new System.Windows.Forms.Label();
+        registerOpenButton = new System.Windows.Forms.Button();
         SuspendLayout();
         // 
         // loginButton
         // 
-        loginButton.BackColor = System.Drawing.Color.Teal;
+        loginButton.BackColor = System.Drawing.Color.Green;
         loginButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
         loginButton.Cursor = System.Windows.Forms.Cursors.Hand;
         loginButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
         loginButton.Font = new System.Drawing.Font("Arial Rounded MT Bold", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)0));
         loginButton.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
-        loginButton.Location = new System.Drawing.Point(73, 246);
+        loginButton.Location = new System.Drawing.Point(56, 190);
         loginButton.Name = "loginButton";
-        loginButton.Size = new System.Drawing.Size(165, 31);
+        loginButton.Size = new System.Drawing.Size(165, 46);
         loginButton.TabIndex = 3;
         loginButton.Text = "login";
         loginButton.UseVisualStyleBackColor = false;
@@ -59,7 +60,7 @@ partial class LoginForm
         // emailTextBox
         // 
         emailTextBox.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)204));
-        emailTextBox.Location = new System.Drawing.Point(73, 54);
+        emailTextBox.Location = new System.Drawing.Point(56, 46);
         emailTextBox.Name = "emailTextBox";
         emailTextBox.Size = new System.Drawing.Size(165, 30);
         emailTextBox.TabIndex = 1;
@@ -67,7 +68,7 @@ partial class LoginForm
         // passwordTextBox
         // 
         passwordTextBox.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)204));
-        passwordTextBox.Location = new System.Drawing.Point(73, 135);
+        passwordTextBox.Location = new System.Drawing.Point(56, 127);
         passwordTextBox.Name = "passwordTextBox";
         passwordTextBox.PasswordChar = '*';
         passwordTextBox.Size = new System.Drawing.Size(165, 30);
@@ -76,7 +77,7 @@ partial class LoginForm
         // label1
         // 
         label1.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)204));
-        label1.Location = new System.Drawing.Point(73, 28);
+        label1.Location = new System.Drawing.Point(56, 20);
         label1.Name = "label1";
         label1.Size = new System.Drawing.Size(49, 23);
         label1.TabIndex = 3;
@@ -85,7 +86,7 @@ partial class LoginForm
         // label2
         // 
         label2.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)204));
-        label2.Location = new System.Drawing.Point(73, 109);
+        label2.Location = new System.Drawing.Point(56, 101);
         label2.Name = "label2";
         label2.Size = new System.Drawing.Size(85, 23);
         label2.TabIndex = 4;
@@ -94,7 +95,7 @@ partial class LoginForm
         // label3
         // 
         label3.Font = new System.Drawing.Font("Arial Rounded MT Bold", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)0));
-        label3.Location = new System.Drawing.Point(73, 28);
+        label3.Location = new System.Drawing.Point(56, 20);
         label3.Name = "label3";
         label3.Size = new System.Drawing.Size(55, 23);
         label3.TabIndex = 5;
@@ -103,19 +104,36 @@ partial class LoginForm
         // label4
         // 
         label4.Font = new System.Drawing.Font("Arial Rounded MT Bold", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)0));
-        label4.Location = new System.Drawing.Point(73, 111);
+        label4.Location = new System.Drawing.Point(56, 103);
         label4.Name = "label4";
         label4.Size = new System.Drawing.Size(95, 23);
         label4.TabIndex = 6;
         label4.Text = "password";
         // 
+        // registerOpenButton
+        // 
+        registerOpenButton.BackColor = System.Drawing.Color.Teal;
+        registerOpenButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
+        registerOpenButton.Cursor = System.Windows.Forms.Cursors.Hand;
+        registerOpenButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+        registerOpenButton.Font = new System.Drawing.Font("Arial Rounded MT Bold", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)0));
+        registerOpenButton.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
+        registerOpenButton.Location = new System.Drawing.Point(178, 258);
+        registerOpenButton.Name = "registerOpenButton";
+        registerOpenButton.Size = new System.Drawing.Size(92, 31);
+        registerOpenButton.TabIndex = 7;
+        registerOpenButton.Text = "register";
+        registerOpenButton.UseVisualStyleBackColor = false;
+        registerOpenButton.Click += registerOpenButton_Click;
+        // 
         // LoginForm
         // 
         AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
         AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-        BackColor = System.Drawing.Color.BlueViolet;
+        BackColor = System.Drawing.Color.DarkOrchid;
         BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-        ClientSize = new System.Drawing.Size(328, 301);
+        ClientSize = new System.Drawing.Size(282, 301);
+        Controls.Add(registerOpenButton);
         Controls.Add(label4);
         Controls.Add(label3);
         Controls.Add(label2);
@@ -128,6 +146,8 @@ partial class LoginForm
         ResumeLayout(false);
         PerformLayout();
     }
+
+    private System.Windows.Forms.Button registerOpenButton;
 
     private System.Windows.Forms.Label label3;
     private System.Windows.Forms.Label label4;

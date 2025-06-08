@@ -19,6 +19,8 @@ public partial class LoginForm : Form, ILoginView
     }
 
     public event Func<Task> LoginAsync = null!;
+    
+    public event Action OpenRegisterForm;
 
     public LoginForm(ApplicationContext applicationContext)
     {
@@ -58,5 +60,10 @@ public partial class LoginForm : Form, ILoginView
             // Включаем кнопку обратно
             loginButton.Enabled = true;
         }
+    }
+
+    private void registerOpenButton_Click(object sender, EventArgs e)
+    {
+        OpenRegisterForm.Invoke();
     }
 }
