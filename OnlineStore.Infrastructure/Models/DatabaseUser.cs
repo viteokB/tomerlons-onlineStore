@@ -1,5 +1,6 @@
 ﻿using OnlineStore.Core;
 using OnlineStore.Core.Interfaces;
+using OnlineStore.Core.Models;
 
 namespace OnlineStore.Repository.Models;
 

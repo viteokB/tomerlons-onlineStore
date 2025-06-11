@@ -1,4 +1,4 @@
-﻿namespace OnlineStore.Core;
+﻿namespace OnlineStore.Core.Models;
 
 public class UserRole
 {

@@ -1,4 +1,5 @@
 ﻿using OnlineStore.Core;
+using OnlineStore.Core.Models;
 using Presentation.Common;
 
 namespace Presentation.Views;

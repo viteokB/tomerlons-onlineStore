@@ -1,4 +1,5 @@
 ﻿using OnlineStore.Core;
+using OnlineStore.Core.Models;
 using Presentation.Views;
 
 namespace OnlineStore.UI.Forms;

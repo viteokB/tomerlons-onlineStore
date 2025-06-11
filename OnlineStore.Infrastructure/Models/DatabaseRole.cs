@@ -1,5 +1,6 @@
 ﻿using OnlineStore.Core;
 using OnlineStore.Core.Interfaces;
+using OnlineStore.Core.Models;
 
 namespace OnlineStore.Repository.Models;
 
@@ -9,7 +10,7 @@ public class DatabaseRole : IMapWith<DatabaseRole, UserRole>
     
     public required string Name { get; set; }
     
-    public ICollection<DatabaseUser> Users { get; set; } = new List<DatabaseUser>();
+    public ICollection<DatabaseUser> Users { get; set; } = new List<DatabaseUser>(); 
     
     public static UserRole Map(DatabaseRole from)
     {

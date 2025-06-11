@@ -17,7 +17,8 @@ public static class DependencyInjection
 
         services.AddDbContext<OnlineStoreDbContext>(options =>
         {
-            options.UseSqlite(dbConnectionString);
+            options.UseSqlite(dbConnectionString,
+                x => x.UseNetTopologySuite());
         });
         
         // repositories registration

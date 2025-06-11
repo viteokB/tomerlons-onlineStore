@@ -1,5 +1,6 @@
 ﻿using OnlineStore.Core;
 using OnlineStore.Core.Common;
+using OnlineStore.Core.Models;
 
 namespace OnlineStore.Services.Login;
 
