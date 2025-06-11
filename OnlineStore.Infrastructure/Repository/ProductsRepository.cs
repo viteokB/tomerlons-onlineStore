@@ -76,49 +76,68 @@ public class ProductsRepository : IProductsRepository
     {
         try
         {
-            var query = _databaseProducts.AsQueryable();
-            
+            var query = _databaseProducts
+                .AsNoTracking() // Recommended for read-only operations
+                .Include(p => p.Country)
+                .Include(p => p.Brand)
+                .Include(p => p.Type)
+                .Where(p => p.IsActive); // Filter out inactive products by default
+
+            // Apply filters if parameters are provided
             if (searchRequest.Query != null!)
             {
                 if (searchRequest.Query.ProductType != null)
                 {
-                    query = query.Where(p => p.Type!.Id == searchRequest.Query.ProductType.Id);
+                    query = query.Where(p => p.TypeId == searchRequest.Query.ProductType.Id);
                 }
 
                 if (searchRequest.Query.Brand != null)
                 {
-                    query = query.Where(p => p.Brand!.Id == searchRequest.Query.Brand.Id);
+                    query = query.Where(p => p.BrandId == searchRequest.Query.Brand.Id);
                 }
 
                 if (searchRequest.Query.Country != null)
                 {
-                    query = query.Where(p => p.Country.Id == searchRequest.Query.Country.Id);
+                    query = query.Where(p => p.CountryId == searchRequest.Query.Country.Id);
                 }
             }
 
             var totalCount = await query.CountAsync(cancellationToken);
-            var skip = searchRequest.Offset ?? 0;
-        
-            skip = Math.Min(skip, Math.Max(totalCount - 1, 0)); // Не выходим за границы
-            var take = Math.Min(searchRequest.Limit, totalCount - skip); // Не берем лишнего
-
+            
+            var offset = searchRequest.Offset ?? 0;
+            var limit = searchRequest.Limit;
+            
+            offset = Math.Max(0, offset);
+            limit = Math.Clamp(limit, 1, 100);
+            
+            if (offset >= totalCount && totalCount > 0)
+            {
+                offset = totalCount - 1;
+            }
+            
             var results = await query
-                .Skip(skip)
-                .Take(take)
-                .Select(c => DatabaseProduct.Map(c))
+                .OrderBy(p => p.Name)
+                .Skip(offset)
+                .Take(limit)
+                .Select(p => DatabaseProduct.Map(p))
                 .ToListAsync(cancellationToken);
+            
+            var hasMore = offset + limit < totalCount;
+            var nextOffset = hasMore ? offset + limit : (int?)null;
 
-            var hasMore = skip + take < totalCount;
-            var nextOffset = hasMore ? skip + take : new int?();
-    
-            return OperationResult<PaginatedResult<Product>>.Success(new PaginatedResult<Product>(
-                Results: results,
-                Pagination: new PaginationMetadata(
-                    NextOffset: nextOffset,
-                    HasMore: hasMore,
-                    TotalCount: totalCount
-                )
-            ));
+            return OperationResult<PaginatedResult<Product>>.Success(
+                new PaginatedResult<Product>(
+                    Results: results,
+                    Pagination: new PaginationMetadata(
+                        NextOffset: nextOffset,
+                        HasMore: hasMore,
+                        TotalCount: totalCount
+                    )
+                ));
+        }
+        catch (OperationCanceledException)
+        {
+            return OperationResult<PaginatedResult<Product>>.Fail("Operation was canceled")!;
         }
         catch (Exception ex)
         {
