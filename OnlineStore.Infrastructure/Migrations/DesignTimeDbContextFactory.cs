@@ -9,7 +9,8 @@ public class DesignTimeDbContextFactory : IDesignTimeDbContextFactory<OnlineStor
     public OnlineStoreDbContext CreateDbContext(string[] args)
     {
         var optionsBuilder = new DbContextOptionsBuilder<OnlineStoreDbContext>();
-        optionsBuilder.UseSqlite("Data Source=OnlineStore.db");
+        optionsBuilder.UseSqlite("Data Source=OnlineStore.db", o =>
+            o.UseNetTopologySuite());
 
         return new OnlineStoreDbContext(optionsBuilder.Options);
     }

@@ -16,7 +16,7 @@ public class DatabaseOrderHistory
 
     public int DeliveryAddressId { get; set; }
     
-    public Address DeliveryAddress { get; set; } = null!;
+    public DatabaseAddress DeliveryAddress { get; set; } = null!;
 
     public DatabaseType Type { get; set; } = null!;
 

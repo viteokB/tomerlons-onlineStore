@@ -38,10 +38,10 @@ public class DatabaseAddressConfiguration : IEntityTypeConfiguration<DatabaseAdd
             .HasColumnName("apartment_number")
             .HasColumnType("varchar(10)")
             .IsRequired(false);
-
+        
         builder.Property(x => x.Coordinate)
             .HasColumnName("coordinate")
-            .HasColumnType("GEOMETRY")
+            .HasSrid(4326)
             .IsRequired();
 
         builder.HasMany(x => x.Wharehouses)

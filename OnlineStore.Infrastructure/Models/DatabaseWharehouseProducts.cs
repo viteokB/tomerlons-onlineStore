@@ -1,7 +1,4 @@
-﻿using OnlineStore.Core.Models;
-using OnlineStore.Core.Models.WhareHouse;
-
-namespace OnlineStore.Repository.Models;
+﻿namespace OnlineStore.Repository.Models;
 
 public class DatabaseWharehouseProducts
 {
@@ -17,7 +14,7 @@ public class DatabaseWharehouseProducts
     
     public int? ChangedById { get; set; }
     
-    public User? ChangedBy { get; set; } = null!;
+    public DatabaseUser? ChangedBy { get; set; } = null!;
     
     public int Count { get; set; }
     

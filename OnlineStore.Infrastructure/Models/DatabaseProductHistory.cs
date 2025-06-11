@@ -10,7 +10,7 @@ public class DatabaseProductHistory
     
     public int ProductId { get; set; }
     
-    public Product Product { get; set; } = null!;
+    public DatabaseProduct Product { get; set; } = null!;
     
     public DatabaseType Type { get; set; } = null!;
     

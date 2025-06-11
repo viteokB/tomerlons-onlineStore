@@ -1,6 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using OnlineStore.Core.Models.WhareHouse;
 
 namespace OnlineStore.Repository.Models.TablesConfiguration;
 

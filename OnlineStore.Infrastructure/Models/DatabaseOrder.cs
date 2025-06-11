@@ -12,7 +12,7 @@ public class DatabaseOrder
 
     public int DeliveryAddressId { get; set; }
     
-    public Address DeliveryAddress { get; set; } = null!;
+    public DatabaseAddress DeliveryAddress { get; set; } = null!;
 
     public int DeliveryStatusId { get; set; }
     

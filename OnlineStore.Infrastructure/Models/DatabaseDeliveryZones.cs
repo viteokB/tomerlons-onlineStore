@@ -1,6 +1,4 @@
-﻿using OnlineStore.Core.Models.WhareHouse;
-
-namespace OnlineStore.Repository.Models;
+﻿namespace OnlineStore.Repository.Models;
 
 public class DatabaseDeliveryZones
 {
@@ -8,7 +6,7 @@ public class DatabaseDeliveryZones
     
     public int WharehouseId { get; set; }
     
-    public Wharehouse Wharehouse { get; set; }
+    public DatabaseWharehouse Wharehouse { get; set; }
     
     public string Name { get; set; }
     

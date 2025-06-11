@@ -117,7 +117,7 @@ partial class AuthorForm
         // pictureBox1
         // 
         pictureBox1.Dock = System.Windows.Forms.DockStyle.Fill;
-        pictureBox1.Image = ((System.Drawing.Image)resources.GetObject("pictureBox1.Image"));
+        // pictureBox1.Image = ((System.Drawing.Image)resources.GetObject("pictureBox1.Image"));
         pictureBox1.Location = new System.Drawing.Point(0, 0);
         pictureBox1.Name = "pictureBox1";
         pictureBox1.Size = new System.Drawing.Size(280, 383);

@@ -1,5 +1,4 @@
-﻿using System.Drawing;
-using Point = NetTopologySuite.Geometries.Point;
+﻿using NetTopologySuite.Geometries;
 
 namespace OnlineStore.Repository.Models;
 
@@ -18,6 +17,10 @@ public class DatabaseAddress
     public string? ApartmentNumber { get; set; }
     
     public required Point Coordinate { get; set; }
+    
+    // public required float Latitude { get; set; }
+    //
+    // public required float Longtitude { get; set; }
     
     public ICollection<DatabaseOrderHistory> Orders { get; set; } = new List<DatabaseOrderHistory>();
     
