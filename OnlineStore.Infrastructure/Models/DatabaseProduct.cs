@@ -1,9 +1,10 @@
-﻿using OnlineStore.Core.Models;
+﻿using OnlineStore.Core.Interfaces;
+using OnlineStore.Core.Models;
 using Type = System.Type;
 
 namespace OnlineStore.Repository.Models;
 
-public class DatabaseProduct
+public class DatabaseProduct : IMapWith<DatabaseProduct, Product>, IMapWith<Product, DatabaseProduct>
 {
     public int Id { get; set; }
     
@@ -38,4 +39,40 @@ public class DatabaseProduct
     public ICollection<DatabaseWharehouseProducts> WhProducts { get; set; } = new List<DatabaseWharehouseProducts>();
     
     public ICollection<DatabaseOrder> Orders { get; set; } = new List<DatabaseOrder>();
+    
+    public static Product Map(DatabaseProduct from)
+    {
+        return new Product
+        {
+            Id = from.Id,
+            Type = DatabaseType.Map(from.Type!),
+            Country = DatabaseCountry.Map(from.Country!),
+            ChangedBy = DatabaseUser.Map(from.ChangedBy!),
+            Brand = DatabaseBrand.Map(from.Brand!),
+            Name = from.Name,
+            PhotoPath = from.PhotoPath,
+            CatalogNumber = from.CatalogNumber,
+            BasePrice = from.BasePrice,
+            IsActive = from.IsActive,
+            ChangedAt = from.ChangedAt,
+        };
+    }
+
+    public static DatabaseProduct Map(Product from)
+    {
+        return new DatabaseProduct
+        {
+            Id = from.Id,
+            Type = DatabaseType.Map(from.Type!),
+            Country = DatabaseCountry.Map(from.Country!),
+            ChangedBy = DatabaseUser.Map(from.ChangedBy!),
+            Brand = DatabaseBrand.Map(from.Brand!),
+            Name = from.Name,
+            PhotoPath = from.PhotoPath,
+            CatalogNumber = from.CatalogNumber,
+            BasePrice = from.BasePrice,
+            IsActive = from.IsActive,
+            ChangedAt = from.ChangedAt,
+        };
+    }
 }

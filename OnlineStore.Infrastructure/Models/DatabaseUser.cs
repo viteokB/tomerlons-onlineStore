@@ -4,7 +4,7 @@ using OnlineStore.Core.Models;
 
 namespace OnlineStore.Repository.Models;
 
-public class DatabaseUser : IMapWith<DatabaseUser, User>
+public class DatabaseUser : IMapWith<DatabaseUser, User>, IMapWith<User, DatabaseUser>
 {
     public int Id { get; set; }
     
@@ -21,6 +21,18 @@ public class DatabaseUser : IMapWith<DatabaseUser, User>
     public static User Map(DatabaseUser from)
     {
         return new User()
+        {
+            Id = from.Id,
+            Role = DatabaseRole.Map(from.Role),
+            Email = from.Email,
+            HashedPassword = from.HashedPassword,
+            CreatedDate = from.CreatedDate
+        };
+    }
+
+    public static DatabaseUser Map(User from)
+    {
+        return new DatabaseUser()
         {
             Id = from.Id,
             Role = DatabaseRole.Map(from.Role),

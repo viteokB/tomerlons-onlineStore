@@ -22,7 +22,7 @@ public class CountryRepository : ICountryRepository
     public async Task<OperationResult> AddCountry(Country type, CancellationToken cancellationToken)
     {
         if (type == null!)
-            return OperationResult.Fail("Type cannot be null");
+            return OperationResult.Fail("Country cannot be null");
         
         try
         {
@@ -39,7 +39,7 @@ public class CountryRepository : ICountryRepository
     public async Task<OperationResult> DeleteCountry(Country type, CancellationToken cancellationToken)
     {
         if (type == null!)
-            return OperationResult.Fail("Type cannot be null");
+            return OperationResult.Fail("Country cannot be null");
         
         try
         {
@@ -57,7 +57,7 @@ public class CountryRepository : ICountryRepository
     public async Task<OperationResult> UpdateCountry(Country type, CancellationToken cancellationToken)
     {
         if (type == null!)
-            return OperationResult.Fail("Type cannot be null");
+            return OperationResult.Fail("Country cannot be null");
         
         try
         {

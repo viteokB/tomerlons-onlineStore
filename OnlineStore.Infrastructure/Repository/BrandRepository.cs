@@ -22,7 +22,7 @@ public class BrandRepository : IBrandRepository
     public async Task<OperationResult> AddBrand(Brand type, CancellationToken cancellationToken)
     {
         if (type == null!)
-            return OperationResult.Fail("Type cannot be null");
+            return OperationResult.Fail("Brand cannot be null");
         
         try
         {
@@ -39,7 +39,7 @@ public class BrandRepository : IBrandRepository
     public async Task<OperationResult> DeleteBrand(Brand type, CancellationToken cancellationToken)
     {
         if (type == null!)
-            return OperationResult.Fail("Type cannot be null");
+            return OperationResult.Fail("Brand cannot be null");
         
         try
         {
@@ -57,7 +57,7 @@ public class BrandRepository : IBrandRepository
     public async Task<OperationResult> UpdateBrand(Brand type, CancellationToken cancellationToken)
     {
         if (type == null!)
-            return OperationResult.Fail("Type cannot be null");
+            return OperationResult.Fail("Brand cannot be null");
         
         try
         {

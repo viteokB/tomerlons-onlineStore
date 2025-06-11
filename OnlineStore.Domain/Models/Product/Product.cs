@@ -18,7 +18,7 @@ public class Product
     
     public required string CatalogNumber { get; set; }
     
-    public double BasePrice { get; set; }
+    public float BasePrice { get; set; }
     
     public bool IsActive { get; set; }
     
