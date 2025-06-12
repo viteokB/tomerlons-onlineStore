@@ -1,4 +1,5 @@
-﻿using Presentation.Common;
+﻿using OnlineStore.Core.Models;
+using Presentation.Common;
 using Presentation.Presenters;
 
 namespace Presentation.NavigationService;
@@ -9,17 +10,20 @@ public class NavigationService : INavigationService
     private readonly Func<RegisterPresenter> _registerPresenterFactory;
     private readonly Func<MainPresenter> _mainPresenterFactory;
     private readonly Func<AuthorPresenter> _authorPresenterFactory;
+    private readonly Func<TypeCrudPresenter> _typeCrudPresenterFactory;
 
     public NavigationService(
         Func<LoginPresenter> loginPresenterFactory,
         Func<RegisterPresenter> registerPresenterFactory,
         Func<MainPresenter> mainPresenterFactory,
-        Func<AuthorPresenter> authorPresenterFactory)
+        Func<AuthorPresenter> authorPresenterFactory,
+        Func<TypeCrudPresenter> typeCrudPresenterFactory)
     {
         _loginPresenterFactory = loginPresenterFactory;
         _registerPresenterFactory = registerPresenterFactory;
         _mainPresenterFactory = mainPresenterFactory;
         _authorPresenterFactory = authorPresenterFactory;
+        _typeCrudPresenterFactory = typeCrudPresenterFactory;
     }
 
     public ModalResult NavigateToLogin()
@@ -40,6 +44,13 @@ public class NavigationService : INavigationService
     {
         var presenter = _authorPresenterFactory();
         presenter.Run();
+        return presenter.View.ModalResult;
+    }
+
+    public ModalResult NavigateToTypeRedactor(User user)
+    {
+        var presenter = _typeCrudPresenterFactory();
+        presenter.Run(user);
         return presenter.View.ModalResult;
     }
 

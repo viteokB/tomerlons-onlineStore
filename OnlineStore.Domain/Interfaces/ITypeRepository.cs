@@ -11,8 +11,8 @@ public interface ITypeRepository
     public Task<OperationResult> DeleteType(Models.Type type,
         CancellationToken cancellationToken);
     
-    public Task<OperationResult> UpdateType(Models.Type type,
-        CancellationToken cancellationToken);
+    public Task<OperationResult> UpdateType(int id, 
+        Models.Type type, CancellationToken cancellationToken);
 
     public Task<OperationResult<List<Models.Type>>> GetTypes(CancellationToken cancellationToken);
     

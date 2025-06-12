@@ -79,12 +79,12 @@ public class ProductService : IProductService
         return await _typeRepository.AddType(type, CancellationToken.None);
     }
 
-    public async Task<OperationResult> UpdateType(Type type, User currentUser)
+    public async Task<OperationResult> UpdateType(int updateId, Type updateTo, User currentUser)
     {
         if (!IsAdmin(currentUser))
             return OperationResult.Fail("Недостаточно прав для выполнения операции");
 
-        return await _typeRepository.UpdateType(type, CancellationToken.None);
+        return await _typeRepository.UpdateType(updateId, updateTo, CancellationToken.None);
     }
 
     public async Task<OperationResult> DeleteType(Type type, User currentUser)

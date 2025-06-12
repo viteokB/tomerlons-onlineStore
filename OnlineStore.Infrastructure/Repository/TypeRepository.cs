@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics;
+using System.Security.Cryptography.X509Certificates;
 using Microsoft.EntityFrameworkCore;
 using OnlineStore.Core.Common;
 using OnlineStore.Core.Common.Pagination;
@@ -55,14 +56,19 @@ public class TypeRepository : ITypeRepository
         }
     }
 
-    public async Task<OperationResult> UpdateType(Type type, CancellationToken cancellationToken)
+    public async Task<OperationResult> UpdateType(int id, Type type, CancellationToken cancellationToken)
     {
         if (type == null!)
-            return OperationResult.Fail("Type cannot be null");
+            return OperationResult.Fail("Update type data cannot be null");
         
         try
         {
-            var entity = DatabaseType.Map(type);
+            var entity = await _databaseTypes.FirstOrDefaultAsync(t => t.Id == id);
+            if(entity == null)
+                return OperationResult.Fail("Type was not found");
+            entity.Name = type.Name;
+            entity.Description = type.Description;
+            
             _databaseTypes.Update(entity);
             await _dbContext.SaveChangesAsync(cancellationToken);
             return OperationResult.Success();

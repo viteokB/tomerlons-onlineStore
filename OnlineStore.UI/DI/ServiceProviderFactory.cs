@@ -2,6 +2,7 @@
 using Microsoft.Extensions.DependencyInjection;
 using OnlineStore.Repository;
 using OnlineStore.Services.Login;
+using OnlineStore.Services.Products;
 using OnlineStore.UI.Forms;
 using Presentation.NavigationService;
 using Presentation.Presenters;
@@ -40,6 +41,7 @@ public static class ServiceProviderFactory
         IConfiguration configuration)
     {
         services.AddScoped<IUserService, UserService>();
+        services.AddScoped<IProductService, ProductService>();
     }
     
     private static void RegisterPresentation(
@@ -53,11 +55,14 @@ public static class ServiceProviderFactory
         services.AddTransient<IMainView, MainForm>();
         services.AddTransient<IRegisterView, RegisterForm>();
         services.AddTransient<IAuthorView, AuthorForm>();
+        services.AddTransient<ITypeRedactorView, TypeRedactorForm>();
         
+        // Регистрация Presenters
         services.AddTransient<LoginPresenter>();
         services.AddTransient<RegisterPresenter>();
         services.AddTransient<MainPresenter>();
         services.AddTransient<AuthorPresenter>();
+        services.AddTransient<TypeRedactorForm>();
         
         // Регистрация фабрик презентеров
         services.AddTransient<Func<LoginPresenter>>(provider => 

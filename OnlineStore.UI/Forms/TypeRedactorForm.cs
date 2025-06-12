@@ -1,0 +1,192 @@
+﻿using OnlineStore.Core.Common.Pagination;
+using OnlineStore.Core.Models;
+using OnlineStore.UI.Forms.Common;
+using Presentation.Views;
+using Type = OnlineStore.Core.Models.Type;
+
+namespace OnlineStore.UI.Forms;
+
+public partial class TypeRedactorForm : BaseModalForm, ITypeRedactorView
+{
+    private const int PageSize = 10; // Количество элементов на странице.
+    private bool _isLoadingData = false;
+    
+    public User? User { get; set; }
+    
+    public string TypeName
+    {
+        get => nameTextBox.Text.Trim(); 
+        set => nameTextBox.Text = value.Trim();
+    }
+    
+    public string TypeDescription
+    {
+        get => descriptionTextBox.Text.Trim(); 
+        set => descriptionTextBox.Text = value.Trim();
+    }
+    
+    public Type? SelectedType 
+    {
+        get => searchComboBox.SelectedItem as Type; 
+        set => searchComboBox.SelectedItem = value;
+    }
+    
+    public Func<Task> CreateNewType { get; set; }
+    
+    public Func<Task> UpdateType { get; set; }
+    
+    public Func<Task> DeleteType { get; set; }
+    
+    public Func<Task> SearchType { get; set; }
+    
+    public SearchRequest<string> SearchRequest { get; set; }
+    
+    public PaginatedResult<Type> PaginatedTypes { get; set; }
+    
+    public TypeRedactorForm()
+    {
+        InitializeComponent();
+        searchComboBox.DropDownStyle = ComboBoxStyle.DropDown; // Разрешить ввод текста + выбор
+        searchComboBox.AutoCompleteMode = AutoCompleteMode.SuggestAppend; // Для подсказок
+        searchComboBox.AutoCompleteSource = AutoCompleteSource.ListItems; // Источник подсказок
+    }
+    
+    public void ShowError(string message)
+    {
+        MessageBox.Show(this, message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+    }
+
+    public void ShowGoodInfo(string message)
+    {
+        MessageBox.Show(this, message, "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
+    }
+
+    private async void createButton_Click(object sender, EventArgs e)
+    {
+        await ExecuteOperation(() => CreateNewType.Invoke(), createButton);
+    }
+
+    private async void updateButton_Click(object sender, EventArgs e)
+    {
+        await ExecuteOperation(() => UpdateType.Invoke(), updateButton);
+    }
+
+    private async void removeButton_Click(object sender, EventArgs e)
+    {
+        await ExecuteOperation(() => DeleteType.Invoke(), removeButton);
+    }
+
+    private async void searchComboBox_TextChanged(object sender, EventArgs e)
+    {
+        // Если пользователь быстро вводит текст, подождем немного, прежде чем делать запрос.
+        await Task.Delay(300);
+
+        // Проверяем, что текст в ComboBox изменился
+        if (searchComboBox.Text != SearchRequest?.Query)
+        {
+            await PerformSearch();
+        }
+    }
+    
+    private async Task PerformSearch()
+    {
+        if (_isLoadingData) return;
+
+        try
+        {
+            _isLoadingData = true;
+            searchComboBox.Items.Clear();
+            SearchRequest = new SearchRequest<string>(searchComboBox.Text, PageSize, 0);
+            await SearchType.Invoke();
+            PopulateComboBox();
+        }
+        catch (Exception ex)
+        {
+            ShowError(ex.Message);
+        }
+        finally
+        {
+            _isLoadingData = false;
+        }
+    }
+    
+    private void PopulateComboBox()
+    {
+        if (PaginatedTypes?.Results != null)
+        {
+            foreach (var type in PaginatedTypes.Results)
+            {
+                searchComboBox.Items.Add(type);
+            }
+
+            // Устанавливаем AutoCompleteSource после добавления элементов
+            searchComboBox.AutoCompleteSource = AutoCompleteSource.ListItems;
+        }
+    }
+
+    private async void searchComboBox_DropDown(object sender, EventArgs e)
+    {
+        // Загрузка следующих страниц при открытии списка (если есть еще страницы)
+        if (PaginatedTypes is { Pagination.HasMore: true } && !_isLoadingData)
+        {
+            try
+            {
+                _isLoadingData = true;
+                SearchRequest = new SearchRequest<string>(
+                    SearchRequest.Query, PageSize, PaginatedTypes.Pagination.NextOffset); // Запрос следующей страницы
+                await SearchType.Invoke();  // Загрузка следующей страницы
+                PopulateComboBox(); // Добавление элементов в ComboBox
+            }
+            catch (Exception ex)
+            {
+                ShowError(ex.Message);
+            }
+            finally
+            {
+                _isLoadingData = false;
+            }
+        }
+    }
+
+    private void searchComboBox_SelectedIndexChanged(object sender, EventArgs e)
+    {
+        if (SelectedType != null)
+        {
+            TypeName = SelectedType.Name;
+            TypeDescription = SelectedType.Description;
+        }
+        else
+        {
+            TypeName = "";
+            TypeDescription = "";
+        }
+    }
+
+    private void searchComboBox_Leave(object sender, EventArgs e)
+    {
+        // Если пользователь ввел текст, которого нет в списке, сбрасываем выбранный элемент
+        if (!searchComboBox.Items.Contains(searchComboBox.Text))
+        {
+            SelectedType = null;
+            TypeName = "";
+            TypeDescription = "";
+        }
+    }
+    
+    private async Task ExecuteOperation(Func<Task> operation, Control button)
+    {
+        try
+        {
+            button.Enabled = false;
+            await operation.Invoke();
+        }
+        catch (Exception ex)
+        {
+            ShowError(ex.Message);
+        }
+        finally
+        {
+            button.Enabled = true;
+        }
+    }
+}

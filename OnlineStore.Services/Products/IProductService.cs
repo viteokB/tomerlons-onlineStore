@@ -17,7 +17,7 @@ public interface IProductService
 
     #region Type Operations
     Task<OperationResult> AddType(Type type, User currentUser);
-    Task<OperationResult> UpdateType(Type type, User currentUser);
+    Task<OperationResult> UpdateType(int id, Type type, User currentUser);
     Task<OperationResult> DeleteType(Type type, User currentUser);
     Task<OperationResult<List<Type>>> GetTypes(User currentUser);
     Task<OperationResult<PaginatedResult<Type>>> SearchTypes(SearchRequest<string> request, User currentUser);
