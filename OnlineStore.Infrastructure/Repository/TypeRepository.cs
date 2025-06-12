@@ -45,7 +45,8 @@ public class TypeRepository : ITypeRepository
         
         try
         {
-            var entity = await _databaseTypes.FindAsync(type, cancellationToken);
+            var entity = await _databaseTypes
+                .FirstOrDefaultAsync(p => p.Id == type.Id, cancellationToken);
             _databaseTypes.Remove(entity!);
             await _dbContext.SaveChangesAsync(cancellationToken);
             return OperationResult.Success();

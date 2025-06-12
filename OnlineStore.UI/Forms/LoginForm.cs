@@ -1,10 +1,11 @@
-﻿using OnlineStore.UI.Forms.Common;
+﻿using OnlineStore.Core.Models;
+using OnlineStore.UI.Forms.Common;
 using Presentation.Common;
 using Presentation.Views;
 
 namespace OnlineStore.UI.Forms;
 
-public partial class LoginForm : BaseModalForm, ILoginView
+public partial class LoginForm : BaseModalForm<User>, ILoginView
 {
     public string Email
     {
@@ -65,5 +66,5 @@ public partial class LoginForm : BaseModalForm, ILoginView
         OpenRegisterForm.Invoke();
     }
 
-    public ModalResult ModalResult { get; set; }
+    public ComplexModalResult<User> ModalResult { get; set; }
 }

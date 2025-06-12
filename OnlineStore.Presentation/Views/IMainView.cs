@@ -12,7 +12,9 @@ public interface IMainView : IView
     
     public event Action  OpenModalAuthorDialog;
     
-    public User User { get; set; }
+    public event Action  OpenTypesRedactorDialog;
+    
+    public User? User { get; set; }
     
     void ShowError(string message);
     

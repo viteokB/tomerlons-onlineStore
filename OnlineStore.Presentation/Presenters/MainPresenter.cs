@@ -14,6 +14,9 @@ public class MainPresenter : BasePresenter<IMainView>
         INavigationService navigationService,
         IUserService userService) : base(view)
     {
+        // Пока не вошли
+        View.User = null;
+        
         _navigationService = navigationService;
         _userService = userService;
         SubscribeToViewEvents();
@@ -24,15 +27,34 @@ public class MainPresenter : BasePresenter<IMainView>
         View.OpenModalLoginDialog += OnOpenModalLoginDialog;
         View.OpenModalRegisterDialog += OnOpenModalRegisterDialog;
         View.OpenModalAuthorDialog += OnOpenModalAuthorDialog;
+        View.OpenTypesRedactorDialog += OnOpenTypesRedactorDialog;
+    }
+
+    private void OnOpenTypesRedactorDialog()
+    {
+        if (View.User != null)
+        {
+            var result = _navigationService.NavigateToTypeRedactor(View.User);
+            View.ShowMessage(result.ToString());
+        }
+        else
+        {
+            View.ShowMessage("Невозможно открыть редактор, вы не вошли");
+        }
     }
 
     private void OnOpenModalLoginDialog()
     {
-        var result = _navigationService.NavigateToLogin();
+        var modalResult = _navigationService.NavigateToLogin();
         
-        if (result == ModalResult.Ok)
+        if (modalResult.ModalResult == ModalResult.Yes)
         {
             View.ShowMessage("Вход выполнен успешно!");
+            View.User = modalResult.ModalResultData;
+        }
+        else
+        {
+            View.ShowMessage($"Вход выполнен не успешно! Результат = {modalResult.ModalResult.ToString()}");
         }
     }
 

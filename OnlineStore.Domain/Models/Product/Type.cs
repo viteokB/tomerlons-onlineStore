@@ -7,4 +7,7 @@ public class Type
     public required string Name { get; set; }
     
     public required string Description { get; set; }
+
+    public override string ToString()
+        => Name.ToString();
 }

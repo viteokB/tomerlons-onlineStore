@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.VisualBasic.CompilerServices;
+using OnlineStore.Core.Models;
 using OnlineStore.Services.Login;
 using Presentation.Common;
 using Presentation.NavigationService;
@@ -17,7 +18,10 @@ public class LoginPresenter : BasePresenter<ILoginView>
     {
         _userService = userService;
         _navigationService = navigationService;
+
         View.ModalResult = ModalResult.None;
+        View.ModalResultData =  null!; // пока нет результата выполнения
+        
         View.LoginAsync += async () => await Login(view.Email, view.Password);
         View.OpenRegisterForm += OpenRegisterForm;
     }
@@ -32,16 +36,17 @@ public class LoginPresenter : BasePresenter<ILoginView>
         if (!user.IsSuccess)
         {
             View.ShowError(user.Message!);
-            View.ModalResult = ModalResult.No;
+            View.SetModalResult(ModalResult.No);
         }
         else
         {
             View.ShowInformation("Авторизация успешна");
-            View.ModalResult = ModalResult.Yes;
+            View.SetModalResult(ModalResult.Yes);
+            View.ModalResultData =  user.Data;
             View.Close();
         }
     }
-
+    
     private async void OpenRegisterForm()
     {
         var userRoles = await _userService.GetUserRoles();

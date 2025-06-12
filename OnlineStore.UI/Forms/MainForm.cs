@@ -23,6 +23,8 @@ public partial class MainForm : Form, IMainView
     public event Action? OpenModalLoginDialog;
     public event Action? OpenModalRegisterDialog;
     public event Action? OpenModalAuthorDialog;
+    
+    public event Action? OpenTypesRedactorDialog;
 
     public User User { get; set; }
 
@@ -49,5 +51,10 @@ public partial class MainForm : Form, IMainView
     private void button3_Click(object sender, EventArgs e)
     {
         OpenModalAuthorDialog?.Invoke();
+    }
+
+    private void button4_Click(object sender, EventArgs e)
+    {
+        OpenTypesRedactorDialog?.Invoke();
     }
 }

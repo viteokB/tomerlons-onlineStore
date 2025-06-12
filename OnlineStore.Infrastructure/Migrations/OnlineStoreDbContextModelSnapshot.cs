@@ -166,6 +166,45 @@ namespace OnlineStore.Repository.Migrations
                     b.ToTable("delivery_zones", (string)null);
                 });
 
+            modelBuilder.Entity("OnlineStore.Repository.Models.DatabaseDeliveryZonesHistory", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("DeliveryDays")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<float>("DeliveryPrice")
+                        .HasColumnType("REAL");
+
+                    b.Property<int>("DeliveryZoneId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("MaxDistance")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("MinDistance")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("WharehouseId")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("DeliveryZoneId");
+
+                    b.HasIndex("WharehouseId");
+
+                    b.ToTable("DeliveryZonesHistory");
+                });
+
             modelBuilder.Entity("OnlineStore.Repository.Models.DatabaseOrder", b =>
                 {
                     b.Property<int>("Id")
@@ -373,6 +412,63 @@ namespace OnlineStore.Repository.Migrations
                     b.ToTable("products", (string)null);
                 });
 
+            modelBuilder.Entity("OnlineStore.Repository.Models.DatabaseProductHistory", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<float>("BasePrice")
+                        .HasColumnType("REAL");
+
+                    b.Property<int>("BrandId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("CatalogNumber")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("ChangedAt")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("ChangedById")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("CountryId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("PhotoPath")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("ProductId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("TypeId")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("BrandId");
+
+                    b.HasIndex("ChangedById");
+
+                    b.HasIndex("CountryId");
+
+                    b.HasIndex("ProductId");
+
+                    b.HasIndex("TypeId");
+
+                    b.ToTable("ProductsHistory");
+                });
+
             modelBuilder.Entity("OnlineStore.Repository.Models.DatabaseRole", b =>
                 {
                     b.Property<int>("Id")
@@ -476,6 +572,46 @@ namespace OnlineStore.Repository.Migrations
                     b.ToTable("wharehouse", (string)null);
                 });
 
+            modelBuilder.Entity("OnlineStore.Repository.Models.DatabaseWharehouseProdHistory", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<DateTime>("ChangedAt")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("ChangedById")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("Count")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("ProductId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("WarehouseProdId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("WharehouseId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("WharehouseProductsId")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ChangedById");
+
+                    b.HasIndex("ProductId");
+
+                    b.HasIndex("WharehouseId");
+
+                    b.HasIndex("WharehouseProductsId");
+
+                    b.ToTable("WharehouseProductsHistory");
+                });
+
             modelBuilder.Entity("OnlineStore.Repository.Models.DatabaseWharehouseProducts", b =>
                 {
                     b.Property<int>("Id")
@@ -530,6 +666,25 @@ namespace OnlineStore.Repository.Migrations
                         .HasForeignKey("WharehouseId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Wharehouse");
+                });
+
+            modelBuilder.Entity("OnlineStore.Repository.Models.DatabaseDeliveryZonesHistory", b =>
+                {
+                    b.HasOne("OnlineStore.Repository.Models.DatabaseDeliveryZones", "DeliveryZone")
+                        .WithMany()
+                        .HasForeignKey("DeliveryZoneId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("OnlineStore.Repository.Models.DatabaseWharehouse", "Wharehouse")
+                        .WithMany()
+                        .HasForeignKey("WharehouseId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("DeliveryZone");
 
                     b.Navigation("Wharehouse");
                 });
@@ -679,6 +834,49 @@ namespace OnlineStore.Repository.Migrations
                     b.Navigation("Type");
                 });
 
+            modelBuilder.Entity("OnlineStore.Repository.Models.DatabaseProductHistory", b =>
+                {
+                    b.HasOne("OnlineStore.Repository.Models.DatabaseBrand", "Brand")
+                        .WithMany()
+                        .HasForeignKey("BrandId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("OnlineStore.Repository.Models.DatabaseUser", "ChangedBy")
+                        .WithMany()
+                        .HasForeignKey("ChangedById")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("OnlineStore.Repository.Models.DatabaseCountry", "Country")
+                        .WithMany()
+                        .HasForeignKey("CountryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("OnlineStore.Repository.Models.DatabaseProduct", "Product")
+                        .WithMany()
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("OnlineStore.Repository.Models.DatabaseType", "Type")
+                        .WithMany()
+                        .HasForeignKey("TypeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Brand");
+
+                    b.Navigation("ChangedBy");
+
+                    b.Navigation("Country");
+
+                    b.Navigation("Product");
+
+                    b.Navigation("Type");
+                });
+
             modelBuilder.Entity("OnlineStore.Repository.Models.DatabaseUser", b =>
                 {
                     b.HasOne("OnlineStore.Repository.Models.DatabaseRole", "Role")
@@ -699,6 +897,41 @@ namespace OnlineStore.Repository.Migrations
                         .IsRequired();
 
                     b.Navigation("Address");
+                });
+
+            modelBuilder.Entity("OnlineStore.Repository.Models.DatabaseWharehouseProdHistory", b =>
+                {
+                    b.HasOne("OnlineStore.Repository.Models.DatabaseUser", "ChangedBy")
+                        .WithMany()
+                        .HasForeignKey("ChangedById")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("OnlineStore.Repository.Models.DatabaseProduct", "Product")
+                        .WithMany()
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("OnlineStore.Repository.Models.DatabaseWharehouseProducts", "Wharehouse")
+                        .WithMany()
+                        .HasForeignKey("WharehouseId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("OnlineStore.Repository.Models.DatabaseWharehouseProducts", "WharehouseProducts")
+                        .WithMany()
+                        .HasForeignKey("WharehouseProductsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("ChangedBy");
+
+                    b.Navigation("Product");
+
+                    b.Navigation("Wharehouse");
+
+                    b.Navigation("WharehouseProducts");
                 });
 
             modelBuilder.Entity("OnlineStore.Repository.Models.DatabaseWharehouseProducts", b =>

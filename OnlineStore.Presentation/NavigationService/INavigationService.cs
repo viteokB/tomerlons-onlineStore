@@ -5,7 +5,7 @@ namespace Presentation.NavigationService;
 
 public interface INavigationService
 {
-    ModalResult NavigateToLogin();
+    ComplexModalResult<User> NavigateToLogin();
     ModalResult NavigateToRegister(List<string> roles);
 
     ModalResult NavigateToAuthor();

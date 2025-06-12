@@ -97,4 +97,9 @@ public partial class RegisterForm : Form, IRegisterView
     }
 
     public ModalResult ModalResult { get; set; }
+    
+    public void SetModalResult(ModalResult modalResult)
+    {
+        throw new NotImplementedException();
+    }
 }

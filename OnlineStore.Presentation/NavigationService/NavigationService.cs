@@ -26,17 +26,21 @@ public class NavigationService : INavigationService
         _typeCrudPresenterFactory = typeCrudPresenterFactory;
     }
 
-    public ModalResult NavigateToLogin()
+    public ComplexModalResult<User> NavigateToLogin()
     {
         var presenter = _loginPresenterFactory();
         presenter.Run();
-        return presenter.View.ModalResult;
+        
+        return new ComplexModalResult<User>(
+            presenter.View.ModalResult,
+            presenter.View.ModalResultData);
     }
 
     public ModalResult NavigateToRegister(List<string> roles)
     {
         var presenter = _registerPresenterFactory();
         presenter.Run(roles);
+        
         return presenter.View.ModalResult;
     }
 

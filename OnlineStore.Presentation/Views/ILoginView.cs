@@ -1,9 +1,10 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using OnlineStore.Core.Models;
 using Presentation.Common;
 
 namespace Presentation.Views;
 
-public interface ILoginView : IModalView
+public interface ILoginView : IModalView<User>
 {
     public string Email { get; set; }
     

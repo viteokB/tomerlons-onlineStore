@@ -51,6 +51,7 @@ public class TypeCrudPresenter : BasePresenter<ITypeRedactorView, User>
         {
             View.ShowError($"Ошибка при создании нового типа: `{operation.Message}`");
         }
+        
         View.ShowGoodInfo($"Тип `{typeName}` создан успешно");
     }
     
@@ -105,5 +106,6 @@ public class TypeCrudPresenter : BasePresenter<ITypeRedactorView, User>
     public override void Run(User arg)
     {
         View.User = arg;
+        View.Show();
     }
 }
