@@ -51,8 +51,10 @@ public class TypeCrudPresenter : BasePresenter<ITypeRedactorView, User>
         {
             View.ShowError($"Ошибка при создании нового типа: `{operation.Message}`");
         }
-        
-        View.ShowGoodInfo($"Тип `{typeName}` создан успешно");
+        else
+        {
+            View.ShowGoodInfo($"Тип `{typeName}` создан успешно");
+        }
     }
     
     private async Task DeleteType(Type? selectedType)
@@ -68,7 +70,10 @@ public class TypeCrudPresenter : BasePresenter<ITypeRedactorView, User>
         {
             View.ShowError($"Ошибка при удалении типа: `{operation.Message}`");
         }
-        View.ShowGoodInfo($"Тип `{selectedType?.Name}` удален успешно");
+        else
+        {
+            View.ShowGoodInfo($"Тип `{selectedType?.Name}` удален успешно");
+        }
     }
     
     private async Task UpdateType(Type? selectedType, string newName, string newDescription)
@@ -85,7 +90,10 @@ public class TypeCrudPresenter : BasePresenter<ITypeRedactorView, User>
         {
             View.ShowError($"Ошибка при удалении типа: `{operation.Message}`");
         }
-        View.ShowGoodInfo($"Тип `{selectedType?.Name}` удален успешно");
+        else
+        {
+            View.ShowGoodInfo($"Тип `{selectedType?.Name}` удален успешно");
+        }
     }
 
     private async Task SearchType(SearchRequest<string> searchRequest)

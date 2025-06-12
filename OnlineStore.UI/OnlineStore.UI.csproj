@@ -27,9 +27,6 @@
       <Compile Update="Forms\TypeRedactorForm.cs">
         <SubType>Form</SubType>
       </Compile>
-      <Compile Update="Forms\TypeRedactorForm2.cs">
-        <SubType>Form</SubType>
-      </Compile>
     </ItemGroup>
 
     <ItemGroup>

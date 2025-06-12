@@ -55,7 +55,7 @@ public static class ServiceProviderFactory
         services.AddTransient<IMainView, MainForm>();
         services.AddTransient<IRegisterView, RegisterForm>();
         services.AddTransient<IAuthorView, AuthorForm>();
-        services.AddTransient<ITypeRedactorView, TypeRedactorForm2>();
+        services.AddTransient<ITypeRedactorView, TypeRedactorForm>();
         
         // Регистрация Presenters
         services.AddTransient<LoginPresenter>();

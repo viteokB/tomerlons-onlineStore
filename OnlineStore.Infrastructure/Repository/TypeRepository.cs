@@ -28,6 +28,14 @@ public class TypeRepository : ITypeRepository
         
         try
         {
+            var existType = await _databaseTypes
+                .FirstOrDefaultAsync(t => t.Name == type.Name, cancellationToken);
+            
+            if (existType != null)
+            {
+                return OperationResult.Fail($"Тип \"{type.Name}\" уже существует ");
+            }
+            
             await _databaseTypes.AddAsync(DatabaseType.Map(type), cancellationToken);
             await _dbContext.SaveChangesAsync(cancellationToken);
             return OperationResult.Success();
