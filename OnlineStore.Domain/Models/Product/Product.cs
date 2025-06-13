@@ -23,4 +23,8 @@ public class Product
     public bool IsActive { get; set; }
     
     public DateTime ChangedAt { get; set; }
+    
+    public override string ToString()
+        => $"Id:{Id}, Name:{Name}";
 }
+

@@ -1,4 +1,5 @@
 ﻿using System.Globalization;
+using System.Runtime.InteropServices.JavaScript;
 using OnlineStore.Core.Common.Pagination;
 using OnlineStore.Core.Models;
 using OnlineStore.UI.Forms.Common;
@@ -128,9 +129,11 @@ public partial class ProductRedactorForm : BaseModalForm, IAddProductView
 
     private void UpdateSearchParameters()
     {
+        ProductsParamets.ProductName = productsComboBox.Text;
         ProductsParamets.ProductType = Type;
         ProductsParamets.Brand = Brand;
         ProductsParamets.Country = Country;
+        ProductsParamets.IsActive = IsActive;
         
         SearchProductRequest = new SearchRequest<ProductsParamets>(
             ProductsParamets, 
@@ -375,6 +378,15 @@ public partial class ProductRedactorForm : BaseModalForm, IAddProductView
             CatalogNumber = SelectedProduct.CatalogNumber;
             BasePrice = SelectedProduct.BasePrice;
             IsActive = SelectedProduct.IsActive;
+
+            nameLabel.Text = SelectedProduct.Name;
+            typeLabel.Text = SelectedProduct.Type.Name;
+            brandLabel.Text = SelectedProduct.Brand.Name;
+            countryLabel.Text = SelectedProduct.Country.Name;
+            photoPathLabel.Text = SelectedProduct.PhotoPath;
+            numberLabel.Text = SelectedProduct.CatalogNumber;
+            priceLabel.Text = SelectedProduct.BasePrice.ToString(CultureInfo.InvariantCulture);
+            isActiveLabel.Text = SelectedProduct.IsActive.ToString();
             
             // Обновляем параметры фильтрации
             ProductsParamets!.ProductType = Type;

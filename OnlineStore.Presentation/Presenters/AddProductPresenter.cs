@@ -155,15 +155,7 @@ public class AddProductPresenter : BasePresenter<IAddProductView, User>
             return;
         }
 
-        var product = new Product
-        {
-            Id = View.SelectedProduct.Id,
-            IsActive = false,
-            ChangedBy = View.ChangedBy,
-            ChangedAt = DateTime.Now,
-            Name = View.SelectedProduct.Name,
-            CatalogNumber = View.SelectedProduct.CatalogNumber
-        };
+        var product = View.SelectedProduct;
 
         var operation = await _productService.UpdateProduct(product.Id, product, View.ChangedBy!);
 

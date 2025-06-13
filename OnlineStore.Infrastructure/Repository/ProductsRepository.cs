@@ -151,11 +151,21 @@ public class ProductsRepository : IProductsRepository
                 .Include(p => p.Country)
                 .Include(p => p.Brand)
                 .Include(p => p.Type)
-                .Where(p => p.IsActive); // Filter out inactive products by default
+                .Include(p => p.ChangedBy)
+                .Include(p => p.ChangedBy.Role)
+                .Include(p => p.Brand.Country)
+                .Where(p => p.IsActive == searchRequest.Query.IsActive); // Filter out inactive products by default
 
             // Apply filters if parameters are provided
             if (searchRequest.Query != null!)
             {
+                if (searchRequest.Query.ProductName != null)
+                {
+                    var searchTerm = $"{searchRequest.Query.ProductName.ToLower()}%";
+                    query = query
+                        .Where(c =>
+                            EF.Functions.Like(c.Name.ToLower(), searchTerm));
+                }
                 if (searchRequest.Query.ProductType != null)
                 {
                     query = query.Where(p => p.TypeId == searchRequest.Query.ProductType.Id);
