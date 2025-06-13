@@ -39,11 +39,9 @@ partial class ProductRedactorForm
         label1 = new System.Windows.Forms.Label();
         label2 = new System.Windows.Forms.Label();
         label3 = new System.Windows.Forms.Label();
-        brandComboBox = new System.Windows.Forms.ComboBox();
         countryComboBox = new System.Windows.Forms.ComboBox();
         photoPathTextBox = new System.Windows.Forms.TextBox();
         label4 = new System.Windows.Forms.Label();
-        productsComboBox = new System.Windows.Forms.ComboBox();
         label5 = new System.Windows.Forms.Label();
         button1 = new System.Windows.Forms.Button();
         label6 = new System.Windows.Forms.Label();
@@ -52,6 +50,9 @@ partial class ProductRedactorForm
         numberTextBox = new System.Windows.Forms.TextBox();
         label8 = new System.Windows.Forms.Label();
         priceTextBox = new System.Windows.Forms.TextBox();
+        isActiveCheckBox = new System.Windows.Forms.CheckBox();
+        productsComboBox = new System.Windows.Forms.ComboBox();
+        brandComboBox = new System.Windows.Forms.ComboBox();
         SuspendLayout();
         // 
         // createBtn
@@ -128,16 +129,6 @@ partial class ProductRedactorForm
         label3.TabIndex = 7;
         label3.Text = "Country";
         // 
-        // brandComboBox
-        // 
-        brandComboBox.FormattingEnabled = true;
-        brandComboBox.Location = new System.Drawing.Point(568, 81);
-        brandComboBox.Name = "brandComboBox";
-        brandComboBox.Size = new System.Drawing.Size(121, 28);
-        brandComboBox.TabIndex = 8;
-        brandComboBox.DropDown += brandComboBox_DropDown;
-        brandComboBox.TextChanged += brandComboBox_TextChanged;
-        // 
         // countryComboBox
         // 
         countryComboBox.FormattingEnabled = true;
@@ -162,17 +153,6 @@ partial class ProductRedactorForm
         label4.Size = new System.Drawing.Size(100, 23);
         label4.TabIndex = 11;
         label4.Text = "Photo Path";
-        // 
-        // productsComboBox
-        // 
-        productsComboBox.FormattingEnabled = true;
-        productsComboBox.Location = new System.Drawing.Point(320, 29);
-        productsComboBox.Name = "productsComboBox";
-        productsComboBox.Size = new System.Drawing.Size(121, 28);
-        productsComboBox.TabIndex = 12;
-        productsComboBox.DropDown += productsComboBox_DropDown;
-        productsComboBox.SelectedIndexChanged += productsComboBox_SelectedIndexChanged;
-        productsComboBox.TextChanged += productsComboBox_TextChanged;
         // 
         // label5
         // 
@@ -237,11 +217,44 @@ partial class ProductRedactorForm
         priceTextBox.Size = new System.Drawing.Size(121, 27);
         priceTextBox.TabIndex = 20;
         // 
+        // isActiveCheckBox
+        // 
+        isActiveCheckBox.Location = new System.Drawing.Point(568, 382);
+        isActiveCheckBox.Name = "isActiveCheckBox";
+        isActiveCheckBox.RightToLeft = System.Windows.Forms.RightToLeft.No;
+        isActiveCheckBox.Size = new System.Drawing.Size(121, 24);
+        isActiveCheckBox.TabIndex = 21;
+        isActiveCheckBox.Text = "IsActive";
+        isActiveCheckBox.UseVisualStyleBackColor = true;
+        // 
+        // productsComboBox
+        // 
+        productsComboBox.FormattingEnabled = true;
+        productsComboBox.Location = new System.Drawing.Point(320, 29);
+        productsComboBox.Name = "productsComboBox";
+        productsComboBox.Size = new System.Drawing.Size(121, 28);
+        productsComboBox.TabIndex = 12;
+        productsComboBox.DropDown += productsComboBox_DropDown;
+        productsComboBox.SelectedIndexChanged += productsComboBox_SelectedIndexChanged;
+        productsComboBox.TextChanged += productsComboBox_TextChanged;
+        // 
+        // brandComboBox
+        // 
+        brandComboBox.FormattingEnabled = true;
+        brandComboBox.Location = new System.Drawing.Point(568, 81);
+        brandComboBox.Name = "brandComboBox";
+        brandComboBox.Size = new System.Drawing.Size(121, 28);
+        brandComboBox.TabIndex = 22;
+        brandComboBox.DropDown += brandComboBox_DropDown;
+        brandComboBox.TextChanged += brandComboBox_TextChanged;
+        // 
         // ProductRedactorForm
         // 
         AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
         AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
         ClientSize = new System.Drawing.Size(800, 450);
+        Controls.Add(brandComboBox);
+        Controls.Add(isActiveCheckBox);
         Controls.Add(priceTextBox);
         Controls.Add(label8);
         Controls.Add(numberTextBox);
@@ -254,7 +267,6 @@ partial class ProductRedactorForm
         Controls.Add(label4);
         Controls.Add(photoPathTextBox);
         Controls.Add(countryComboBox);
-        Controls.Add(brandComboBox);
         Controls.Add(label3);
         Controls.Add(label2);
         Controls.Add(label1);
@@ -267,6 +279,10 @@ partial class ProductRedactorForm
         ResumeLayout(false);
         PerformLayout();
     }
+
+    private System.Windows.Forms.ComboBox brandComboBox;
+
+    private System.Windows.Forms.CheckBox isActiveCheckBox;
 
     private System.Windows.Forms.Label label8;
     private System.Windows.Forms.TextBox priceTextBox;
@@ -289,7 +305,6 @@ partial class ProductRedactorForm
     private System.Windows.Forms.Label label1;
     private System.Windows.Forms.Label label2;
     private System.Windows.Forms.Label label3;
-    private System.Windows.Forms.ComboBox brandComboBox;
 
     private System.Windows.Forms.ComboBox countryComboBox;
 

@@ -100,7 +100,7 @@ public class AddProductPresenter : BasePresenter<IAddProductView, User>
         else
         {
             View.ShowGoodInfo($"Продукт '{View.Name}' успешно создан");
-            ClearForm();
+            View.ClearForm();
             await SearchProducts(); // Обновляем список продуктов
         }
     }
@@ -196,7 +196,7 @@ public class AddProductPresenter : BasePresenter<IAddProductView, User>
         else
         {
             View.ShowGoodInfo($"Продукт '{View.SelectedProduct.Name}' удален");
-            ClearForm();
+            View.ClearForm();
             await SearchProducts(); // Обновляем список продуктов
         }
     }
@@ -263,18 +263,5 @@ public class AddProductPresenter : BasePresenter<IAddProductView, User>
         {
             View.PaginatedProducts = operation.Data;
         }
-    }
-
-    private void ClearForm()
-    {
-        View.Name = string.Empty;
-        View.CatalogNumber = string.Empty;
-        View.BasePrice = 0;
-        View.PhotoPath = null;
-        View.Type = null;
-        View.Brand = null;
-        View.Country = null;
-        View.IsActive = true;
-        View.SelectedProduct = null;
     }
 }

@@ -38,7 +38,7 @@ namespace OnlineStore.Repository.Migrations
                 values: new object[] 
                 {
                     1,
-                    "Россия", 
+                    "россия", 
                     "RUS",
                 });
             
@@ -48,7 +48,7 @@ namespace OnlineStore.Repository.Migrations
                 values: new object[] 
                 {
                     2,
-                    "Германия", 
+                    "германия", 
                     "DEU"
                 });
 
@@ -60,7 +60,7 @@ namespace OnlineStore.Repository.Migrations
                 {
                     1,
                     1, 
-                    "Lada"
+                    "lada"
                 });
             
             migrationBuilder.InsertData(
@@ -70,7 +70,7 @@ namespace OnlineStore.Repository.Migrations
                 {
                     2,
                     2, 
-                    "BMW"
+                    "bmw"
                 });
         }
 

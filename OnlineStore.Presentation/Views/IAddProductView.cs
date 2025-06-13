@@ -66,4 +66,6 @@ public interface IAddProductView : IModalView
     void ShowError(string message);
     
     void ShowGoodInfo(string message);
+
+    public void ClearForm();
 }

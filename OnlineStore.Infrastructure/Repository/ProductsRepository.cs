@@ -33,7 +33,54 @@ public class ProductsRepository : IProductsRepository
             {
                 return OperationResult.Fail("С таким артикулом товар уже есть");
             }
-            await _databaseProducts.AddAsync(DatabaseProduct.Map(product), cancellationToken);
+            // DatabaseBrand? dbBrand = null;
+            // if (product.Brand != null)
+            // {
+            //     dbBrand = await _dbContext.Brands
+            //         .FirstOrDefaultAsync(b => b.Id == product.Brand.Id, cancellationToken);
+            // }
+            // DatabaseType? dbType = null;
+            // if (product.Type != null)
+            // {
+            //     dbType = await _dbContext.Types
+            //         .FirstOrDefaultAsync(t => t.Id == product.Type.Id, cancellationToken);
+            // }
+            // DatabaseCountry? dbCountry = null;
+            // if (product.Country != null)
+            // {
+            //     dbCountry = await _dbContext.Countries
+            //         .FirstOrDefaultAsync(t => t.Id == product.Country.Id, cancellationToken);
+            // }
+            //
+            // var newProduct = new DatabaseProduct
+            // {
+            //     Type = dbType,
+            //     Country = dbCountry,
+            //     ChangedBy = DatabaseUser.Map(product.ChangedBy!),
+            //     Brand = dbBrand,
+            //     Name = product.Name,
+            //     PhotoPath = product.PhotoPath,
+            //     CatalogNumber = product.CatalogNumber,
+            //     BasePrice = product.BasePrice,
+            //     IsActive = product.IsActive,
+            //     ChangedAt = product.ChangedAt
+            // };
+            
+            var newProduct = new DatabaseProduct
+            {
+                TypeId = product.Type?.Id,
+                CountryId = product.Country?.Id,
+                BrandId = product.Brand?.Id,
+                Name = product.Name,
+                PhotoPath = product.PhotoPath,
+                CatalogNumber = product.CatalogNumber,
+                BasePrice = product.BasePrice,
+                IsActive = product.IsActive,
+                ChangedById = product.ChangedBy?.Id,
+                ChangedAt = product.ChangedAt
+            };
+            
+            await _databaseProducts.AddAsync(newProduct, cancellationToken);
             await _dbContext.SaveChangesAsync(cancellationToken);
             return OperationResult.Success();
         }

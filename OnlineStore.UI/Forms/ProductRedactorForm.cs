@@ -47,11 +47,29 @@ public partial class ProductRedactorForm : BaseModalForm, IAddProductView
         set => priceTextBox.Text = value.ToString(CultureInfo.InvariantCulture);
     }
 
-    public bool IsActive { get; set; }
+    public bool IsActive
+    { 
+        get => isActiveCheckBox.Checked;
+        set => isActiveCheckBox.Checked = value;
+    }
     
-    public Type? Type { get; set; }
-    public Country? Country { get; set; }
-    public Brand? Brand { get; set; }
+    public Type? Type
+    {
+        get => typeComboBox.SelectedItem as Type; 
+        set => typeComboBox.SelectedItem = value;
+    }
+    
+    public Country? Country 
+    {
+        get => countryComboBox.SelectedItem as Country; 
+        set => countryComboBox.SelectedItem = value;
+    }
+    
+    public Brand? Brand
+    {
+        get => brandComboBox.SelectedItem as Brand; 
+        set => brandComboBox.SelectedItem = value;
+    }
     
     public Func<Task> CreateNewProduct { get; set; }
     public Func<Task> UpdateProduct { get; set; }
@@ -398,7 +416,7 @@ public partial class ProductRedactorForm : BaseModalForm, IAddProductView
         }
     }
     
-    private void ClearForm()
+    public void ClearForm()
     {
         Name = string.Empty;
         CatalogNumber = string.Empty;
