@@ -46,6 +46,12 @@ partial class ProductRedactorForm
         productsComboBox = new System.Windows.Forms.ComboBox();
         label5 = new System.Windows.Forms.Label();
         button1 = new System.Windows.Forms.Button();
+        label6 = new System.Windows.Forms.Label();
+        nameTextBox = new System.Windows.Forms.TextBox();
+        label7 = new System.Windows.Forms.Label();
+        numberTextBox = new System.Windows.Forms.TextBox();
+        label8 = new System.Windows.Forms.Label();
+        priceTextBox = new System.Windows.Forms.TextBox();
         SuspendLayout();
         // 
         // createBtn
@@ -160,7 +166,7 @@ partial class ProductRedactorForm
         // productsComboBox
         // 
         productsComboBox.FormattingEnabled = true;
-        productsComboBox.Location = new System.Drawing.Point(568, 247);
+        productsComboBox.Location = new System.Drawing.Point(320, 29);
         productsComboBox.Name = "productsComboBox";
         productsComboBox.Size = new System.Drawing.Size(121, 28);
         productsComboBox.TabIndex = 12;
@@ -170,7 +176,7 @@ partial class ProductRedactorForm
         // 
         // label5
         // 
-        label5.Location = new System.Drawing.Point(421, 247);
+        label5.Location = new System.Drawing.Point(173, 29);
         label5.Name = "label5";
         label5.Size = new System.Drawing.Size(141, 23);
         label5.TabIndex = 13;
@@ -186,11 +192,62 @@ partial class ProductRedactorForm
         button1.UseVisualStyleBackColor = true;
         button1.Click += browsePhotoButton_Click;
         // 
+        // label6
+        // 
+        label6.Location = new System.Drawing.Point(462, 242);
+        label6.Name = "label6";
+        label6.Size = new System.Drawing.Size(100, 23);
+        label6.TabIndex = 15;
+        label6.Text = "Name";
+        // 
+        // nameTextBox
+        // 
+        nameTextBox.Location = new System.Drawing.Point(568, 239);
+        nameTextBox.Name = "nameTextBox";
+        nameTextBox.Size = new System.Drawing.Size(121, 27);
+        nameTextBox.TabIndex = 16;
+        // 
+        // label7
+        // 
+        label7.Location = new System.Drawing.Point(462, 289);
+        label7.Name = "label7";
+        label7.Size = new System.Drawing.Size(100, 23);
+        label7.TabIndex = 17;
+        label7.Text = "CatalogNumber";
+        // 
+        // numberTextBox
+        // 
+        numberTextBox.Location = new System.Drawing.Point(568, 289);
+        numberTextBox.Name = "numberTextBox";
+        numberTextBox.Size = new System.Drawing.Size(121, 27);
+        numberTextBox.TabIndex = 18;
+        // 
+        // label8
+        // 
+        label8.Location = new System.Drawing.Point(462, 344);
+        label8.Name = "label8";
+        label8.Size = new System.Drawing.Size(100, 23);
+        label8.TabIndex = 19;
+        label8.Text = "PriceTextBox";
+        // 
+        // priceTextBox
+        // 
+        priceTextBox.Location = new System.Drawing.Point(568, 340);
+        priceTextBox.Name = "priceTextBox";
+        priceTextBox.Size = new System.Drawing.Size(121, 27);
+        priceTextBox.TabIndex = 20;
+        // 
         // ProductRedactorForm
         // 
         AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
         AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
         ClientSize = new System.Drawing.Size(800, 450);
+        Controls.Add(priceTextBox);
+        Controls.Add(label8);
+        Controls.Add(numberTextBox);
+        Controls.Add(label7);
+        Controls.Add(nameTextBox);
+        Controls.Add(label6);
         Controls.Add(button1);
         Controls.Add(label5);
         Controls.Add(productsComboBox);
@@ -210,6 +267,14 @@ partial class ProductRedactorForm
         ResumeLayout(false);
         PerformLayout();
     }
+
+    private System.Windows.Forms.Label label8;
+    private System.Windows.Forms.TextBox priceTextBox;
+
+    private System.Windows.Forms.Label label6;
+    private System.Windows.Forms.TextBox nameTextBox;
+    private System.Windows.Forms.Label label7;
+    private System.Windows.Forms.TextBox numberTextBox;
 
     private System.Windows.Forms.Button button1;
 

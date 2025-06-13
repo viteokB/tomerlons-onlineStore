@@ -1,4 +1,5 @@
-﻿using OnlineStore.Core.Common.Pagination;
+﻿using System.Globalization;
+using OnlineStore.Core.Common.Pagination;
 using OnlineStore.Core.Models;
 using OnlineStore.UI.Forms.Common;
 using Presentation.Views;
@@ -16,11 +17,38 @@ public partial class ProductRedactorForm : BaseModalForm, IAddProductView
     public ProductsParamets? ProductsParamets { get; set; } = new ProductsParamets();
     
     // Реализация остальных свойств интерфейса
-    public string Name { get; set; }
+    public string Name
+    {
+        get => nameTextBox.Text;
+        set => nameTextBox.Text = value;
+    }
+    
     public string? PhotoPath { get; set; }
-    public string CatalogNumber { get; set; }
-    public float BasePrice { get; set; }
+    public string CatalogNumber
+    {
+        get => numberTextBox.Text;
+        set => numberTextBox.Text = value;
+    }
+    
+    public float BasePrice
+    {
+        get
+        {
+            if (float.TryParse(priceTextBox.Text, out float result))
+            {
+                return result;
+            }
+            else
+            {
+                ShowError("Введите цену в виде числа");
+            }
+            return 0f; // или другое значение по умолчанию при ошибке парсинга
+        }
+        set => priceTextBox.Text = value.ToString(CultureInfo.InvariantCulture);
+    }
+
     public bool IsActive { get; set; }
+    
     public Type? Type { get; set; }
     public Country? Country { get; set; }
     public Brand? Brand { get; set; }
