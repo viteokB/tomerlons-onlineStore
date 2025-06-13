@@ -18,6 +18,8 @@ public interface IMainView : IView
     
     public event Action  OpenBrandRedactorDialog;
     
+    public event Action  OpenProductRedactorDialog;
+    
     public User? User { get; set; }
     
     void ShowError(string message);

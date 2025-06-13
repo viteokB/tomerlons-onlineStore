@@ -161,20 +161,20 @@ public class ProductService : IProductService
         return await _productsRepository.AddProduct(product, CancellationToken.None);
     }
 
-    public async Task<OperationResult> UpdateProduct(Product product, User currentUser)
+    public async Task<OperationResult> UpdateProduct(int? id, Product product, User currentUser)
     {
         if (!IsAdmin(currentUser) && !IsManager(currentUser))
             return OperationResult.Fail("Недостаточно прав для выполнения операции");
 
-        return await _productsRepository.UpdateProduct(product, CancellationToken.None);
+        return await _productsRepository.UpdateProduct(id, product, CancellationToken.None);
     }
 
-    public async Task<OperationResult> DeleteProduct(Product product, User currentUser)
+    public async Task<OperationResult> DeleteProduct(int? id, User currentUser)
     {
         if (!IsAdmin(currentUser))
             return OperationResult.Fail("Недостаточно прав для выполнения операции");
 
-        return await _productsRepository.DeleteProduct(product, CancellationToken.None);
+        return await _productsRepository.DeleteProduct(id, CancellationToken.None);
     }
 
     public async Task<OperationResult<PaginatedResult<Product>>> SearchProducts(

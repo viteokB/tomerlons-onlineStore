@@ -389,10 +389,10 @@ partial class TypeRedactorForm
         comboBox1.Name = "comboBox1";
         comboBox1.Size = new System.Drawing.Size(499, 34);
         comboBox1.TabIndex = 0;
-        comboBox1.DropDown += comboBox_DropDown;
-        comboBox1.SelectedIndexChanged += comboBox_SelectedIndexChanged;
-        comboBox1.TextChanged += comboBox_TextChanged;
-        comboBox1.Leave += comboBox_Leave;
+        comboBox1.DropDown += comboBox1_DropDown;
+        comboBox1.SelectedIndexChanged += comboBox1_SelectedIndexChanged;
+        comboBox1.TextChanged += comboBox1_TextChanged;
+        comboBox1.Leave += comboBox1_Leave;
         // 
         // TypeRedactorForm
         // 

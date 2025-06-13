@@ -27,8 +27,8 @@ public partial class TypeRedactorForm : BaseModalForm, ITypeRedactorView
     
     public Type? SelectedType 
     {
-        get => comboBox.SelectedItem as Type; 
-        set => comboBox.SelectedItem = value;
+        get => comboBox1.SelectedItem as Type; 
+        set => comboBox1.SelectedItem = value;
     }
     
     public Func<Task> CreateNewType { get; set; }
@@ -46,9 +46,9 @@ public partial class TypeRedactorForm : BaseModalForm, ITypeRedactorView
     public TypeRedactorForm()
     {
         InitializeComponent();
-        comboBox.DropDownStyle = ComboBoxStyle.DropDown; // Разрешить ввод текста + выбор
-        comboBox.AutoCompleteMode = AutoCompleteMode.SuggestAppend; // Для подсказок
-        comboBox.AutoCompleteSource = AutoCompleteSource.ListItems; // Источник подсказок
+        comboBox1.DropDownStyle = ComboBoxStyle.DropDown; // Разрешить ввод текста + выбор
+        comboBox1.AutoCompleteMode = AutoCompleteMode.SuggestAppend; // Для подсказок
+        comboBox1.AutoCompleteSource = AutoCompleteSource.ListItems; // Источник подсказок
     }
     
     public void ShowError(string message)
@@ -79,14 +79,14 @@ public partial class TypeRedactorForm : BaseModalForm, ITypeRedactorView
         await ExecuteOperation(() => DeleteType.Invoke(), deleteBtn);
     }
 
-    private async void comboBox_TextChanged(object sender, EventArgs e)
+    private async void comboBox1_TextChanged(object sender, EventArgs e)
     {
         Console.WriteLine("TextChanged Type");
         // Если пользователь быстро вводит текст, подождем немного, прежде чем делать запрос.
         await Task.Delay(300);
         
         // Проверяем, что текст в ComboBox изменился
-        if (comboBox.Text != SearchRequest?.Query)
+        if (comboBox1.Text != SearchRequest?.Query)
         {
             await PerformSearch();
         }
@@ -100,8 +100,8 @@ public partial class TypeRedactorForm : BaseModalForm, ITypeRedactorView
         try
         {
             _isLoadingData = true;
-            comboBox.Items.Clear();
-            SearchRequest = new SearchRequest<string>(comboBox.Text, PageSize, 0);
+            comboBox1.Items.Clear();
+            SearchRequest = new SearchRequest<string>(comboBox1.Text, PageSize, 0);
             await SearchType.Invoke();
             PopulateComboBox();
         }
@@ -123,17 +123,17 @@ public partial class TypeRedactorForm : BaseModalForm, ITypeRedactorView
         {
             foreach (var type in PaginatedTypes.Results)
             {
-                comboBox.Items.Add(type);
+                comboBox1.Items.Add(type);
             }
         
             // Устанавливаем AutoCompleteSource после добавления элементов
-            comboBox.AutoCompleteSource = AutoCompleteSource.ListItems;
+            comboBox1.AutoCompleteSource = AutoCompleteSource.ListItems;
         }
     }
 
-    private async void comboBox_DropDown(object sender, EventArgs e)
+    private async void comboBox1_DropDown(object sender, EventArgs e)
     {
-        Console.WriteLine("comboBox_DropDown Type");
+        Console.WriteLine("comboBox1_DropDown Type");
         // Загрузка следующих страниц при открытии списка (если есть еще страницы)
         if (PaginatedTypes is { Pagination.HasMore: true } && !_isLoadingData)
         {
@@ -156,9 +156,9 @@ public partial class TypeRedactorForm : BaseModalForm, ITypeRedactorView
         }
     }
 
-    private void comboBox_SelectedIndexChanged(object sender, EventArgs e)
+    private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
     {
-        Console.WriteLine("comboBox_SelectedIndexChanged Type");
+        Console.WriteLine("comboBox1_SelectedIndexChanged Type");
         if (SelectedType != null)
         {
             TypeName = SelectedType.Name;
@@ -171,11 +171,11 @@ public partial class TypeRedactorForm : BaseModalForm, ITypeRedactorView
         }
     }
 
-    private void comboBox_Leave(object sender, EventArgs e)
+    private void comboBox1_Leave(object sender, EventArgs e)
     {
-        Console.WriteLine("comboBox_Leave Type");
+        Console.WriteLine("comboBox1_Leave Type");
         // Если пользователь ввел текст, которого нет в списке, сбрасываем выбранный элемент
-        if (!comboBox.Items.Contains(comboBox.Text))
+        if (!comboBox1.Items.Contains(comboBox1.Text))
         {
             SelectedType = null;
             TypeName = "";

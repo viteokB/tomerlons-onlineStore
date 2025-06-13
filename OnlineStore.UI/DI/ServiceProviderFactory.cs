@@ -58,6 +58,7 @@ public static class ServiceProviderFactory
         services.AddTransient<ITypeRedactorView, TypeRedactorForm>();
         services.AddTransient<ICountryRedactorView, CountryRedactorForm>();
         services.AddTransient<IBrandRedactorView, BrandRedactorForm>();
+        services.AddTransient<IAddProductView, ProductRedactorForm>();
         
         // Регистрация Presenters
         services.AddTransient<LoginPresenter>();
@@ -67,6 +68,7 @@ public static class ServiceProviderFactory
         services.AddTransient<TypeCrudPresenter>();
         services.AddTransient<CountryCrudPresenter>();
         services.AddTransient<BrandCrudPresenter>();
+        services.AddTransient<AddProductPresenter>();
         
         // Регистрация фабрик презентеров
         services.AddTransient<Func<LoginPresenter>>(provider => 
@@ -89,5 +91,8 @@ public static class ServiceProviderFactory
         
         services.AddTransient<Func<BrandCrudPresenter>>(provider =>
             provider.GetRequiredService<BrandCrudPresenter>);
+        
+        services.AddTransient<Func<AddProductPresenter>>(provider =>
+            provider.GetRequiredService<AddProductPresenter>);
     }
 }

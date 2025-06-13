@@ -8,9 +8,9 @@ public interface IProductsRepository
 {
     public Task<OperationResult> AddProduct(Product product, CancellationToken cancellationToken);
     
-    public Task<OperationResult> UpdateProduct(Product product, CancellationToken cancellationToken);
+    public Task<OperationResult> UpdateProduct(int? id, Product product, CancellationToken cancellationToken);
     
-    public Task<OperationResult> DeleteProduct(Product product, CancellationToken cancellationToken);
+    public Task<OperationResult> DeleteProduct(int? id, CancellationToken cancellationToken);
     
     public Task<OperationResult<PaginatedResult<Product>>> SearchProducts(
         SearchRequest<ProductsParamets> searchRequest, CancellationToken cancellationToken);

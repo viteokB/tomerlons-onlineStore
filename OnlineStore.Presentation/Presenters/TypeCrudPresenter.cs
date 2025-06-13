@@ -22,21 +22,21 @@ public class TypeCrudPresenter : BasePresenter<ITypeRedactorView, User>
         _productService = productService;
         _navigationService = navigationService;
         
-        RedactorView.CreateNewType += async () => await CreateNewType(RedactorView.TypeName, RedactorView.TypeDescription);
-        RedactorView.UpdateType += async () => await UpdateType(RedactorView.SelectedType, RedactorView.TypeName, RedactorView.TypeDescription);
-        RedactorView.DeleteType += async () => await DeleteType(RedactorView.SelectedType);
-        RedactorView.SearchType += async () => await SearchType(RedactorView.SearchRequest);
+        View.CreateNewType += async () => await CreateNewType(View.TypeName, View.TypeDescription);
+        View.UpdateType += async () => await UpdateType(View.SelectedType, View.TypeName, View.TypeDescription);
+        View.DeleteType += async () => await DeleteType(View.SelectedType);
+        View.SearchType += async () => await SearchType(View.SearchRequest);
     }
     
     private async Task CreateNewType(string typeName, string description)
     {
         if (string.IsNullOrWhiteSpace(typeName))
         {
-            RedactorView.ShowError("Создаваемый тип не должен быть пустой строкой");
+            View.ShowError("Создаваемый тип не должен быть пустой строкой");
         }
-        if (RedactorView.User is null)
+        if (View.User is null)
         {
-            RedactorView.ShowError("Пользователь не задан");
+            View.ShowError("Пользователь не задан");
         }
 
         var newType = new Type
@@ -45,15 +45,15 @@ public class TypeCrudPresenter : BasePresenter<ITypeRedactorView, User>
             Description = description
         };
         
-        var operation = await _productService.AddType(newType, RedactorView.User!);
+        var operation = await _productService.AddType(newType, View.User!);
 
         if (!operation.IsSuccess)
         {
-            RedactorView.ShowError($"Ошибка при создании нового типа: `{operation.Message}`");
+            View.ShowError($"Ошибка при создании нового типа: `{operation.Message}`");
         }
         else
         {
-            RedactorView.ShowGoodInfo($"Тип `{typeName}` создан успешно");
+            View.ShowGoodInfo($"Тип `{typeName}` создан успешно");
         }
     }
     
@@ -61,18 +61,18 @@ public class TypeCrudPresenter : BasePresenter<ITypeRedactorView, User>
     {
         if (selectedType == null)
         {
-            RedactorView.ShowError("Удаляемый `Тип` должен быть выбран");
+            View.ShowError("Удаляемый `Тип` должен быть выбран");
         }
         
-        var operation = await _productService.DeleteType(selectedType!, RedactorView.User!);
+        var operation = await _productService.DeleteType(selectedType!, View.User!);
 
         if (!operation.IsSuccess)
         {
-            RedactorView.ShowError($"Ошибка при удалении типа: `{operation.Message}`");
+            View.ShowError($"Ошибка при удалении типа: `{operation.Message}`");
         }
         else
         {
-            RedactorView.ShowGoodInfo($"Тип `{selectedType?.Name}` удален успешно");
+            View.ShowGoodInfo($"Тип `{selectedType?.Name}` удален успешно");
         }
     }
     
@@ -80,40 +80,40 @@ public class TypeCrudPresenter : BasePresenter<ITypeRedactorView, User>
     {
         if (selectedType == null)
         {
-            RedactorView.ShowError("Удаляемый `Тип` должен быть выбран");
+            View.ShowError("Удаляемый `Тип` должен быть выбран");
         }
         
         var operation = await _productService.UpdateType(selectedType!.Id, 
-            new Type { Name = newName, Description = newDescription}, RedactorView.User!);
+            new Type { Name = newName, Description = newDescription}, View.User!);
 
         if (!operation.IsSuccess)
         {
-            RedactorView.ShowError($"Ошибка при удалении типа: `{operation.Message}`");
+            View.ShowError($"Ошибка при удалении типа: `{operation.Message}`");
         }
         else
         {
-            RedactorView.ShowGoodInfo($"Тип `{selectedType?.Name}` удален успешно");
+            View.ShowGoodInfo($"Тип `{selectedType?.Name}` удален успешно");
         }
     }
 
     private async Task SearchType(SearchRequest<string> searchRequest)
     {
-        var operation = await _productService.SearchTypes(searchRequest, RedactorView.User!);
+        var operation = await _productService.SearchTypes(searchRequest, View.User!);
 
         if (!operation.IsSuccess)
         {
-            RedactorView.ShowError($"Ошибка при поиске типов `{operation.Message}`");
+            View.ShowError($"Ошибка при поиске типов `{operation.Message}`");
         }
         else
         {
             var paginatedResult = operation.Data;
-            RedactorView.PaginatedTypes = paginatedResult;
+            View.PaginatedTypes = paginatedResult;
         }
     }
 
     public override void Run(User arg)
     {
-        RedactorView.User = arg;
-        RedactorView.Show();
+        View.User = arg;
+        View.Show();
     }
 }

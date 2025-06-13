@@ -33,8 +33,8 @@ public interface IProductService
 
     #region Product Operations
     Task<OperationResult> AddProduct(Product product, User currentUser);
-    Task<OperationResult> UpdateProduct(Product product, User currentUser);
-    Task<OperationResult> DeleteProduct(Product product, User currentUser);
+    Task<OperationResult> UpdateProduct(int? id, Product product, User currentUser);
+    Task<OperationResult> DeleteProduct(int? id, User currentUser);
     Task<OperationResult<PaginatedResult<Product>>> SearchProducts(SearchRequest<ProductsParamets> request, User currentUser);
     #endregion
 }

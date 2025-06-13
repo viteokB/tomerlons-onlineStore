@@ -37,6 +37,7 @@ partial class MainForm
         button4 = new System.Windows.Forms.Button();
         button5 = new System.Windows.Forms.Button();
         button6 = new System.Windows.Forms.Button();
+        button7 = new System.Windows.Forms.Button();
         SuspendLayout();
         // 
         // button1
@@ -99,11 +100,22 @@ partial class MainForm
         button6.UseVisualStyleBackColor = true;
         button6.Click += button6_Click;
         // 
+        // button7
+        // 
+        button7.Location = new System.Drawing.Point(576, 88);
+        button7.Name = "button7";
+        button7.Size = new System.Drawing.Size(115, 36);
+        button7.TabIndex = 6;
+        button7.Text = "productRedactory";
+        button7.UseVisualStyleBackColor = true;
+        button7.Click += button7_Click;
+        // 
         // MainForm
         // 
         AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
         AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
         ClientSize = new System.Drawing.Size(800, 450);
+        Controls.Add(button7);
         Controls.Add(button6);
         Controls.Add(button5);
         Controls.Add(button4);
@@ -113,6 +125,8 @@ partial class MainForm
         Text = "MainForm";
         ResumeLayout(false);
     }
+
+    private System.Windows.Forms.Button button7;
 
     private System.Windows.Forms.Button button6;
 

@@ -33,6 +33,9 @@
       <Compile Update="Forms\BrandRedactorForm.cs">
         <SubType>Form</SubType>
       </Compile>
+      <Compile Update="Forms\ProductRedactorForm.cs">
+        <SubType>Form</SubType>
+      </Compile>
     </ItemGroup>
 
     <ItemGroup>

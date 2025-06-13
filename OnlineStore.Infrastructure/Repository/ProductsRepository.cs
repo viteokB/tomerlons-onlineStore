@@ -26,6 +26,13 @@ public class ProductsRepository : IProductsRepository
         
         try
         {
+            var exsist = await _databaseProducts
+                .FirstOrDefaultAsync(p => p.CatalogNumber == product.CatalogNumber, cancellationToken);
+
+            if (exsist != null)
+            {
+                return OperationResult.Fail("С таким артикулом товар уже есть");
+            }
             await _databaseProducts.AddAsync(DatabaseProduct.Map(product), cancellationToken);
             await _dbContext.SaveChangesAsync(cancellationToken);
             return OperationResult.Success();
@@ -36,14 +43,29 @@ public class ProductsRepository : IProductsRepository
         }
     }
 
-    public async Task<OperationResult> UpdateProduct(Product product, CancellationToken cancellationToken)
+    public async Task<OperationResult> UpdateProduct(int? id, Product product, CancellationToken cancellationToken)
     {
+        if (id == null!)
+            return OperationResult.Fail("Id of product cannot be null");
         if (product == null!)
-            return OperationResult.Fail("Type cannot be null");
+            return OperationResult.Fail("Product cannot be null");
         
         try
         {
-            await _databaseProducts.AddAsync(DatabaseProduct.Map(product), cancellationToken);
+            var entity = await _databaseProducts
+                .FirstOrDefaultAsync(p => p.Id == id, cancellationToken);
+
+            entity.TypeId = product.Type.Id;
+            entity.BrandId = product.Brand.Id;
+            entity.CountryId = product.Country.Id;
+            entity.ChangedById = product.ChangedBy.Id;
+            entity.Name = product.Name;
+            entity.PhotoPath = product.PhotoPath;
+            entity.CatalogNumber = product.CatalogNumber;
+            entity.BasePrice = product.BasePrice;
+            entity.IsActive = product.IsActive;
+            entity.ChangedAt = DateTime.Now;
+            _dbContext.Update(entity);
             await _dbContext.SaveChangesAsync(cancellationToken);
             return OperationResult.Success();
         }
@@ -53,14 +75,15 @@ public class ProductsRepository : IProductsRepository
         }
     }
 
-    public async Task<OperationResult> DeleteProduct(Product product, CancellationToken cancellationToken)
+    public async Task<OperationResult> DeleteProduct(int? id, CancellationToken cancellationToken)
     {
-        if (product == null!)
-            return OperationResult.Fail("Type cannot be null");
+        if (id == null!)
+            return OperationResult.Fail("Product id cannot be null");
         
         try
         {
-            var entity = await _databaseProducts.FindAsync(product, cancellationToken);
+            var entity = await _databaseProducts
+                .FirstOrDefaultAsync(p => p.Id == id, cancellationToken);
             _databaseProducts.Remove(entity!);
             await _dbContext.SaveChangesAsync(cancellationToken);
             return OperationResult.Success();

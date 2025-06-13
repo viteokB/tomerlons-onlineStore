@@ -13,6 +13,7 @@ public class NavigationService : INavigationService
     private readonly Func<TypeCrudPresenter> _typeCrudPresenterFactory;
     private readonly Func<CountryCrudPresenter> _countryCrudPresenterFactory;
     private readonly Func<BrandCrudPresenter> _brandCrudPresenterFactory;
+    private readonly Func<AddProductPresenter> _addProductPresenterFactory;
 
     public NavigationService(
         Func<LoginPresenter> loginPresenterFactory,
@@ -21,7 +22,8 @@ public class NavigationService : INavigationService
         Func<AuthorPresenter> authorPresenterFactory,
         Func<TypeCrudPresenter> typeCrudPresenterFactory,
         Func<CountryCrudPresenter> countryCrudPresenterFactory,
-        Func<BrandCrudPresenter> brandCrudPresenterFactory)
+        Func<BrandCrudPresenter> brandCrudPresenterFactory,
+        Func<AddProductPresenter> addProductPresenterFactory)
     {
         _loginPresenterFactory = loginPresenterFactory;
         _registerPresenterFactory = registerPresenterFactory;
@@ -30,6 +32,7 @@ public class NavigationService : INavigationService
         _typeCrudPresenterFactory = typeCrudPresenterFactory;
         _countryCrudPresenterFactory = countryCrudPresenterFactory;
         _brandCrudPresenterFactory = brandCrudPresenterFactory;
+        _addProductPresenterFactory = addProductPresenterFactory;
     }
 
     public ComplexModalResult<User> NavigateToLogin()
@@ -47,7 +50,7 @@ public class NavigationService : INavigationService
         var presenter = _registerPresenterFactory();
         presenter.Run(roles);
         
-        return presenter.RedactorView.ModalResult;
+        return presenter.View.ModalResult;
     }
 
     public ModalResult NavigateToAuthor()
@@ -61,21 +64,28 @@ public class NavigationService : INavigationService
     {
         var presenter = _typeCrudPresenterFactory();
         presenter.Run(user);
-        return presenter.RedactorView.ModalResult;
+        return presenter.View.ModalResult;
     }
 
     public ModalResult NavigateToCountryRedactor(User user)
     {
         var presenter = _countryCrudPresenterFactory();
         presenter.Run(user);
-        return presenter.RedactorView.ModalResult;
+        return presenter.View.ModalResult;
     }
 
     public ModalResult NavigateToBrandRedactor(User user)
     {
         var presenter = _brandCrudPresenterFactory();
         presenter.Run(user);
-        return presenter.RedactorView.ModalResult;
+        return presenter.View.ModalResult;
+    }
+
+    public ModalResult NavigateToProductRedactor(User user)
+    {
+        var presenter = _addProductPresenterFactory();
+        presenter.Run(user);
+        return presenter.View.ModalResult;
     }
 
     public void NavigateToMain()
