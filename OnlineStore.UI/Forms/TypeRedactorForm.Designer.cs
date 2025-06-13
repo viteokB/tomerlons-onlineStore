@@ -34,23 +34,23 @@ partial class TypeRedactorForm
         createBtn = new System.Windows.Forms.Button();
         deleteBtn = new System.Windows.Forms.Button();
         updateBtn = new System.Windows.Forms.Button();
-        comboBox = new System.Windows.Forms.ComboBox();
         nameTextBox = new System.Windows.Forms.TextBox();
         description = new System.Windows.Forms.RichTextBox();
         splitContainer1 = new System.Windows.Forms.SplitContainer();
+        label5 = new System.Windows.Forms.Label();
         splitContainer2 = new System.Windows.Forms.SplitContainer();
         splitContainer3 = new System.Windows.Forms.SplitContainer();
         splitContainer4 = new System.Windows.Forms.SplitContainer();
         splitContainer5 = new System.Windows.Forms.SplitContainer();
         splitContainer6 = new System.Windows.Forms.SplitContainer();
-        splitContainer7 = new System.Windows.Forms.SplitContainer();
-        splitContainer8 = new System.Windows.Forms.SplitContainer();
-        splitContainer9 = new System.Windows.Forms.SplitContainer();
-        label1 = new System.Windows.Forms.Label();
-        splitContainer10 = new System.Windows.Forms.SplitContainer();
-        label3 = new System.Windows.Forms.Label();
         label4 = new System.Windows.Forms.Label();
-        label5 = new System.Windows.Forms.Label();
+        splitContainer7 = new System.Windows.Forms.SplitContainer();
+        splitContainer9 = new System.Windows.Forms.SplitContainer();
+        label3 = new System.Windows.Forms.Label();
+        splitContainer8 = new System.Windows.Forms.SplitContainer();
+        splitContainer10 = new System.Windows.Forms.SplitContainer();
+        label1 = new System.Windows.Forms.Label();
+        comboBox1 = new System.Windows.Forms.ComboBox();
         ((System.ComponentModel.ISupportInitialize)splitContainer1).BeginInit();
         splitContainer1.Panel1.SuspendLayout();
         splitContainer1.Panel2.SuspendLayout();
@@ -78,14 +78,14 @@ partial class TypeRedactorForm
         splitContainer7.Panel1.SuspendLayout();
         splitContainer7.Panel2.SuspendLayout();
         splitContainer7.SuspendLayout();
-        ((System.ComponentModel.ISupportInitialize)splitContainer8).BeginInit();
-        splitContainer8.Panel1.SuspendLayout();
-        splitContainer8.Panel2.SuspendLayout();
-        splitContainer8.SuspendLayout();
         ((System.ComponentModel.ISupportInitialize)splitContainer9).BeginInit();
         splitContainer9.Panel1.SuspendLayout();
         splitContainer9.Panel2.SuspendLayout();
         splitContainer9.SuspendLayout();
+        ((System.ComponentModel.ISupportInitialize)splitContainer8).BeginInit();
+        splitContainer8.Panel1.SuspendLayout();
+        splitContainer8.Panel2.SuspendLayout();
+        splitContainer8.SuspendLayout();
         ((System.ComponentModel.ISupportInitialize)splitContainer10).BeginInit();
         splitContainer10.Panel1.SuspendLayout();
         splitContainer10.Panel2.SuspendLayout();
@@ -134,20 +134,6 @@ partial class TypeRedactorForm
         updateBtn.UseVisualStyleBackColor = false;
         updateBtn.Click += updateButton_Click;
         // 
-        // comboBox
-        // 
-        comboBox.Dock = System.Windows.Forms.DockStyle.Fill;
-        comboBox.Font = new System.Drawing.Font("Trebuchet MS", 12F);
-        comboBox.FormattingEnabled = true;
-        comboBox.Location = new System.Drawing.Point(0, 0);
-        comboBox.Name = "comboBox";
-        comboBox.Size = new System.Drawing.Size(499, 34);
-        comboBox.TabIndex = 3;
-        comboBox.DropDown += comboBox_DropDown;
-        comboBox.SelectedIndexChanged += comboBox_SelectedIndexChanged;
-        comboBox.TextChanged += comboBox_TextChanged;
-        comboBox.Leave += comboBox_Leave;
-        // 
         // nameTextBox
         // 
         nameTextBox.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -184,6 +170,19 @@ partial class TypeRedactorForm
         splitContainer1.Size = new System.Drawing.Size(664, 534);
         splitContainer1.SplitterDistance = 77;
         splitContainer1.TabIndex = 6;
+        // 
+        // label5
+        // 
+        label5.BackColor = System.Drawing.Color.DarkOliveGreen;
+        label5.Dock = System.Windows.Forms.DockStyle.Fill;
+        label5.Font = new System.Drawing.Font("Trebuchet MS", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)204));
+        label5.ForeColor = System.Drawing.Color.White;
+        label5.Location = new System.Drawing.Point(0, 0);
+        label5.Name = "label5";
+        label5.Size = new System.Drawing.Size(664, 77);
+        label5.TabIndex = 0;
+        label5.Text = "Редактор \"Типов\" товаров";
+        label5.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
         // 
         // splitContainer2
         // 
@@ -270,6 +269,19 @@ partial class TypeRedactorForm
         splitContainer6.SplitterDistance = 38;
         splitContainer6.TabIndex = 0;
         // 
+        // label4
+        // 
+        label4.BackColor = System.Drawing.Color.MidnightBlue;
+        label4.Dock = System.Windows.Forms.DockStyle.Fill;
+        label4.Font = new System.Drawing.Font("Trebuchet MS", 12F);
+        label4.ForeColor = System.Drawing.Color.White;
+        label4.Location = new System.Drawing.Point(0, 0);
+        label4.Name = "label4";
+        label4.Size = new System.Drawing.Size(499, 38);
+        label4.TabIndex = 0;
+        label4.Text = "Поиск";
+        label4.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+        // 
         // splitContainer7
         // 
         splitContainer7.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -287,6 +299,37 @@ partial class TypeRedactorForm
         splitContainer7.Size = new System.Drawing.Size(499, 411);
         splitContainer7.SplitterDistance = 83;
         splitContainer7.TabIndex = 0;
+        // 
+        // splitContainer9
+        // 
+        splitContainer9.Dock = System.Windows.Forms.DockStyle.Fill;
+        splitContainer9.Location = new System.Drawing.Point(0, 0);
+        splitContainer9.Name = "splitContainer9";
+        splitContainer9.Orientation = System.Windows.Forms.Orientation.Horizontal;
+        // 
+        // splitContainer9.Panel1
+        // 
+        splitContainer9.Panel1.Controls.Add(comboBox1);
+        // 
+        // splitContainer9.Panel2
+        // 
+        splitContainer9.Panel2.Controls.Add(label3);
+        splitContainer9.Size = new System.Drawing.Size(499, 83);
+        splitContainer9.SplitterDistance = 37;
+        splitContainer9.TabIndex = 0;
+        // 
+        // label3
+        // 
+        label3.BackColor = System.Drawing.Color.DimGray;
+        label3.Dock = System.Windows.Forms.DockStyle.Fill;
+        label3.Font = new System.Drawing.Font("Trebuchet MS", 12F);
+        label3.ForeColor = System.Drawing.Color.Transparent;
+        label3.Location = new System.Drawing.Point(0, 0);
+        label3.Name = "label3";
+        label3.Size = new System.Drawing.Size(499, 42);
+        label3.TabIndex = 0;
+        label3.Text = "Название";
+        label3.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
         // 
         // splitContainer8
         // 
@@ -306,37 +349,6 @@ partial class TypeRedactorForm
         splitContainer8.SplitterDistance = 84;
         splitContainer8.TabIndex = 0;
         // 
-        // splitContainer9
-        // 
-        splitContainer9.Dock = System.Windows.Forms.DockStyle.Fill;
-        splitContainer9.Location = new System.Drawing.Point(0, 0);
-        splitContainer9.Name = "splitContainer9";
-        splitContainer9.Orientation = System.Windows.Forms.Orientation.Horizontal;
-        // 
-        // splitContainer9.Panel1
-        // 
-        splitContainer9.Panel1.Controls.Add(comboBox);
-        // 
-        // splitContainer9.Panel2
-        // 
-        splitContainer9.Panel2.Controls.Add(label3);
-        splitContainer9.Size = new System.Drawing.Size(499, 83);
-        splitContainer9.SplitterDistance = 37;
-        splitContainer9.TabIndex = 0;
-        // 
-        // label1
-        // 
-        label1.BackColor = System.Drawing.Color.DimGray;
-        label1.Dock = System.Windows.Forms.DockStyle.Fill;
-        label1.Font = new System.Drawing.Font("Trebuchet MS", 12F);
-        label1.ForeColor = System.Drawing.Color.White;
-        label1.Location = new System.Drawing.Point(0, 0);
-        label1.Name = "label1";
-        label1.Size = new System.Drawing.Size(499, 43);
-        label1.TabIndex = 0;
-        label1.Text = "Описание";
-        label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-        // 
         // splitContainer10
         // 
         splitContainer10.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -355,44 +367,32 @@ partial class TypeRedactorForm
         splitContainer10.SplitterDistance = 37;
         splitContainer10.TabIndex = 0;
         // 
-        // label3
+        // label1
         // 
-        label3.BackColor = System.Drawing.Color.DimGray;
-        label3.Dock = System.Windows.Forms.DockStyle.Fill;
-        label3.Font = new System.Drawing.Font("Trebuchet MS", 12F);
-        label3.ForeColor = System.Drawing.Color.Transparent;
-        label3.Location = new System.Drawing.Point(0, 0);
-        label3.Name = "label3";
-        label3.Size = new System.Drawing.Size(499, 42);
-        label3.TabIndex = 0;
-        label3.Text = "Название";
-        label3.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+        label1.BackColor = System.Drawing.Color.DimGray;
+        label1.Dock = System.Windows.Forms.DockStyle.Fill;
+        label1.Font = new System.Drawing.Font("Trebuchet MS", 12F);
+        label1.ForeColor = System.Drawing.Color.White;
+        label1.Location = new System.Drawing.Point(0, 0);
+        label1.Name = "label1";
+        label1.Size = new System.Drawing.Size(499, 43);
+        label1.TabIndex = 0;
+        label1.Text = "Описание";
+        label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
         // 
-        // label4
+        // comboBox1
         // 
-        label4.BackColor = System.Drawing.Color.MidnightBlue;
-        label4.Dock = System.Windows.Forms.DockStyle.Fill;
-        label4.Font = new System.Drawing.Font("Trebuchet MS", 12F);
-        label4.ForeColor = System.Drawing.Color.White;
-        label4.Location = new System.Drawing.Point(0, 0);
-        label4.Name = "label4";
-        label4.Size = new System.Drawing.Size(499, 38);
-        label4.TabIndex = 0;
-        label4.Text = "Поиск";
-        label4.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-        // 
-        // label5
-        // 
-        label5.BackColor = System.Drawing.Color.DarkOliveGreen;
-        label5.Dock = System.Windows.Forms.DockStyle.Fill;
-        label5.Font = new System.Drawing.Font("Trebuchet MS", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)204));
-        label5.ForeColor = System.Drawing.Color.White;
-        label5.Location = new System.Drawing.Point(0, 0);
-        label5.Name = "label5";
-        label5.Size = new System.Drawing.Size(664, 77);
-        label5.TabIndex = 0;
-        label5.Text = "Редактор \"Типов\" товаров";
-        label5.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+        comboBox1.Dock = System.Windows.Forms.DockStyle.Fill;
+        comboBox1.Font = new System.Drawing.Font("Trebuchet MS", 12F);
+        comboBox1.FormattingEnabled = true;
+        comboBox1.Location = new System.Drawing.Point(0, 0);
+        comboBox1.Name = "comboBox1";
+        comboBox1.Size = new System.Drawing.Size(499, 34);
+        comboBox1.TabIndex = 0;
+        comboBox1.DropDown += comboBox_DropDown;
+        comboBox1.SelectedIndexChanged += comboBox_SelectedIndexChanged;
+        comboBox1.TextChanged += comboBox_TextChanged;
+        comboBox1.Leave += comboBox_Leave;
         // 
         // TypeRedactorForm
         // 
@@ -429,14 +429,14 @@ partial class TypeRedactorForm
         splitContainer7.Panel2.ResumeLayout(false);
         ((System.ComponentModel.ISupportInitialize)splitContainer7).EndInit();
         splitContainer7.ResumeLayout(false);
-        splitContainer8.Panel1.ResumeLayout(false);
-        splitContainer8.Panel2.ResumeLayout(false);
-        ((System.ComponentModel.ISupportInitialize)splitContainer8).EndInit();
-        splitContainer8.ResumeLayout(false);
         splitContainer9.Panel1.ResumeLayout(false);
         splitContainer9.Panel2.ResumeLayout(false);
         ((System.ComponentModel.ISupportInitialize)splitContainer9).EndInit();
         splitContainer9.ResumeLayout(false);
+        splitContainer8.Panel1.ResumeLayout(false);
+        splitContainer8.Panel2.ResumeLayout(false);
+        ((System.ComponentModel.ISupportInitialize)splitContainer8).EndInit();
+        splitContainer8.ResumeLayout(false);
         splitContainer10.Panel1.ResumeLayout(false);
         splitContainer10.Panel1.PerformLayout();
         splitContainer10.Panel2.ResumeLayout(false);
@@ -444,6 +444,8 @@ partial class TypeRedactorForm
         splitContainer10.ResumeLayout(false);
         ResumeLayout(false);
     }
+
+    private System.Windows.Forms.ComboBox comboBox1;
 
     private System.Windows.Forms.Label label5;
 

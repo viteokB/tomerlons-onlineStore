@@ -28,6 +28,20 @@ public class MainPresenter : BasePresenter<IMainView>
         View.OpenModalRegisterDialog += OnOpenModalRegisterDialog;
         View.OpenModalAuthorDialog += OnOpenModalAuthorDialog;
         View.OpenTypesRedactorDialog += OnOpenTypesRedactorDialog;
+        View.OpenCountryRedactorDialog += OnOpenCountryRedactorDialog;
+    }
+
+    private void OnOpenCountryRedactorDialog()
+    {
+        if (View.User != null)
+        {
+            var result = _navigationService.NavigateToCountryRedactor(View.User);
+            View.ShowMessage(result.ToString());
+        }
+        else
+        {
+            View.ShowMessage("Невозможно открыть редактор, вы не вошли");
+        }
     }
 
     private void OnOpenTypesRedactorDialog()

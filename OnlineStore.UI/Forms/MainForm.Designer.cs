@@ -35,6 +35,7 @@ partial class MainForm
         button2 = new System.Windows.Forms.Button();
         button3 = new System.Windows.Forms.Button();
         button4 = new System.Windows.Forms.Button();
+        button5 = new System.Windows.Forms.Button();
         SuspendLayout();
         // 
         // button1
@@ -77,11 +78,22 @@ partial class MainForm
         button4.UseVisualStyleBackColor = true;
         button4.Click += button4_Click;
         // 
+        // button5
+        // 
+        button5.Location = new System.Drawing.Point(576, 203);
+        button5.Name = "button5";
+        button5.Size = new System.Drawing.Size(115, 36);
+        button5.TabIndex = 4;
+        button5.Text = "countryDialog";
+        button5.UseVisualStyleBackColor = true;
+        button5.Click += button5_Click;
+        // 
         // MainForm
         // 
         AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
         AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
         ClientSize = new System.Drawing.Size(800, 450);
+        Controls.Add(button5);
         Controls.Add(button4);
         Controls.Add(button3);
         Controls.Add(button2);
@@ -89,6 +101,8 @@ partial class MainForm
         Text = "MainForm";
         ResumeLayout(false);
     }
+
+    private System.Windows.Forms.Button button5;
 
     private System.Windows.Forms.Button button4;
 

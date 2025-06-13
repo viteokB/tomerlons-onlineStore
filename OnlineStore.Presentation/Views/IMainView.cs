@@ -14,6 +14,8 @@ public interface IMainView : IView
     
     public event Action  OpenTypesRedactorDialog;
     
+    public event Action  OpenCountryRedactorDialog;
+    
     public User? User { get; set; }
     
     void ShowError(string message);

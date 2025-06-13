@@ -120,20 +120,20 @@ public class ProductService : IProductService
         return await _countryRepository.AddCountry(country, CancellationToken.None);
     }
 
-    public async Task<OperationResult> UpdateCountry(Country country, User currentUser)
+    public async Task<OperationResult> UpdateCountry(int id, Country country, User currentUser)
     {
         if (!IsAdmin(currentUser))
             return OperationResult.Fail("Недостаточно прав для выполнения операции");
 
-        return await _countryRepository.UpdateCountry(country, CancellationToken.None);
+        return await _countryRepository.UpdateCountry(id, country, CancellationToken.None);
     }
 
-    public async Task<OperationResult> DeleteCountry(Country country, User currentUser)
+    public async Task<OperationResult> DeleteCountry(int? id, User currentUser)
     {
         if (!IsAdmin(currentUser))
             return OperationResult.Fail("Недостаточно прав для выполнения операции");
 
-        return await _countryRepository.DeleteCountry(country, CancellationToken.None);
+        return await _countryRepository.DeleteCountry(id, CancellationToken.None);
     }
 
     public async Task<OperationResult<List<Country>>> GetCountries(User currentUser)

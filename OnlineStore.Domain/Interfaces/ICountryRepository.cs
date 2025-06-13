@@ -8,9 +8,9 @@ public interface ICountryRepository
 {
     public Task<OperationResult> AddCountry(Country type, CancellationToken cancellationToken);
     
-    public Task<OperationResult> DeleteCountry(Country type, CancellationToken cancellationToken);
+    public Task<OperationResult> DeleteCountry(int? id, CancellationToken cancellationToken);
     
-    public Task<OperationResult> UpdateCountry(Country type, CancellationToken cancellationToken);
+    public Task<OperationResult> UpdateCountry(int id, Country type, CancellationToken cancellationToken);
 
     public Task<OperationResult<List<Country>>> GetCountries(CancellationToken cancellationToken);
     

@@ -26,6 +26,14 @@ public class CountryRepository : ICountryRepository
         
         try
         {
+            var existCountry = await _databaseCountry
+                .FirstOrDefaultAsync(t => t.Name == type.Name, cancellationToken);
+            
+            if (existCountry != null)
+            {
+                return OperationResult.Fail($"Страна \"{existCountry.Name}\" уже существует ");
+            }
+            
             await _databaseCountry.AddAsync(DatabaseCountry.Map(type), cancellationToken);
             await _dbContext.SaveChangesAsync(cancellationToken);
             return OperationResult.Success();
@@ -36,14 +44,15 @@ public class CountryRepository : ICountryRepository
         }
     }
 
-    public async Task<OperationResult> DeleteCountry(Country type, CancellationToken cancellationToken)
+    public async Task<OperationResult> DeleteCountry(int? id, CancellationToken cancellationToken)
     {
-        if (type == null!)
+        if (id == null!)
             return OperationResult.Fail("Country cannot be null");
         
         try
         {
-            var entity = await _databaseCountry.FindAsync(type, cancellationToken);
+            var entity = await _databaseCountry
+                .FirstOrDefaultAsync(t => t.Id == id, cancellationToken);
             _databaseCountry.Remove(entity!);
             await _dbContext.SaveChangesAsync(cancellationToken);
             return OperationResult.Success();
@@ -54,15 +63,22 @@ public class CountryRepository : ICountryRepository
         }
     }
 
-    public async Task<OperationResult> UpdateCountry(Country type, CancellationToken cancellationToken)
+    public async Task<OperationResult> UpdateCountry(int id, Country type, CancellationToken cancellationToken)
     {
         if (type == null!)
             return OperationResult.Fail("Country cannot be null");
         
         try
         {
-            var entity = DatabaseCountry.Map(type);
-            _databaseCountry.Update(entity);
+            var toUpdate = await _databaseCountry
+                .FirstOrDefaultAsync(x => x.Id == id, cancellationToken);
+            if (toUpdate == null)
+            {
+                return OperationResult.Fail("Страна для обновления не обнаружена");
+            }
+            toUpdate.Name = type.Name;
+            toUpdate.Code = type.Code;
+            _databaseCountry.Update(toUpdate);
             await _dbContext.SaveChangesAsync(cancellationToken);
             return OperationResult.Success();
         }

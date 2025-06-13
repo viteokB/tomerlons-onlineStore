@@ -20,11 +20,11 @@ public abstract class BasePresenter<TIView> : IPresenter
 public abstract class BasePresenter<TIView, TArg> : IPresenter<TArg>
     where TIView : IView
 {
-    public TIView View { get;private set; }
+    public TIView RedactorView { get;private set; }
 
-    protected BasePresenter(TIView view)
+    protected BasePresenter(TIView redactorView)
     {
-        View = view;
+        RedactorView = redactorView;
     }
 
 

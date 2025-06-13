@@ -7,4 +7,7 @@ public class Country
     public required string Name { get; set; }
     
     public required string Code { get; set; }
+    
+    public override string ToString() 
+        => Name;
 }

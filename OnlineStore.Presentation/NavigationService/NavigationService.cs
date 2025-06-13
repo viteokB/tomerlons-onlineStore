@@ -11,19 +11,22 @@ public class NavigationService : INavigationService
     private readonly Func<MainPresenter> _mainPresenterFactory;
     private readonly Func<AuthorPresenter> _authorPresenterFactory;
     private readonly Func<TypeCrudPresenter> _typeCrudPresenterFactory;
+    private readonly Func<CountryCrudPresenter> _countryCrudPresenterFactory;
 
     public NavigationService(
         Func<LoginPresenter> loginPresenterFactory,
         Func<RegisterPresenter> registerPresenterFactory,
         Func<MainPresenter> mainPresenterFactory,
         Func<AuthorPresenter> authorPresenterFactory,
-        Func<TypeCrudPresenter> typeCrudPresenterFactory)
+        Func<TypeCrudPresenter> typeCrudPresenterFactory,
+        Func<CountryCrudPresenter> countryCrudPresenterFactory)
     {
         _loginPresenterFactory = loginPresenterFactory;
         _registerPresenterFactory = registerPresenterFactory;
         _mainPresenterFactory = mainPresenterFactory;
         _authorPresenterFactory = authorPresenterFactory;
         _typeCrudPresenterFactory = typeCrudPresenterFactory;
+        _countryCrudPresenterFactory = countryCrudPresenterFactory;
     }
 
     public ComplexModalResult<User> NavigateToLogin()
@@ -41,7 +44,7 @@ public class NavigationService : INavigationService
         var presenter = _registerPresenterFactory();
         presenter.Run(roles);
         
-        return presenter.View.ModalResult;
+        return presenter.RedactorView.ModalResult;
     }
 
     public ModalResult NavigateToAuthor()
@@ -55,7 +58,14 @@ public class NavigationService : INavigationService
     {
         var presenter = _typeCrudPresenterFactory();
         presenter.Run(user);
-        return presenter.View.ModalResult;
+        return presenter.RedactorView.ModalResult;
+    }
+
+    public ModalResult NavigateToCountryRedactor(User user)
+    {
+        var presenter = _countryCrudPresenterFactory();
+        presenter.Run(user);
+        return presenter.RedactorView.ModalResult;
     }
 
     public void NavigateToMain()

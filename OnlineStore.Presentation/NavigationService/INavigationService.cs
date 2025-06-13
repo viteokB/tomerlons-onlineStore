@@ -12,5 +12,7 @@ public interface INavigationService
     
     ModalResult NavigateToTypeRedactor(User user);
     
+    ModalResult NavigateToCountryRedactor(User user);
+    
     void NavigateToMain();
 }

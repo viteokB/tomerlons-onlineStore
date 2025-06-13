@@ -25,8 +25,8 @@ public interface IProductService
 
     #region Country Operations
     Task<OperationResult> AddCountry(Country country, User currentUser);
-    Task<OperationResult> UpdateCountry(Country country, User currentUser);
-    Task<OperationResult> DeleteCountry(Country country, User currentUser);
+    Task<OperationResult> UpdateCountry(int id, Country country, User currentUser);
+    Task<OperationResult> DeleteCountry(int? id, User currentUser);
     Task<OperationResult<List<Country>>> GetCountries(User currentUser);
     Task<OperationResult<PaginatedResult<Country>>> SearchCountries(SearchRequest<string> request, User currentUser);
     #endregion

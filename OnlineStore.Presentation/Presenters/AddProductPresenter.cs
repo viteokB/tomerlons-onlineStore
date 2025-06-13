@@ -25,11 +25,11 @@ public class AddProductPresenter : BasePresenter<IAddProductView, User>
     {
         if (string.IsNullOrWhiteSpace(typeName))
         {
-            View.ShowError("Создаваемый тип не должен быть пустой строкой");
+            RedactorView.ShowError("Создаваемый тип не должен быть пустой строкой");
         }
-        if (View.ChangedBy is null)
+        if (RedactorView.ChangedBy is null)
         {
-            View.ShowError("Создаваемый тип не должен быть пустой строкой");
+            RedactorView.ShowError("Создаваемый тип не должен быть пустой строкой");
         }
 
         var newType = new Type
@@ -38,17 +38,17 @@ public class AddProductPresenter : BasePresenter<IAddProductView, User>
             Description = description
         };
         
-        var operation = await _productService.AddType(newType, View.ChangedBy!);
+        var operation = await _productService.AddType(newType, RedactorView.ChangedBy!);
 
         if (!operation.IsSuccess)
         {
-            View.ShowError($"Ошибка при создании нового типа: `{operation.Message}`");
+            RedactorView.ShowError($"Ошибка при создании нового типа: `{operation.Message}`");
         }
-        View.ShowGoodInfo($"Тип `{typeName}` создан успешно");
+        RedactorView.ShowGoodInfo($"Тип `{typeName}` создан успешно");
     }
 
     public override void Run(User arg)
     {
-        View.ChangedBy = arg;
+        RedactorView.ChangedBy = arg;
     }
 }

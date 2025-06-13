@@ -18,12 +18,12 @@ public class RegisterPresenter : BasePresenter<IRegisterView, List<string>>
         _userService = userService;
         _navigationService = navigationService;
         
-        View.ModalResult = ModalResult.None;
-        View.IsValidRepeatedPassword += () => ValidateRepeatedPassword(View.Password, View.RepeatedPassword);
-        View.IsValidEmail += () => ValidateEmail(View.Email);
-        View.IsValidRole += () => ValidateRole(View.Role);
-        View.OpenLoginForm += OpenLoginForm;
-        View.RegisterAsync += async () => await RegisterAsync(View.Role, View.Email, View.Password);
+        RedactorView.ModalResult = ModalResult.None;
+        RedactorView.IsValidRepeatedPassword += () => ValidateRepeatedPassword(RedactorView.Password, RedactorView.RepeatedPassword);
+        RedactorView.IsValidEmail += () => ValidateEmail(RedactorView.Email);
+        RedactorView.IsValidRole += () => ValidateRole(RedactorView.Role);
+        RedactorView.OpenLoginForm += OpenLoginForm;
+        RedactorView.RegisterAsync += async () => await RegisterAsync(RedactorView.Role, RedactorView.Email, RedactorView.Password);
     }
     
     private void OpenLoginForm()
@@ -36,12 +36,12 @@ public class RegisterPresenter : BasePresenter<IRegisterView, List<string>>
     {
         if (string.IsNullOrEmpty(password) || string.IsNullOrEmpty(repeatedPassword))
         {
-            View.ShowError("Пароль и/или повторенный пароль не должны быть пустыми");
+            RedactorView.ShowError("Пароль и/или повторенный пароль не должны быть пустыми");
             return false;
         }
         else if (password != repeatedPassword)
         {
-            View.ShowError("Пароль и повторенный пароль должны быть равны");
+            RedactorView.ShowError("Пароль и повторенный пароль должны быть равны");
             return false;
         }
         
@@ -52,7 +52,7 @@ public class RegisterPresenter : BasePresenter<IRegisterView, List<string>>
     {
         if (string.IsNullOrWhiteSpace(email))
         {
-            View.ShowError("Email не может быть пустым");
+            RedactorView.ShowError("Email не может быть пустым");
             return false;
         }
 
@@ -62,7 +62,7 @@ public class RegisterPresenter : BasePresenter<IRegisterView, List<string>>
     
         if (!isValid)
         {
-            View.ShowError("Некорректный формат email");
+            RedactorView.ShowError("Некорректный формат email");
         }
     
         return isValid;
@@ -70,9 +70,9 @@ public class RegisterPresenter : BasePresenter<IRegisterView, List<string>>
 
     private bool ValidateRole(string role)
     {
-        if (string.IsNullOrEmpty(role) || !View.UserRolesList.Contains(role))
+        if (string.IsNullOrEmpty(role) || !RedactorView.UserRolesList.Contains(role))
         {
-            View.ShowError("Роль должна быть выбрана");
+            RedactorView.ShowError("Роль должна быть выбрана");
             return false;
         }
 
@@ -85,19 +85,19 @@ public class RegisterPresenter : BasePresenter<IRegisterView, List<string>>
 
         if (!register.IsSuccess)
         {
-            View.ShowError(register.Message!);
+            RedactorView.ShowError(register.Message!);
         }
         else
         {
-            View.ShowGoodInfo($"Регистрация пользователя '{email}' - выполнена успешно");
-            View.ModalResult = ModalResult.Yes;
-            View.Close();
+            RedactorView.ShowGoodInfo($"Регистрация пользователя '{email}' - выполнена успешно");
+            RedactorView.ModalResult = ModalResult.Yes;
+            RedactorView.Close();
         }
     }
 
     public override void Run(List<string> arg)
     {
-        View.UserRolesList = arg;
-        View.Show();
+        RedactorView.UserRolesList = arg;
+        RedactorView.Show();
     }
 }

@@ -27,6 +27,9 @@
       <Compile Update="Forms\TypeRedactorForm.cs">
         <SubType>Form</SubType>
       </Compile>
+      <Compile Update="Forms\CountryRedactorForm.cs">
+        <SubType>Form</SubType>
+      </Compile>
     </ItemGroup>
 
     <ItemGroup>
