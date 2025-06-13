@@ -27,6 +27,8 @@ public partial class MainForm : Form, IMainView
     public event Action? OpenTypesRedactorDialog;
     
     public event Action? OpenCountryRedactorDialog;
+    
+    public event Action? OpenBrandRedactorDialog;
 
     public User User { get; set; }
 
@@ -63,5 +65,10 @@ public partial class MainForm : Form, IMainView
     private void button5_Click(object sender, EventArgs e)
     {
         OpenCountryRedactorDialog?.Invoke();
+    }
+
+    private void button6_Click(object sender, EventArgs e)
+    {
+        OpenBrandRedactorDialog?.Invoke();
     }
 }

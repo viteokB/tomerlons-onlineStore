@@ -7,4 +7,7 @@ public class Brand
     public required Country Country { get; set; }
     
     public required string Name { get; set; }
+    
+    public override string ToString()
+        => Name;
 }

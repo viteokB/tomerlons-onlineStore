@@ -38,20 +38,20 @@ public class ProductService : IProductService
         return await _brandRepository.AddBrand(brand, CancellationToken.None);
     }
 
-    public async Task<OperationResult> UpdateBrand(Brand brand, User currentUser)
+    public async Task<OperationResult> UpdateBrand(int id, Brand brand, User currentUser)
     {
         if (!IsAdmin(currentUser))
             return OperationResult.Fail("Недостаточно прав для выполнения операции");
 
-        return await _brandRepository.UpdateBrand(brand, CancellationToken.None);
+        return await _brandRepository.UpdateBrand(id, brand, CancellationToken.None);
     }
 
-    public async Task<OperationResult> DeleteBrand(Brand brand, User currentUser)
+    public async Task<OperationResult> DeleteBrand(int id, User currentUser)
     {
         if (!IsAdmin(currentUser))
             return OperationResult.Fail("Недостаточно прав для выполнения операции");
 
-        return await _brandRepository.DeleteBrand(brand, CancellationToken.None);
+        return await _brandRepository.DeleteBrand(id, CancellationToken.None);
     }
 
     public async Task<OperationResult<List<Brand>>> GetBrands(User currentUser)

@@ -8,9 +8,9 @@ public interface IBrandRepository
 {
     public Task<OperationResult> AddBrand(Brand type, CancellationToken cancellationToken);
     
-    public Task<OperationResult> DeleteBrand(Brand type, CancellationToken cancellationToken);
+    public Task<OperationResult> DeleteBrand(int? id, CancellationToken cancellationToken);
     
-    public Task<OperationResult> UpdateBrand(Brand type, CancellationToken cancellationToken);
+    public Task<OperationResult> UpdateBrand(int id, Brand type, CancellationToken cancellationToken);
 
     public Task<OperationResult<List<Brand>>> GetBrands(CancellationToken cancellationToken);
     

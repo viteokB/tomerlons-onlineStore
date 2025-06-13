@@ -36,6 +36,7 @@ partial class MainForm
         button3 = new System.Windows.Forms.Button();
         button4 = new System.Windows.Forms.Button();
         button5 = new System.Windows.Forms.Button();
+        button6 = new System.Windows.Forms.Button();
         SuspendLayout();
         // 
         // button1
@@ -60,7 +61,7 @@ partial class MainForm
         // 
         // button3
         // 
-        button3.Location = new System.Drawing.Point(446, 142);
+        button3.Location = new System.Drawing.Point(25, 12);
         button3.Name = "button3";
         button3.Size = new System.Drawing.Size(75, 36);
         button3.TabIndex = 2;
@@ -88,11 +89,22 @@ partial class MainForm
         button5.UseVisualStyleBackColor = true;
         button5.Click += button5_Click;
         // 
+        // button6
+        // 
+        button6.Location = new System.Drawing.Point(576, 266);
+        button6.Name = "button6";
+        button6.Size = new System.Drawing.Size(115, 36);
+        button6.TabIndex = 5;
+        button6.Text = "brandDialog";
+        button6.UseVisualStyleBackColor = true;
+        button6.Click += button6_Click;
+        // 
         // MainForm
         // 
         AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
         AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
         ClientSize = new System.Drawing.Size(800, 450);
+        Controls.Add(button6);
         Controls.Add(button5);
         Controls.Add(button4);
         Controls.Add(button3);
@@ -101,6 +113,8 @@ partial class MainForm
         Text = "MainForm";
         ResumeLayout(false);
     }
+
+    private System.Windows.Forms.Button button6;
 
     private System.Windows.Forms.Button button5;
 

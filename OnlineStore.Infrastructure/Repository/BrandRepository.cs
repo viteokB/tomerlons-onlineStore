@@ -26,7 +26,17 @@ public class BrandRepository : IBrandRepository
         
         try
         {
-            await _databaseBrands.AddAsync(DatabaseBrand.Map(type), cancellationToken);
+            var exsist = await _databaseBrands
+                .FirstOrDefaultAsync(t => t.Name == type.Name);
+            if (exsist != null)
+            {
+                return OperationResult.Fail($"Бренд {type.Name} уже существует");
+            }
+            await _databaseBrands.AddAsync(new DatabaseBrand()
+            {
+                Name = type.Name,
+                CountryId = type.Country.Id
+            }, cancellationToken);
             await _dbContext.SaveChangesAsync(cancellationToken);
             return OperationResult.Success();
         }
@@ -36,14 +46,14 @@ public class BrandRepository : IBrandRepository
         }
     }
 
-    public async Task<OperationResult> DeleteBrand(Brand type, CancellationToken cancellationToken)
+    public async Task<OperationResult> DeleteBrand(int? id, CancellationToken cancellationToken)
     {
-        if (type == null!)
+        if (id == null!)
             return OperationResult.Fail("Brand cannot be null");
         
         try
         {
-            var entity = await _databaseBrands.FindAsync(type, cancellationToken);
+            var entity = await _databaseBrands.FirstOrDefaultAsync(t => t.Id == id, cancellationToken);
             _databaseBrands.Remove(entity!);
             await _dbContext.SaveChangesAsync(cancellationToken);
             return OperationResult.Success();
@@ -54,15 +64,22 @@ public class BrandRepository : IBrandRepository
         }
     }
 
-    public async Task<OperationResult> UpdateBrand(Brand type, CancellationToken cancellationToken)
+    public async Task<OperationResult> UpdateBrand(int id, Brand type, CancellationToken cancellationToken)
     {
         if (type == null!)
             return OperationResult.Fail("Brand cannot be null");
         
         try
         {
-            var entity = DatabaseBrand.Map(type);
-            _databaseBrands.Update(entity);
+            var toUpdate = await _databaseBrands
+                .FirstOrDefaultAsync(t => t.Id == id, cancellationToken);
+            if (toUpdate == null)
+            {
+                return OperationResult.Fail("Бренд для обновления не найден");
+            }
+            toUpdate.Name = type.Name;
+            toUpdate.CountryId = type.Country.Id;
+            _databaseBrands.Update(toUpdate);
             await _dbContext.SaveChangesAsync(cancellationToken);
             return OperationResult.Success();
         }
@@ -92,7 +109,9 @@ public class BrandRepository : IBrandRepository
     public async Task<OperationResult<PaginatedResult<Brand>>> SearchBrand(
         SearchRequest<string> request, CancellationToken cancellationToken)
     {
-        var query = _databaseBrands.AsQueryable();
+        var query = _databaseBrands
+            .Include(b => b.Country)
+            .AsQueryable();
 
         if (!string.IsNullOrEmpty(request.Query))
         {

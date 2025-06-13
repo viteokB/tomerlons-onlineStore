@@ -9,8 +9,8 @@ public interface IProductService
 {
     #region Brand Operations
     Task<OperationResult> AddBrand(Brand brand, User currentUser);
-    Task<OperationResult> UpdateBrand(Brand brand, User currentUser);
-    Task<OperationResult> DeleteBrand(Brand brand, User currentUser);
+    Task<OperationResult> UpdateBrand(int id, Brand brand, User currentUser);
+    Task<OperationResult> DeleteBrand(int id, User currentUser);
     Task<OperationResult<List<Brand>>> GetBrands(User currentUser);
     Task<OperationResult<PaginatedResult<Brand>>> SearchBrands(SearchRequest<string> request, User currentUser);
     #endregion
