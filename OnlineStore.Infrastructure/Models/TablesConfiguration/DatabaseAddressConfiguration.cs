@@ -39,9 +39,12 @@ public class DatabaseAddressConfiguration : IEntityTypeConfiguration<DatabaseAdd
             .HasColumnType("varchar(10)")
             .IsRequired(false);
         
-        builder.Property(x => x.Coordinate)
-            .HasColumnName("coordinate")
-            .HasSrid(4326)
+        builder.Property(x => x.Latitude)
+            .HasColumnName("latitude")
+            .IsRequired();
+
+        builder.Property(x => x.Longitude)
+            .HasColumnName("longitude")
             .IsRequired();
 
         builder.HasMany(x => x.Wharehouses)

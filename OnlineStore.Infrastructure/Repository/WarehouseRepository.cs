@@ -1,10 +1,12 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using NetTopologySuite.Geometries;
 using OnlineStore.Core.Common;
 using OnlineStore.Core.Common.Pagination;
 using OnlineStore.Core.Interfaces;
 using OnlineStore.Core.Models;
 using OnlineStore.Core.Models.WhareHouse;
 using OnlineStore.Repository.Models;
+using Exception = System.Exception;
 
 namespace OnlineStore.Repository.Repository;
 
@@ -14,42 +16,83 @@ public class WarehouseRepository : IWarehouseRepository
     private readonly DbSet<DatabaseWharehouse> _wharehouseDbSet;
     private readonly DbSet<DatabaseWharehouseProducts> _wharehouseProductsDbSet;
 
-    public WarehouseRepository(DbSet<DatabaseWharehouseProducts> wharehouseProductsDbSet,
-        DbSet<DatabaseWharehouse> wharehouseDbSet, OnlineStoreDbContext dbContext)
+    public WarehouseRepository(OnlineStoreDbContext dbContext)
     {
-        _wharehouseProductsDbSet = wharehouseProductsDbSet;
-        _wharehouseDbSet = wharehouseDbSet;
+        _wharehouseProductsDbSet = dbContext.WarehousesProducts;
+        _wharehouseDbSet = dbContext.Warehouses;
         _dbContext = dbContext;
     }
     
-    public async Task<OperationResult> AddWarehouse(Warehouse warehouse, CancellationToken cancellationToken)
+    public async Task<OperationResult<Warehouse>> AddWarehouse(Warehouse warehouse, CancellationToken cancellationToken)
     {
         if (warehouse == null!)
-            return OperationResult.Fail("Warehouse не может быть null");
+            return OperationResult<Warehouse>.Fail("Warehouse cannot be null")!;
+
         try
         {
-            var exsist = await _wharehouseDbSet
-                .FirstOrDefaultAsync(w => w.Id == warehouse.Id, cancellationToken);
+            // 1. Проверяем существование склада
+            var existingWarehouse = await _wharehouseDbSet
+                .FirstOrDefaultAsync(w => w.Name == warehouse.Name, cancellationToken);
+            
+            if (existingWarehouse != null)
+                return OperationResult<Warehouse>.Fail("Склад с таким названием уже существует")!;
 
-            if (exsist != null)
+            // 2. Обрабатываем адрес
+            if (warehouse.Address != null!)
             {
-                return OperationResult.Fail("Данный склад уже существует.");
+                // Проверяем существование адреса
+                var existingAddress = warehouse.Address.Id != 0 
+                    ? await _dbContext.Addresses.FindAsync(warehouse.Address.Id, cancellationToken)
+                    : null;
+
+                if (existingAddress != null)
+                {
+                    // Если адрес существует - проверяем изменения
+                    if (!AreAddressesEqual(existingAddress, warehouse.Address))
+                    {
+                        // Обновляем адрес
+                        existingAddress.Country = warehouse.Address.Country;
+                        existingAddress.City = warehouse.Address.City;
+                        existingAddress.Street = warehouse.Address.Street;
+                        existingAddress.HouseNumber = warehouse.Address.HouseNumber;
+                        existingAddress.ApartmentNumber = warehouse.Address.ApartmentNumber;
+                        existingAddress.Latitude = warehouse.Address.Coordinate.Latitude;
+                        existingAddress.Longitude = warehouse.Address.Coordinate.Longitude;
+
+                        _dbContext.Addresses.Update(existingAddress);
+                        warehouse.Address = DatabaseAddress.Map(existingAddress);
+                    }
+                }
+                else
+                {
+                    // Добавляем новый адрес
+                    var newAddress = DatabaseAddress.Map(warehouse.Address);
+                    
+                    await _dbContext.Addresses.AddAsync(newAddress, cancellationToken);
+                    await _dbContext.SaveChangesAsync(cancellationToken);
+                    warehouse.Address = DatabaseAddress.Map(newAddress);
+                }
             }
 
-            await _wharehouseDbSet.AddAsync(DatabaseWharehouse.Map(warehouse), cancellationToken);
+            // 3. Добавляем склад
+            var dbWarehouse = DatabaseWharehouse.Map(warehouse);
+            await _wharehouseDbSet.AddAsync(dbWarehouse, cancellationToken);
             await _dbContext.SaveChangesAsync(cancellationToken);
-            return OperationResult.Success();
+
+            // Обновляем ID в возвращаемом объекте
+            warehouse.Id = dbWarehouse.Id;
+            return OperationResult<Warehouse>.Success(warehouse);
         }
         catch (Exception ex)
         {
-            return OperationResult.Fail($"Ошибка при добавлении склада: {ex.Message}");
+            return OperationResult<Warehouse>.Fail($"Ошибка при добавлении склада: {ex.Message} \n Inner: '{ex.InnerException.Message}'")!;
         }
     }
 
-    public async Task<OperationResult> UpdateWarehouse(int updateWhId, Warehouse warehouse, CancellationToken cancellationToken)
+    public async Task<OperationResult<Warehouse>> UpdateWarehouse(int updateWhId, Warehouse warehouse, CancellationToken cancellationToken)
     {
         if (warehouse == null!)
-            return OperationResult.Fail("Склад не может быть null");
+            return OperationResult<Warehouse>.Fail("Склад не может быть null")!;
 
         try
         {
@@ -58,19 +101,20 @@ public class WarehouseRepository : IWarehouseRepository
 
             if (entity == null)
             {
-                return OperationResult.Fail("Склада для обновления не существует");
+                return OperationResult<Warehouse>.Fail("Склада для обновления не существует")!;
             }
-
-            entity.Address.Id = warehouse.Address.Id;
+            
             entity.Name = warehouse.Name;
+            entity.AddressId = warehouse.Address.Id;
             entity.IsActive = warehouse.IsActive;
             _wharehouseDbSet.Update(entity);
             await _dbContext.SaveChangesAsync(cancellationToken);
-            return OperationResult.Success();
+            
+            return OperationResult<Warehouse>.Success(DatabaseWharehouse.Map(entity));
         }
         catch (Exception ex)
         {
-            return OperationResult.Fail($"Ошибка при обновлении склада: {ex.Message}");
+            return OperationResult<Warehouse>.Fail($"Ошибка при обновлении склада: {ex.Message}")!;
         }
     }
 
@@ -99,6 +143,7 @@ public class WarehouseRepository : IWarehouseRepository
         try
         {
             var warehouses = await _wharehouseDbSet
+                .Include(w => w.Address)
                 .AsNoTracking()
                 .Select(w => DatabaseWharehouse.Map(w)) // W мужики, W
                 .ToListAsync(cancellationToken);
@@ -113,12 +158,14 @@ public class WarehouseRepository : IWarehouseRepository
 
     public async Task<OperationResult<PaginatedResult<Warehouse>>> SearchWarehouses(SearchRequest<string> searchRequest, CancellationToken cancellationToken)
     {
-        var query = _wharehouseDbSet.AsQueryable();
+        var query = _wharehouseDbSet
+            .AsQueryable();
 
         if (!string.IsNullOrEmpty(searchRequest.Query))
         {
             var searchTerm = $"searchRequest.Query.ToLower()%";
             query = query
+                .Include(w => w.Address)
                 .Where(c =>
                     EF.Functions.Like(c.Name, searchTerm));
         }
@@ -145,7 +192,36 @@ public class WarehouseRepository : IWarehouseRepository
                 HasMore: hasMore,
                 TotalCount: totalCount)));
     }
-    
+
+    public async Task<OperationResult<Warehouse>> GetWarehouse(int id)
+    {
+        var result = await _wharehouseDbSet
+            .FirstOrDefaultAsync(w => w.Id == id);
+
+        if (result == null)
+            return OperationResult<Warehouse>.Fail("Склад с таким id не найден")!;
+        
+        return OperationResult<Warehouse>.Success(DatabaseWharehouse.Map(result));
+    }
+
+    public async Task<OperationResult<int>> GetWarehouseProductsCount(int warehouseId, int productId, CancellationToken cancellationToken)
+    {
+        try
+        {
+            var result = await _wharehouseProductsDbSet
+                .FirstOrDefaultAsync(w => w.Id == warehouseId && w.ProductId == productId, cancellationToken);
+            if (result == null)
+                return OperationResult<int>.Success(0);
+
+            return OperationResult<int>.Success(result.Count);
+        }
+        catch (Exception ex)
+        {
+            return OperationResult<int>.Fail(
+                $"Ошибка получения количества продукта в складе: '{ex.Message}';\n{ex.InnerException?.Message}");
+        }
+    }
+
     public async Task<OperationResult> UpdateWarehouseProductCount(
         int warehouseId, int productId, int changedById, int count, CancellationToken cancellationToken)
     {
@@ -162,7 +238,7 @@ public class WarehouseRepository : IWarehouseRepository
                 return OperationResult.Fail("Такого склада не существует");
             }
 
-            var product = _dbContext.Products
+            var product = await _dbContext.Products
                 .FirstOrDefaultAsync(p => p.Id == productId, cancellationToken);
 
             var wharehouseProduct = await _wharehouseProductsDbSet
@@ -185,6 +261,7 @@ public class WarehouseRepository : IWarehouseRepository
                     Count = count,
                     ChangedAt = DateTime.Now
                 }, cancellationToken);
+                await _dbContext.SaveChangesAsync(cancellationToken);
             }
             
             return OperationResult.Success();
@@ -193,5 +270,16 @@ public class WarehouseRepository : IWarehouseRepository
         {
             return OperationResult.Fail($"Ошибка обновления количества продукта: {ex.Message}");
         }
+    }
+    
+    private bool AreAddressesEqual(DatabaseAddress dbAddress, Address domainAddress)
+    {
+        return dbAddress.Country == domainAddress.Country &&
+               dbAddress.City == domainAddress.City &&
+               dbAddress.Street == domainAddress.Street &&
+               dbAddress.HouseNumber == domainAddress.HouseNumber &&
+               dbAddress.ApartmentNumber == domainAddress.ApartmentNumber &&
+               Math.Abs(dbAddress.Longitude - domainAddress.Coordinate.Longitude) < 0.000001 &&
+               Math.Abs(dbAddress.Latitude - domainAddress.Coordinate.Latitude) < 0.000001;
     }
 }

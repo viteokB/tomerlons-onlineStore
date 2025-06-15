@@ -16,51 +16,62 @@ public class AddressRepository : IAddressRepository
     public AddressRepository(OnlineStoreDbContext dbContext)
     {
         _dbContext = dbContext;
-        _addresses = dbContext.Set<DatabaseAddress>();
+        _addresses = dbContext.Addresses;
     }
 
-    public async Task<OperationResult> AddAddress(Address address, CancellationToken cancellationToken)
+    public async Task<OperationResult<Address>> AddAddress(Address address, CancellationToken cancellationToken)
     {
-        if (address == null!)
-            return OperationResult.Fail("Address cannot be null");
+        if (address == null)
+            return OperationResult<Address>.Fail("Address cannot be null");
 
         try
         {
-            await _addresses.AddAsync(DatabaseAddress.Map(address), cancellationToken);
+            var dbAddress = DatabaseAddress.Map(address);
+            await _addresses.AddAsync(dbAddress, cancellationToken);
             await _dbContext.SaveChangesAsync(cancellationToken);
-            return OperationResult.Success();
+            
+            // Получаем обновленный адрес с ID
+            var createdAddress = DatabaseAddress.Map(dbAddress);
+            return OperationResult<Address>.Success(createdAddress);
         }
         catch (Exception ex)
         {
-            return OperationResult.Fail($"Failed to add address: {ex.Message}");
+            return OperationResult<Address>.Fail($"Failed to add address: {ex.Message}");
         }
     }
 
-    public async Task<OperationResult> UpdateAddress(int id, Address address, CancellationToken cancellationToken)
+    public async Task<OperationResult<Address>> UpdateAddress(int id, Address address, CancellationToken cancellationToken)
     {
-        if (address == null!)
-            return OperationResult.Fail("Address cannot be null");
+        if (address == null)
+            return OperationResult<Address>.Fail("Address cannot be null");
 
         try
         {
-            var existingAddress = await _addresses.FirstOrDefaultAsync(a => a.Id == id, cancellationToken);
+            var existingAddress = await _addresses
+                .FirstOrDefaultAsync(a => a.Id == id, cancellationToken);
+                
             if (existingAddress == null)
-                return OperationResult.Fail("Address not found");
+                return OperationResult<Address>.Fail("Address not found");
 
+            // Обновляем поля
             existingAddress.Country = address.Country;
             existingAddress.City = address.City;
             existingAddress.Street = address.Street;
             existingAddress.HouseNumber = address.HouseNumber;
             existingAddress.ApartmentNumber = address.ApartmentNumber;
-            existingAddress.Coordinate = new Point(address.Coordinate.Longitude, address.Coordinate.Latitude);
+            existingAddress.Latitude = address.Coordinate.Latitude;
+            existingAddress.Longitude = address.Coordinate.Longitude;
 
             _addresses.Update(existingAddress);
             await _dbContext.SaveChangesAsync(cancellationToken);
-            return OperationResult.Success();
+            
+            // Возвращаем обновленный адрес
+            var updatedAddress = DatabaseAddress.Map(existingAddress);
+            return OperationResult<Address>.Success(updatedAddress);
         }
         catch (Exception ex)
         {
-            return OperationResult.Fail($"Failed to update address: {ex.Message}");
+            return OperationResult<Address>.Fail($"Failed to update address: {ex.Message}");
         }
     }
 
@@ -97,6 +108,18 @@ public class AddressRepository : IAddressRepository
         {
             return OperationResult<List<Address>>.Fail($"Failed to get addresses: {ex.Message}")!;
         }
+    }
+
+    public async Task<OperationResult<Address>> GetAddress(int id, CancellationToken cancellationToken)
+    {
+        var result = await _addresses
+            .FirstOrDefaultAsync(a => a.Id == id, cancellationToken);
+        
+        var opResult = result == null ?
+            OperationResult<Address>.Fail("Address not found")! : 
+            OperationResult<Address>.Success(DatabaseAddress.Map(result));
+        
+        return opResult;
     }
 
     public async Task<OperationResult<PaginatedResult<Address>>> SearchAddresses(

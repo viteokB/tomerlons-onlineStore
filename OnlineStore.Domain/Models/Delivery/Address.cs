@@ -6,13 +6,13 @@ public class Address
     
     public string? Country { get; set; }
     
-    public required string City { get; set; }
+    public string City { get; set; }
     
-    public required string Street { get; set; }
+    public string Street { get; set; }
     
-    public required string HouseNumber { get; set; }
+    public string HouseNumber { get; set; }
     
     public string? ApartmentNumber { get; set; }
     
-    public required Coordinate Coordinate { get; set; }
+    public Coordinate Coordinate { get; set; }
 }

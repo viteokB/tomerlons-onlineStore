@@ -3,7 +3,6 @@ using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using OnlineStore.Core.Interfaces;
-using OnlineStore.Repository.Migrations;
 using OnlineStore.Repository.Repository;
 
 namespace OnlineStore.Repository;
@@ -17,8 +16,7 @@ public static class DependencyInjection
 
         services.AddDbContext<OnlineStoreDbContext>(options =>
         {
-            options.UseSqlite(dbConnectionString, o => 
-                o.UseNetTopologySuite());
+            options.UseSqlite(dbConnectionString);
         });
         
         // repositories registration
@@ -28,7 +26,8 @@ public static class DependencyInjection
         services.AddScoped<IProductsRepository, ProductsRepository>();
         services.AddScoped<ITypeRepository, TypeRepository>();
         services.AddScoped<IUserRepository, UserRepository>();
-        
+        services.AddScoped<IWarehouseRepository, WarehouseRepository>();
+        services.AddScoped<IAddressRepository, AddressRepository>();
 
         return services;
     }

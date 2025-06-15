@@ -38,6 +38,7 @@ partial class MainForm
         button5 = new System.Windows.Forms.Button();
         button6 = new System.Windows.Forms.Button();
         button7 = new System.Windows.Forms.Button();
+        warehouseDialog = new System.Windows.Forms.Button();
         SuspendLayout();
         // 
         // button1
@@ -110,11 +111,22 @@ partial class MainForm
         button7.UseVisualStyleBackColor = true;
         button7.Click += button7_Click;
         // 
+        // warehouseDialog
+        // 
+        warehouseDialog.Location = new System.Drawing.Point(576, 329);
+        warehouseDialog.Name = "warehouseDialog";
+        warehouseDialog.Size = new System.Drawing.Size(115, 36);
+        warehouseDialog.TabIndex = 7;
+        warehouseDialog.Text = "warehouseDialog";
+        warehouseDialog.UseVisualStyleBackColor = true;
+        warehouseDialog.Click += warehouseDialog_Click;
+        // 
         // MainForm
         // 
         AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
         AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
         ClientSize = new System.Drawing.Size(800, 450);
+        Controls.Add(warehouseDialog);
         Controls.Add(button7);
         Controls.Add(button6);
         Controls.Add(button5);
@@ -125,6 +137,8 @@ partial class MainForm
         Text = "MainForm";
         ResumeLayout(false);
     }
+
+    private System.Windows.Forms.Button warehouseDialog;
 
     private System.Windows.Forms.Button button7;
 

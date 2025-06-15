@@ -5,11 +5,35 @@
 namespace OnlineStore.Repository.Migrations
 {
     /// <inheritdoc />
-    public partial class AddBrandsTypesCountries : Migration
+    public partial class AddUsers : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.InsertData(
+                table: "roles",
+                columns: new[] { "name" },
+                values: new object[,]
+                {
+                    {
+                        "админ"
+                    },
+                    {
+                        "клиент"
+                    }
+                });
+            
+            migrationBuilder.InsertData(
+                table: "users",
+                columns: new[] { "role_id", "email", "hashed_password", "CreatedDate" },
+                values: new object[] 
+                {
+                    1, // ID роли админа
+                    "admin@root.com", 
+                    "imaroot", // Замените на реальный хеш пароля
+                    DateTime.UtcNow
+                });
+            
             // Вставка типов
             migrationBuilder.InsertData(
                 table: "types",
@@ -77,9 +101,12 @@ namespace OnlineStore.Repository.Migrations
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            // Удаляем добавленные данные в обратном порядке
+            // Удаляем добавленного пользователя
+            migrationBuilder.DeleteData(
+                table: "users",
+                keyColumn: "email",
+                keyValue: "admin@example.com");
             
-            // Бренды
             migrationBuilder.DeleteData(
                 table: "brands",
                 keyColumn: "Id",

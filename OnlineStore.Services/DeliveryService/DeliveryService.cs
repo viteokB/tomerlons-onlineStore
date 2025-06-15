@@ -5,12 +5,12 @@ using OnlineStore.Core.Models;
 
 namespace OnlineStore.Services.DeliveryService;
 
-public class AddressService : IDeliveryService
+public class DeliveryService : IDeliveryService
 {
     private readonly IAddressRepository _addressRepository;
     private readonly IUserRepository _userRepository;
 
-    public AddressService(
+    public DeliveryService(
         IAddressRepository addressRepository,
         IUserRepository userRepository)
     {

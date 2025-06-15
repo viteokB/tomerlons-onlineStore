@@ -21,7 +21,9 @@ public class DatabaseAddress :
     
     public string? ApartmentNumber { get; set; }
     
-    public required Point Coordinate { get; set; }
+    public required double Latitude { get; set; }
+    
+    public required double Longitude { get; set; }
     
     public ICollection<DatabaseOrderHistory> Orders { get; set; } = new List<DatabaseOrderHistory>();
     
@@ -37,7 +39,7 @@ public class DatabaseAddress :
             Street = from.Street,
             HouseNumber = from.HouseNumber,
             ApartmentNumber = from.ApartmentNumber,
-            Coordinate = new Coordinate(from.Coordinate.Y, from.Coordinate.X),
+            Coordinate = new Coordinate(from.Latitude, from.Longitude),
         };
     }
 
@@ -45,13 +47,13 @@ public class DatabaseAddress :
     {
         return new DatabaseAddress
         {
-            Id = from.Id,
             Country = from.Country,
             City = from.City,
             Street = from.Street,
             HouseNumber = from.HouseNumber,
             ApartmentNumber = from.ApartmentNumber,
-            Coordinate = new Point(from.Coordinate.Longitude, from.Coordinate.Latitude)
+            Latitude = from.Coordinate.Latitude,
+            Longitude = from.Coordinate.Longitude 
         };
     }
 }

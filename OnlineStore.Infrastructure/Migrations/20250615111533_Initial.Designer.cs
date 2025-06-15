@@ -4,7 +4,6 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using NetTopologySuite.Geometries;
 using OnlineStore.Repository;
 
 #nullable disable
@@ -12,8 +11,8 @@ using OnlineStore.Repository;
 namespace OnlineStore.Repository.Migrations
 {
     [DbContext(typeof(OnlineStoreDbContext))]
-    [Migration("20250613103537_AddBrandsTypesCountries")]
-    partial class AddBrandsTypesCountries
+    [Migration("20250615111533_Initial")]
+    partial class Initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -37,12 +36,6 @@ namespace OnlineStore.Repository.Migrations
                         .HasColumnType("varchar(100)")
                         .HasColumnName("city");
 
-                    b.Property<Point>("Coordinate")
-                        .IsRequired()
-                        .HasColumnType("POINT")
-                        .HasColumnName("coordinate")
-                        .HasAnnotation("Sqlite:Srid", 4326);
-
                     b.Property<string>("Country")
                         .IsRequired()
                         .HasColumnType("varchar(100)")
@@ -52,6 +45,14 @@ namespace OnlineStore.Repository.Migrations
                         .IsRequired()
                         .HasColumnType("varchar(10)")
                         .HasColumnName("house_number");
+
+                    b.Property<double>("Latitude")
+                        .HasColumnType("REAL")
+                        .HasColumnName("latitude");
+
+                    b.Property<double>("Longitude")
+                        .HasColumnType("REAL")
+                        .HasColumnName("longitude");
 
                     b.Property<string>("Street")
                         .IsRequired()
@@ -563,6 +564,10 @@ namespace OnlineStore.Repository.Migrations
                         .HasColumnType("INTEGER")
                         .HasColumnName("address_id");
 
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("INTEGER")
+                        .HasColumnName("is_acitve");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("varchar(100)")
@@ -612,7 +617,7 @@ namespace OnlineStore.Repository.Migrations
 
                     b.HasIndex("WharehouseProductsId");
 
-                    b.ToTable("WharehouseProductsHistory");
+                    b.ToTable("WarehousesProductsHistory");
                 });
 
             modelBuilder.Entity("OnlineStore.Repository.Models.DatabaseWharehouseProducts", b =>

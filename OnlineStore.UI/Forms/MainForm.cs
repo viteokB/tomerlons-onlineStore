@@ -31,17 +31,19 @@ public partial class MainForm : Form, IMainView
     public event Action? OpenBrandRedactorDialog;
     
     public event Action? OpenProductRedactorDialog;
+    
+    public event Action? OpenWarehouseRedactorDialog;
 
     public User User { get; set; }
 
     public void ShowError(string message)
     {
-        MessageBox.Show(this, message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+        MessageBox.Show(this, message, @"Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
     }
 
     public void ShowMessage(string message)
     {
-        MessageBox.Show(this, message, "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
+        MessageBox.Show(this, message, @"Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
     }
 
     private void button1_Click(object sender, EventArgs e)
@@ -77,5 +79,10 @@ public partial class MainForm : Form, IMainView
     private void button7_Click(object sender, EventArgs e)
     {
         OpenProductRedactorDialog?.Invoke();
+    }
+
+    private void warehouseDialog_Click(object sender, EventArgs e)
+    {
+        OpenWarehouseRedactorDialog?.Invoke();
     }
 }

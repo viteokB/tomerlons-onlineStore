@@ -1,20 +1,16 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore.Migrations;
-using NetTopologySuite.Geometries;
 
 #nullable disable
 
 namespace OnlineStore.Repository.Migrations
 {
     /// <inheritdoc />
-    public partial class AllTables : Migration
+    public partial class Initial : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.AlterDatabase()
-                .Annotation("Sqlite:InitSpatialMetaData", true);
-
             migrationBuilder.CreateTable(
                 name: "address",
                 columns: table => new
@@ -26,8 +22,8 @@ namespace OnlineStore.Repository.Migrations
                     street = table.Column<string>(type: "varchar(100)", nullable: false),
                     house_number = table.Column<string>(type: "varchar(10)", nullable: false),
                     apartment_number = table.Column<string>(type: "varchar(10)", nullable: true),
-                    coordinate = table.Column<Point>(type: "POINT", nullable: false)
-                        .Annotation("Sqlite:Srid", 4326)
+                    latitude = table.Column<double>(type: "REAL", nullable: false),
+                    longitude = table.Column<double>(type: "REAL", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -62,6 +58,19 @@ namespace OnlineStore.Repository.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "roles",
+                columns: table => new
+                {
+                    id = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    name = table.Column<string>(type: "varchar(50)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_roles", x => x.id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "types",
                 columns: table => new
                 {
@@ -82,7 +91,8 @@ namespace OnlineStore.Repository.Migrations
                     id = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
                     address_id = table.Column<int>(type: "INTEGER", nullable: false),
-                    name = table.Column<string>(type: "varchar(100)", nullable: false)
+                    name = table.Column<string>(type: "varchar(100)", nullable: false),
+                    is_acitve = table.Column<bool>(type: "INTEGER", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -113,6 +123,28 @@ namespace OnlineStore.Repository.Migrations
                         principalTable: "country",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "users",
+                columns: table => new
+                {
+                    id = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    role_id = table.Column<int>(type: "INTEGER", nullable: false),
+                    email = table.Column<string>(type: "varchar(50)", nullable: false),
+                    hashed_password = table.Column<string>(type: "varchar(64)", nullable: false),
+                    CreatedDate = table.Column<DateTime>(type: "TEXT", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_users", x => x.id);
+                    table.ForeignKey(
+                        name: "FK_users_roles_role_id",
+                        column: x => x.role_id,
+                        principalTable: "roles",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -183,6 +215,37 @@ namespace OnlineStore.Repository.Migrations
                         principalTable: "users",
                         principalColumn: "id",
                         onDelete: ReferentialAction.SetNull);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "DeliveryZonesHistory",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    DeliveryZoneId = table.Column<int>(type: "INTEGER", nullable: false),
+                    WharehouseId = table.Column<int>(type: "INTEGER", nullable: false),
+                    Name = table.Column<string>(type: "TEXT", nullable: false),
+                    MinDistance = table.Column<string>(type: "TEXT", nullable: false),
+                    MaxDistance = table.Column<string>(type: "TEXT", nullable: false),
+                    DeliveryPrice = table.Column<float>(type: "REAL", nullable: false),
+                    DeliveryDays = table.Column<int>(type: "INTEGER", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_DeliveryZonesHistory", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_DeliveryZonesHistory_delivery_zones_DeliveryZoneId",
+                        column: x => x.DeliveryZoneId,
+                        principalTable: "delivery_zones",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_DeliveryZonesHistory_wharehouse_WharehouseId",
+                        column: x => x.WharehouseId,
+                        principalTable: "wharehouse",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -323,6 +386,59 @@ namespace OnlineStore.Repository.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "ProductsHistory",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    TypeId = table.Column<int>(type: "INTEGER", nullable: false),
+                    ProductId = table.Column<int>(type: "INTEGER", nullable: false),
+                    CountryId = table.Column<int>(type: "INTEGER", nullable: false),
+                    ChangedById = table.Column<int>(type: "INTEGER", nullable: false),
+                    BrandId = table.Column<int>(type: "INTEGER", nullable: false),
+                    Name = table.Column<string>(type: "TEXT", nullable: false),
+                    PhotoPath = table.Column<string>(type: "TEXT", nullable: false),
+                    CatalogNumber = table.Column<string>(type: "TEXT", nullable: false),
+                    BasePrice = table.Column<float>(type: "REAL", nullable: false),
+                    IsActive = table.Column<bool>(type: "INTEGER", nullable: false),
+                    ChangedAt = table.Column<DateTime>(type: "TEXT", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ProductsHistory", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_ProductsHistory_brands_BrandId",
+                        column: x => x.BrandId,
+                        principalTable: "brands",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_ProductsHistory_country_CountryId",
+                        column: x => x.CountryId,
+                        principalTable: "country",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_ProductsHistory_products_ProductId",
+                        column: x => x.ProductId,
+                        principalTable: "products",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_ProductsHistory_types_TypeId",
+                        column: x => x.TypeId,
+                        principalTable: "types",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_ProductsHistory_users_ChangedById",
+                        column: x => x.ChangedById,
+                        principalTable: "users",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "warehouse_products",
                 columns: table => new
                 {
@@ -354,6 +470,49 @@ namespace OnlineStore.Repository.Migrations
                         column: x => x.WharehouseId,
                         principalTable: "wharehouse",
                         principalColumn: "id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "WarehousesProductsHistory",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    WarehouseProdId = table.Column<int>(type: "INTEGER", nullable: false),
+                    WharehouseProductsId = table.Column<int>(type: "INTEGER", nullable: false),
+                    ProductId = table.Column<int>(type: "INTEGER", nullable: false),
+                    WharehouseId = table.Column<int>(type: "INTEGER", nullable: false),
+                    ChangedById = table.Column<int>(type: "INTEGER", nullable: false),
+                    Count = table.Column<int>(type: "INTEGER", nullable: false),
+                    ChangedAt = table.Column<DateTime>(type: "TEXT", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_WarehousesProductsHistory", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_WarehousesProductsHistory_products_ProductId",
+                        column: x => x.ProductId,
+                        principalTable: "products",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_WarehousesProductsHistory_users_ChangedById",
+                        column: x => x.ChangedById,
+                        principalTable: "users",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_WarehousesProductsHistory_warehouse_products_WharehouseId",
+                        column: x => x.WharehouseId,
+                        principalTable: "warehouse_products",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_WarehousesProductsHistory_warehouse_products_WharehouseProductsId",
+                        column: x => x.WharehouseProductsId,
+                        principalTable: "warehouse_products",
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -418,6 +577,16 @@ namespace OnlineStore.Repository.Migrations
                 column: "wharehouse_id");
 
             migrationBuilder.CreateIndex(
+                name: "IX_DeliveryZonesHistory_DeliveryZoneId",
+                table: "DeliveryZonesHistory",
+                column: "DeliveryZoneId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_DeliveryZonesHistory_WharehouseId",
+                table: "DeliveryZonesHistory",
+                column: "WharehouseId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_order_changed_by",
                 table: "order",
                 column: "changed_by");
@@ -468,6 +637,52 @@ namespace OnlineStore.Repository.Migrations
                 column: "TypeId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_ProductsHistory_BrandId",
+                table: "ProductsHistory",
+                column: "BrandId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ProductsHistory_ChangedById",
+                table: "ProductsHistory",
+                column: "ChangedById");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ProductsHistory_CountryId",
+                table: "ProductsHistory",
+                column: "CountryId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ProductsHistory_ProductId",
+                table: "ProductsHistory",
+                column: "ProductId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ProductsHistory_TypeId",
+                table: "ProductsHistory",
+                column: "TypeId");
+
+            migrationBuilder.CreateIndex(
+                name: "ix_role_name",
+                table: "roles",
+                column: "name");
+
+            migrationBuilder.CreateIndex(
+                name: "ix_hashed_password",
+                table: "users",
+                column: "hashed_password");
+
+            migrationBuilder.CreateIndex(
+                name: "ix_user_email",
+                table: "users",
+                column: "email",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_users_role_id",
+                table: "users",
+                column: "role_id");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_warehouse_products_changed_by",
                 table: "warehouse_products",
                 column: "changed_by");
@@ -483,6 +698,26 @@ namespace OnlineStore.Repository.Migrations
                 column: "WharehouseId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_WarehousesProductsHistory_ChangedById",
+                table: "WarehousesProductsHistory",
+                column: "ChangedById");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_WarehousesProductsHistory_ProductId",
+                table: "WarehousesProductsHistory",
+                column: "ProductId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_WarehousesProductsHistory_WharehouseId",
+                table: "WarehousesProductsHistory",
+                column: "WharehouseId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_WarehousesProductsHistory_WharehouseProductsId",
+                table: "WarehousesProductsHistory",
+                column: "WharehouseProductsId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_wharehouse_address_id",
                 table: "wharehouse",
                 column: "address_id");
@@ -495,16 +730,25 @@ namespace OnlineStore.Repository.Migrations
                 name: "DatabaseOrderHistory");
 
             migrationBuilder.DropTable(
-                name: "delivery_zones");
+                name: "DeliveryZonesHistory");
 
             migrationBuilder.DropTable(
                 name: "order");
 
             migrationBuilder.DropTable(
-                name: "warehouse_products");
+                name: "ProductsHistory");
+
+            migrationBuilder.DropTable(
+                name: "WarehousesProductsHistory");
+
+            migrationBuilder.DropTable(
+                name: "delivery_zones");
 
             migrationBuilder.DropTable(
                 name: "delivery_status");
+
+            migrationBuilder.DropTable(
+                name: "warehouse_products");
 
             migrationBuilder.DropTable(
                 name: "products");
@@ -519,13 +763,16 @@ namespace OnlineStore.Repository.Migrations
                 name: "types");
 
             migrationBuilder.DropTable(
+                name: "users");
+
+            migrationBuilder.DropTable(
                 name: "address");
 
             migrationBuilder.DropTable(
                 name: "country");
 
-            migrationBuilder.AlterDatabase()
-                .OldAnnotation("Sqlite:InitSpatialMetaData", true);
+            migrationBuilder.DropTable(
+                name: "roles");
         }
     }
 }
