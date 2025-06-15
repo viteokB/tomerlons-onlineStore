@@ -1,8 +1,8 @@
 ﻿namespace OnlineStore.Core.Models;
 
-public class Coordinate
+public class Coordinate(double latitude, double longitude)
 {
-    public float Latitude { get; set; }
-    
-    public float Longitude { get; set; }
+    public double Latitude { get; set; } = latitude;
+
+    public double Longitude { get; set; } = longitude;
 }

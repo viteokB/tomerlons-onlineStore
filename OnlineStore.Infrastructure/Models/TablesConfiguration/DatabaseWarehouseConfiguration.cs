@@ -27,5 +27,9 @@ public class DatabaseWarehouseConfiguration : IEntityTypeConfiguration<DatabaseW
             .HasColumnName("name")
             .HasColumnType("varchar(100)")
             .IsRequired();
+        
+        builder.Property(x => x.IsActive)
+            .HasColumnName("is_acitve")
+            .IsRequired();
     }
 }

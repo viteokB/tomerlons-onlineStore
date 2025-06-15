@@ -13,9 +13,9 @@ public sealed class OnlineStoreDbContext : DbContext
     public DbSet<DatabaseCountry> Countries { get; set; }
     public DbSet<DatabaseProduct> Products { get; set; }
     public DbSet<DatabaseProductHistory> ProductsHistory { get; set; }
-    public DbSet<DatabaseWharehouse> Wharehouse { get; set; }
-    public DbSet<DatabaseWharehouseProducts> WharehouseProducts { get; set; }
-    public DbSet<DatabaseWharehouseProdHistory> WharehouseProductsHistory { get; set; }
+    public DbSet<DatabaseWharehouse> Warehouses { get; set; }
+    public DbSet<DatabaseWharehouseProducts> WarehousesProducts { get; set; }
+    public DbSet<DatabaseWharehouseProdHistory> WarehousesProductsHistory { get; set; }
     public DbSet<DatabaseAddress> Addresses { get; set; }
     public DbSet<DatabaseDeliveryZones> DeliveryZones { get; set; }
     public DbSet<DatabaseDeliveryZonesHistory> DeliveryZonesHistory { get; set; }

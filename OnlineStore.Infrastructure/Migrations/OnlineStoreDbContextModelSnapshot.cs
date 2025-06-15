@@ -560,6 +560,10 @@ namespace OnlineStore.Repository.Migrations
                         .HasColumnType("INTEGER")
                         .HasColumnName("address_id");
 
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("INTEGER")
+                        .HasColumnName("is_acitve");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("varchar(100)")

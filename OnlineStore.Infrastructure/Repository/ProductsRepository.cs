@@ -33,38 +33,6 @@ public class ProductsRepository : IProductsRepository
             {
                 return OperationResult.Fail("С таким артикулом товар уже есть");
             }
-            // DatabaseBrand? dbBrand = null;
-            // if (product.Brand != null)
-            // {
-            //     dbBrand = await _dbContext.Brands
-            //         .FirstOrDefaultAsync(b => b.Id == product.Brand.Id, cancellationToken);
-            // }
-            // DatabaseType? dbType = null;
-            // if (product.Type != null)
-            // {
-            //     dbType = await _dbContext.Types
-            //         .FirstOrDefaultAsync(t => t.Id == product.Type.Id, cancellationToken);
-            // }
-            // DatabaseCountry? dbCountry = null;
-            // if (product.Country != null)
-            // {
-            //     dbCountry = await _dbContext.Countries
-            //         .FirstOrDefaultAsync(t => t.Id == product.Country.Id, cancellationToken);
-            // }
-            //
-            // var newProduct = new DatabaseProduct
-            // {
-            //     Type = dbType,
-            //     Country = dbCountry,
-            //     ChangedBy = DatabaseUser.Map(product.ChangedBy!),
-            //     Brand = dbBrand,
-            //     Name = product.Name,
-            //     PhotoPath = product.PhotoPath,
-            //     CatalogNumber = product.CatalogNumber,
-            //     BasePrice = product.BasePrice,
-            //     IsActive = product.IsActive,
-            //     ChangedAt = product.ChangedAt
-            // };
             
             var newProduct = new DatabaseProduct
             {
