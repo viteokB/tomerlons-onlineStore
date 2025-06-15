@@ -39,6 +39,12 @@
       <Compile Update="Forms\WarehouseEditorForm.cs">
         <SubType>Form</SubType>
       </Compile>
+      <Compile Update="Forms\UserCartForm.cs">
+        <SubType>Form</SubType>
+      </Compile>
+      <Compile Update="Forms\AdminOrdersForm.cs">
+        <SubType>Form</SubType>
+      </Compile>
     </ItemGroup>
 
     <ItemGroup>

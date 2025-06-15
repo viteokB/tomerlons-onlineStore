@@ -32,6 +32,35 @@ public class MainPresenter : BasePresenter<IMainView>
         View.OpenBrandRedactorDialog += OnOpenBrandRedactorDialog;
         View.OpenProductRedactorDialog += OnOpenProductRedactorDialog;
         View.OpenWarehouseRedactorDialog += OnOpenWarehouseRedactorDialog;
+
+        View.OpenUserCartDialog += OnOpenUserCartDialog;
+        View.OpenAdminOrdersDialog += OnOpenAdminDialog;
+    }
+
+    private void OnOpenAdminDialog()
+    {
+        if (View.User != null)
+        {
+            var result = _navigationService.NavigateToAdminOrders(View.User);
+            View.ShowMessage(result.ToString());
+        }
+        else
+        {
+            View.ShowMessage("Невозможно открыть редактор, вы не вошли");
+        }
+    }
+
+    private void OnOpenUserCartDialog()
+    {
+        if (View.User != null)
+        {
+            var result = _navigationService.NavigateToUserCart(View.User);
+            View.ShowMessage(result.ToString());
+        }
+        else
+        {
+            View.ShowMessage("Невозможно открыть редактор, вы не вошли");
+        }
     }
 
     private void OnOpenWarehouseRedactorDialog()

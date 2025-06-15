@@ -3,6 +3,7 @@ using Microsoft.Extensions.DependencyInjection;
 using OnlineStore.Repository;
 using OnlineStore.Services.DeliveryService;
 using OnlineStore.Services.Login;
+using OnlineStore.Services.Orders;
 using OnlineStore.Services.Products;
 using OnlineStore.Services.WarehouseService;
 using OnlineStore.UI.Forms;
@@ -46,6 +47,7 @@ public static class ServiceProviderFactory
         services.AddScoped<IProductService, ProductService>();
         services.AddScoped<IWarehouseService, WarehouseService>();
         services.AddScoped<IDeliveryService, DeliveryService>();
+        services.AddScoped<IOrderService, OrderService>();
     }
     
     private static void RegisterPresentation(
@@ -64,6 +66,8 @@ public static class ServiceProviderFactory
         services.AddTransient<IBrandRedactorView, BrandRedactorForm>();
         services.AddTransient<IAddProductView, ProductRedactorForm>();
         services.AddTransient<IWarehouseEditorView, WarehouseEditorForm>();
+        services.AddTransient<IUserCartView, UserCartForm>();
+        services.AddTransient<IAdminOrdersView, AdminOrdersForm>();
         
         // Регистрация Presenters
         services.AddTransient<LoginPresenter>();
@@ -75,6 +79,8 @@ public static class ServiceProviderFactory
         services.AddTransient<BrandCrudPresenter>();
         services.AddTransient<AddProductPresenter>();
         services.AddTransient<WarehouseEditorPresenter>();
+        services.AddTransient<UserCartPresenter>();
+        services.AddTransient<AdminOrdersPresenter>();
         
         // Регистрация фабрик презентеров
         services.AddTransient<Func<LoginPresenter>>(provider => 
@@ -103,5 +109,11 @@ public static class ServiceProviderFactory
         
         services.AddTransient<Func<WarehouseEditorPresenter>>(provider =>
             provider.GetRequiredService<WarehouseEditorPresenter>);
+        
+        services.AddTransient<Func<UserCartPresenter>>(provider =>
+            provider.GetRequiredService<UserCartPresenter>);
+        
+        services.AddTransient<Func<AdminOrdersPresenter>>(provider =>
+            provider.GetRequiredService<AdminOrdersPresenter>);
     }
 }

@@ -15,6 +15,8 @@ public class NavigationService : INavigationService
     private readonly Func<BrandCrudPresenter> _brandCrudPresenterFactory;
     private readonly Func<AddProductPresenter> _addProductPresenterFactory;
     private readonly Func<WarehouseEditorPresenter> _warehouseEditorPresenterFactory;
+    private readonly Func<UserCartPresenter> _userCartPresenterFactory;
+    private readonly Func<AdminOrdersPresenter> _adminOrdersPresenterFactory;
 
     public NavigationService(
         Func<LoginPresenter> loginPresenterFactory,
@@ -25,7 +27,9 @@ public class NavigationService : INavigationService
         Func<CountryCrudPresenter> countryCrudPresenterFactory,
         Func<BrandCrudPresenter> brandCrudPresenterFactory,
         Func<AddProductPresenter> addProductPresenterFactory,
-        Func<WarehouseEditorPresenter> warehouseEditorPresenterFactory)
+        Func<WarehouseEditorPresenter> warehouseEditorPresenterFactory,
+        Func<UserCartPresenter> userCartPresenterFactory,
+        Func<AdminOrdersPresenter> adminOrdersPresenterFactory)
     {
         _loginPresenterFactory = loginPresenterFactory;
         _registerPresenterFactory = registerPresenterFactory;
@@ -36,6 +40,8 @@ public class NavigationService : INavigationService
         _brandCrudPresenterFactory = brandCrudPresenterFactory;
         _addProductPresenterFactory = addProductPresenterFactory;
         _warehouseEditorPresenterFactory = warehouseEditorPresenterFactory;
+        _userCartPresenterFactory = userCartPresenterFactory;
+        _adminOrdersPresenterFactory = adminOrdersPresenterFactory;
     }
 
     public ComplexModalResult<User> NavigateToLogin()
@@ -94,6 +100,20 @@ public class NavigationService : INavigationService
     public ModalResult NavigateToWarehouseRedactor(User user)
     {
         var presenter = _warehouseEditorPresenterFactory();
+        presenter.Run(user);
+        return presenter.View.ModalResult;
+    }
+
+    public ModalResult NavigateToUserCart(User user)
+    {
+        var presenter = _userCartPresenterFactory();
+        presenter.Run(user);
+        return presenter.View.ModalResult;
+    }
+
+    public ModalResult NavigateToAdminOrders(User user)
+    {
+        var presenter = _adminOrdersPresenterFactory();
         presenter.Run(user);
         return presenter.View.ModalResult;
     }

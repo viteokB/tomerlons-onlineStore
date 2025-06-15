@@ -33,6 +33,10 @@ public partial class MainForm : Form, IMainView
     public event Action? OpenProductRedactorDialog;
     
     public event Action? OpenWarehouseRedactorDialog;
+    
+    public event Action? OpenUserCartDialog;
+    
+    public event Action? OpenAdminOrdersDialog;
 
     public User User { get; set; }
 
@@ -84,5 +88,15 @@ public partial class MainForm : Form, IMainView
     private void warehouseDialog_Click(object sender, EventArgs e)
     {
         OpenWarehouseRedactorDialog?.Invoke();
+    }
+
+    private void btnUserCart_Click(object sender, EventArgs e)
+    {
+        OpenUserCartDialog?.Invoke();
+    }
+
+    private void btnAdminOrders_Click(object sender, EventArgs e)
+    {
+        OpenAdminOrdersDialog?.Invoke();
     }
 }

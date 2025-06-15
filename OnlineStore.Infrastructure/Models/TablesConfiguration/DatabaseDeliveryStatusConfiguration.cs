@@ -18,5 +18,13 @@ public class DatabaseDeliveryStatusConfiguration : IEntityTypeConfiguration<Data
             .HasColumnName("name")
             .HasColumnType("varchar(20)")
             .IsRequired();
+        
+        builder.Property(x => x.Description)
+            .HasColumnName("description")
+            .HasColumnType("varchar(100)")
+            .IsRequired();
+        
+        builder.Property(x => x.IsActive)
+            .IsRequired();
     }
 }

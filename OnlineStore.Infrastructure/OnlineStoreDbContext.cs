@@ -18,6 +18,7 @@ public sealed class OnlineStoreDbContext : DbContext
     public DbSet<DatabaseWharehouseProdHistory> WarehousesProductsHistory { get; set; }
     public DbSet<DatabaseAddress> Addresses { get; set; }
     public DbSet<DatabaseDeliveryZones> DeliveryZones { get; set; }
+    public DbSet<DatabaseDeliveryStatus> DeliveryStatuses { get; set; }
     public DbSet<DatabaseDeliveryZonesHistory> DeliveryZonesHistory { get; set; }
     public DbSet<DatabaseOrder> DatabaseOrders { get; set; }
     public DbSet<DatabaseOrderHistory> DatabaseOrderHistory { get; set; }

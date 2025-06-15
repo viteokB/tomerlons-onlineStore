@@ -8,9 +8,11 @@ public class Order
     
     public User User { get; set; } = null!;
     
-    public required Address DeliveryAddress { get; set; }
+    public Address DeliveryAddress { get; set; } = null!;
+
+    public DeliveryStatus DeliveryStatus { get; set; } = null!;
     
-    public required Product Product { get; set; }
+    public Product Product { get; set; } = null!;
 
     public Warehouse Warehouse { get; set; } = null!;
     
@@ -24,7 +26,7 @@ public class Order
     
     public int DeliveryDays { get; set; }
     
-    public string? Description { get; set; }
+    public string Description { get; set; } = null!;
     
     public DateTime CreatedAt { get; set; }
     

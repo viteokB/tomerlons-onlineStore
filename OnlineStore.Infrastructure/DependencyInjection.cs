@@ -22,12 +22,13 @@ public static class DependencyInjection
         // repositories registration
         services.AddScoped<IBrandRepository, BrandRepository>();
         services.AddScoped<ICountryRepository, CountryRepository>();
-        // services.AddScoped<IOrderRepository>();
+        services.AddScoped<IOrderRepository, OrderRepository>();
         services.AddScoped<IProductsRepository, ProductsRepository>();
         services.AddScoped<ITypeRepository, TypeRepository>();
         services.AddScoped<IUserRepository, UserRepository>();
         services.AddScoped<IWarehouseRepository, WarehouseRepository>();
         services.AddScoped<IAddressRepository, AddressRepository>();
+        services.AddScoped<IDeliveryStatusRepository, DeliveryStatusRepository>();
 
         return services;
     }

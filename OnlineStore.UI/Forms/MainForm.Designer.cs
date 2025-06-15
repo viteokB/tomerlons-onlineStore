@@ -39,6 +39,8 @@ partial class MainForm
         button6 = new System.Windows.Forms.Button();
         button7 = new System.Windows.Forms.Button();
         warehouseDialog = new System.Windows.Forms.Button();
+        btnUserCart = new System.Windows.Forms.Button();
+        btnAdminOrders = new System.Windows.Forms.Button();
         SuspendLayout();
         // 
         // button1
@@ -121,11 +123,33 @@ partial class MainForm
         warehouseDialog.UseVisualStyleBackColor = true;
         warehouseDialog.Click += warehouseDialog_Click;
         // 
+        // btnUserCart
+        // 
+        btnUserCart.Location = new System.Drawing.Point(339, 199);
+        btnUserCart.Name = "btnUserCart";
+        btnUserCart.Size = new System.Drawing.Size(75, 44);
+        btnUserCart.TabIndex = 8;
+        btnUserCart.Text = "User cart";
+        btnUserCart.UseVisualStyleBackColor = true;
+        btnUserCart.Click += btnUserCart_Click;
+        // 
+        // btnAdminOrders
+        // 
+        btnAdminOrders.Location = new System.Drawing.Point(576, 380);
+        btnAdminOrders.Name = "btnAdminOrders";
+        btnAdminOrders.Size = new System.Drawing.Size(115, 44);
+        btnAdminOrders.TabIndex = 9;
+        btnAdminOrders.Text = "Admin orders";
+        btnAdminOrders.UseVisualStyleBackColor = true;
+        btnAdminOrders.Click += btnAdminOrders_Click;
+        // 
         // MainForm
         // 
         AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
         AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
         ClientSize = new System.Drawing.Size(800, 450);
+        Controls.Add(btnAdminOrders);
+        Controls.Add(btnUserCart);
         Controls.Add(warehouseDialog);
         Controls.Add(button7);
         Controls.Add(button6);
@@ -137,6 +161,9 @@ partial class MainForm
         Text = "MainForm";
         ResumeLayout(false);
     }
+
+    private System.Windows.Forms.Button btnUserCart;
+    private System.Windows.Forms.Button btnAdminOrders;
 
     private System.Windows.Forms.Button warehouseDialog;
 
