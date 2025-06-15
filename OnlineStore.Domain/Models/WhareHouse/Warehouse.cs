@@ -1,6 +1,6 @@
 ﻿namespace OnlineStore.Core.Models.WhareHouse;
 
-public class Wharehouse
+public class Warehouse
 {
     public int Id { get; set; }
     

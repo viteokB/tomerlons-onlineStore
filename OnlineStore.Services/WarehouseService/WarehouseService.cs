@@ -21,7 +21,7 @@ public class WarehouseService : IWarehouseService
 
     #region Warehouse Operations
 
-    public async Task<OperationResult> AddWarehouse(Wharehouse warehouse, User currentUser)
+    public async Task<OperationResult> AddWarehouse(Warehouse warehouse, User currentUser)
     {
         if (!IsAdmin(currentUser) && !IsManager(currentUser))
             return OperationResult.Fail("Недостаточно прав для выполнения операции");
@@ -29,7 +29,7 @@ public class WarehouseService : IWarehouseService
         return await _warehouseRepository.AddWarehouse(warehouse, CancellationToken.None);
     }
 
-    public async Task<OperationResult> UpdateWarehouse(int id, Wharehouse warehouse, User currentUser)
+    public async Task<OperationResult> UpdateWarehouse(int id, Warehouse warehouse, User currentUser)
     {
         if (!IsAdmin(currentUser) && !IsManager(currentUser))
             return OperationResult.Fail("Недостаточно прав для выполнения операции");
@@ -45,13 +45,13 @@ public class WarehouseService : IWarehouseService
         return await _warehouseRepository.DeleteWarehouse(id, CancellationToken.None);
     }
 
-    public async Task<OperationResult<List<Wharehouse>>> GetWarehouses(User currentUser)
+    public async Task<OperationResult<List<Warehouse>>> GetWarehouses(User currentUser)
     {
         // Все пользователи могут просматривать склады
         return await _warehouseRepository.GetWarehouses(CancellationToken.None);
     }
 
-    public async Task<OperationResult<PaginatedResult<Wharehouse>>> SearchWarehouses(
+    public async Task<OperationResult<PaginatedResult<Warehouse>>> SearchWarehouses(
         SearchRequest<string> request, User currentUser)
     {
         // Все пользователи могут искать склады

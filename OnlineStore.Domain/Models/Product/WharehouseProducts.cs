@@ -8,7 +8,7 @@ public class WharehouseProducts
     
     public Product Product { get; set; } = null!;
 
-    public Wharehouse Wharehouse { get; set; } = null!;
+    public Warehouse Warehouse { get; set; } = null!;
     
     public User ChangedBy { get; set; } = null!;
     

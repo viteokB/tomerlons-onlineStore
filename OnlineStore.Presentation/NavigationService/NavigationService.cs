@@ -14,6 +14,7 @@ public class NavigationService : INavigationService
     private readonly Func<CountryCrudPresenter> _countryCrudPresenterFactory;
     private readonly Func<BrandCrudPresenter> _brandCrudPresenterFactory;
     private readonly Func<AddProductPresenter> _addProductPresenterFactory;
+    private readonly Func<WarehouseEditorPresenter> _warehouseEditorPresenterFactory;
 
     public NavigationService(
         Func<LoginPresenter> loginPresenterFactory,
@@ -23,7 +24,8 @@ public class NavigationService : INavigationService
         Func<TypeCrudPresenter> typeCrudPresenterFactory,
         Func<CountryCrudPresenter> countryCrudPresenterFactory,
         Func<BrandCrudPresenter> brandCrudPresenterFactory,
-        Func<AddProductPresenter> addProductPresenterFactory)
+        Func<AddProductPresenter> addProductPresenterFactory,
+        Func<WarehouseEditorPresenter> warehouseEditorPresenterFactory)
     {
         _loginPresenterFactory = loginPresenterFactory;
         _registerPresenterFactory = registerPresenterFactory;
@@ -33,6 +35,7 @@ public class NavigationService : INavigationService
         _countryCrudPresenterFactory = countryCrudPresenterFactory;
         _brandCrudPresenterFactory = brandCrudPresenterFactory;
         _addProductPresenterFactory = addProductPresenterFactory;
+        _warehouseEditorPresenterFactory = warehouseEditorPresenterFactory;
     }
 
     public ComplexModalResult<User> NavigateToLogin()
@@ -84,6 +87,13 @@ public class NavigationService : INavigationService
     public ModalResult NavigateToProductRedactor(User user)
     {
         var presenter = _addProductPresenterFactory();
+        presenter.Run(user);
+        return presenter.View.ModalResult;
+    }
+
+    public ModalResult NavigateToWarehouseRedactor(User user)
+    {
+        var presenter = _warehouseEditorPresenterFactory();
         presenter.Run(user);
         return presenter.View.ModalResult;
     }

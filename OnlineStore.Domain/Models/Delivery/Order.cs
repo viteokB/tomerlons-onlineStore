@@ -12,7 +12,7 @@ public class Order
     
     public required Product Product { get; set; }
 
-    public Wharehouse Wharehouse { get; set; } = null!;
+    public Warehouse Warehouse { get; set; } = null!;
     
     public User? ChangedBy { get; set; }
     

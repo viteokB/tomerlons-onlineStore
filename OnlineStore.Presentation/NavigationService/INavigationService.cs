@@ -18,5 +18,7 @@ public interface INavigationService
     
     ModalResult NavigateToProductRedactor(User user);
     
+    ModalResult NavigateToWarehouseRedactor(User user);
+    
     void NavigateToMain();
 }

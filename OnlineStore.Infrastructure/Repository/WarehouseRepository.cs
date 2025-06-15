@@ -22,10 +22,10 @@ public class WarehouseRepository : IWarehouseRepository
         _dbContext = dbContext;
     }
     
-    public async Task<OperationResult> AddWarehouse(Wharehouse warehouse, CancellationToken cancellationToken)
+    public async Task<OperationResult> AddWarehouse(Warehouse warehouse, CancellationToken cancellationToken)
     {
         if (warehouse == null!)
-            return OperationResult.Fail("Wharehouse не может быть null");
+            return OperationResult.Fail("Warehouse не может быть null");
         try
         {
             var exsist = await _wharehouseDbSet
@@ -46,7 +46,7 @@ public class WarehouseRepository : IWarehouseRepository
         }
     }
 
-    public async Task<OperationResult> UpdateWarehouse(int updateWhId, Wharehouse warehouse, CancellationToken cancellationToken)
+    public async Task<OperationResult> UpdateWarehouse(int updateWhId, Warehouse warehouse, CancellationToken cancellationToken)
     {
         if (warehouse == null!)
             return OperationResult.Fail("Склад не может быть null");
@@ -94,7 +94,7 @@ public class WarehouseRepository : IWarehouseRepository
         }
     }
 
-    public async Task<OperationResult<List<Wharehouse>>> GetWarehouses(CancellationToken cancellationToken)
+    public async Task<OperationResult<List<Warehouse>>> GetWarehouses(CancellationToken cancellationToken)
     {
         try
         {
@@ -103,15 +103,15 @@ public class WarehouseRepository : IWarehouseRepository
                 .Select(w => DatabaseWharehouse.Map(w)) // W мужики, W
                 .ToListAsync(cancellationToken);
             
-            return OperationResult<List<Wharehouse>>.Success(warehouses);
+            return OperationResult<List<Warehouse>>.Success(warehouses);
         }
         catch (Exception ex)
         {
-            return OperationResult<List<Wharehouse>>.Fail($"Ошибка при получении складов: {ex.Message}")!;
+            return OperationResult<List<Warehouse>>.Fail($"Ошибка при получении складов: {ex.Message}")!;
         }
     }
 
-    public async Task<OperationResult<PaginatedResult<Wharehouse>>> SearchWarehouses(SearchRequest<string> searchRequest, CancellationToken cancellationToken)
+    public async Task<OperationResult<PaginatedResult<Warehouse>>> SearchWarehouses(SearchRequest<string> searchRequest, CancellationToken cancellationToken)
     {
         var query = _wharehouseDbSet.AsQueryable();
 
@@ -138,7 +138,7 @@ public class WarehouseRepository : IWarehouseRepository
         var hasMore = skip + take < totalCount;
         var nextOffset = hasMore ? skip + take : 0;
 
-        return OperationResult<PaginatedResult<Wharehouse>>.Success(new PaginatedResult<Wharehouse>(
+        return OperationResult<PaginatedResult<Warehouse>>.Success(new PaginatedResult<Warehouse>(
             Results: results,
             Pagination: new PaginationMetadata(
                 NextOffset: nextOffset,

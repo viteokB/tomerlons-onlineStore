@@ -6,15 +6,15 @@ namespace OnlineStore.Core.Interfaces;
 
 public interface IWarehouseRepository
 {
-    public Task<OperationResult> AddWarehouse(Wharehouse warehouse, CancellationToken cancellationToken);
+    public Task<OperationResult> AddWarehouse(Warehouse warehouse, CancellationToken cancellationToken);
     
-    public Task<OperationResult> UpdateWarehouse(int updateWhId, Wharehouse warehouse, CancellationToken cancellationToken);
+    public Task<OperationResult> UpdateWarehouse(int updateWhId, Warehouse warehouse, CancellationToken cancellationToken);
     
     public Task<OperationResult> DeleteWarehouse(int deleteWhId, CancellationToken cancellationToken);
     
-    public Task<OperationResult<List<Wharehouse>>> GetWarehouses(CancellationToken cancellationToken);
+    public Task<OperationResult<List<Warehouse>>> GetWarehouses(CancellationToken cancellationToken);
     
-    public Task<OperationResult<PaginatedResult<Wharehouse>>> SearchWarehouses(
+    public Task<OperationResult<PaginatedResult<Warehouse>>> SearchWarehouses(
         SearchRequest<string> searchRequest, CancellationToken cancellationToken); 
     
     public Task<OperationResult> UpdateWarehouseProductCount(

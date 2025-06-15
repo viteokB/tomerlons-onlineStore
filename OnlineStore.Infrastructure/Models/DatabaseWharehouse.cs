@@ -5,8 +5,8 @@ using OnlineStore.Core.Models.WhareHouse;
 namespace OnlineStore.Repository.Models;
 
 public class DatabaseWharehouse : 
-    IMapWith<DatabaseWharehouse, Wharehouse>,
-    IMapWith<Wharehouse, DatabaseWharehouse>
+    IMapWith<DatabaseWharehouse, Warehouse>,
+    IMapWith<Warehouse, DatabaseWharehouse>
 {
     public int Id { get; set; }
     
@@ -23,9 +23,9 @@ public class DatabaseWharehouse :
     public ICollection<DatabaseOrder> WhOrders { get; set; } = new List<DatabaseOrder>();
 
 
-    public static Wharehouse Map(DatabaseWharehouse from)
+    public static Warehouse Map(DatabaseWharehouse from)
     {
-        return new Wharehouse
+        return new Warehouse
         {
             Id = from.Id,
             Name = from.Name,
@@ -34,7 +34,7 @@ public class DatabaseWharehouse :
         };
     }
 
-    public static DatabaseWharehouse Map(Wharehouse from)
+    public static DatabaseWharehouse Map(Warehouse from)
     {
         return new DatabaseWharehouse
         {

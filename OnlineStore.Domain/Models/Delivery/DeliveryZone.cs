@@ -6,5 +6,5 @@ public class DeliveryZone
 {
     public int Id { get; set; }
     
-    public required Wharehouse Wharehouse { get; set; }
+    public required Warehouse Warehouse { get; set; }
 }

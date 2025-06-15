@@ -7,17 +7,17 @@ namespace OnlineStore.Services.WarehouseService;
 
 public interface IWarehouseService
 {
-    Task<OperationResult> AddWarehouse(Wharehouse warehouse, User currentUser);
+    Task<OperationResult> AddWarehouse(Warehouse warehouse, User currentUser);
     
-    Task<OperationResult> UpdateWarehouse(int id, Wharehouse warehouse, User currentUser);
+    Task<OperationResult> UpdateWarehouse(int id, Warehouse warehouse, User currentUser);
     
     Task<OperationResult> DeleteWarehouse(int id, User currentUser);
     
-    Task<OperationResult<List<Wharehouse>>> GetWarehouses(User currentUser);
+    Task<OperationResult<List<Warehouse>>> GetWarehouses(User currentUser);
     
-    Task<OperationResult<PaginatedResult<Wharehouse>>> SearchWarehouses(
+    Task<OperationResult<PaginatedResult<Warehouse>>> SearchWarehouses(
         SearchRequest<string> request, User currentUser);
     
     Task<OperationResult> UpdateWarehouseProductCount(
-        int warehouseId, int productId, int changedBy, int count, User currentUser);
+        int warehouseId, int productId, int changedBy, int count);
 }
