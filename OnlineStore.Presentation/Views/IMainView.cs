@@ -26,6 +26,8 @@ public interface IMainView : IView
     
     public event Action  OpenAdminOrdersDialog;
     
+    public event Action  OpenProducts;
+    
     public User? User { get; set; }
     
     void ShowError(string message);

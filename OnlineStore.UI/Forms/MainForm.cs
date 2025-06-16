@@ -37,6 +37,8 @@ public partial class MainForm : Form, IMainView
     public event Action? OpenUserCartDialog;
     
     public event Action? OpenAdminOrdersDialog;
+    
+    public event Action? OpenProducts;
 
     public User User { get; set; }
 
@@ -98,5 +100,10 @@ public partial class MainForm : Form, IMainView
     private void btnAdminOrders_Click(object sender, EventArgs e)
     {
         OpenAdminOrdersDialog?.Invoke();
+    }
+
+    private void btnProductForm_Click(object sender, EventArgs e)
+    {
+        OpenProducts?.Invoke();
     }
 }

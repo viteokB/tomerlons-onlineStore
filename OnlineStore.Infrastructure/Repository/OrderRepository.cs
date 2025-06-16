@@ -87,7 +87,81 @@ public class OrderRepository : IOrderRepository
         }
     }
 
-    public async Task<OperationResult<PaginatedResult<Order>>> GetUserOrders(int userId, SearchRequest<OrderParameters> request, CancellationToken cancellationToken)
+    public async Task<OperationResult> PutOrderInUserCard(
+        OrderCreateParameters createParameters,
+        CancellationToken cancellationToken) 
+    {
+        try
+        {
+            var whProdEntity = await _dbContext.WarehousesProducts
+                .Include(wh => wh.Product)
+                .FirstOrDefaultAsync(w => 
+                        w.WharehouseId == createParameters.WarehouseId && w.ProductId == createParameters.ProductId,
+                    cancellationToken);
+
+            if (whProdEntity == null)
+            {
+                return OperationResult.Fail("Склада с таким товаром нет");
+            }
+            if (whProdEntity.Count < createParameters.Count)
+            {
+                return OperationResult.Fail("Невозможно положить в корзину, товара на складе меньше чем вы выбрали");
+            }
+            if (!whProdEntity.Product.IsActive)
+            {
+                return OperationResult.Fail("Невозможно положить в корзину, товара не выпущен на продажу");
+            }
+
+            DatabaseAddress? addressEntity = null;
+            if (createParameters.Address != null)
+            {
+                addressEntity = await _dbContext.Addresses
+                    .FirstOrDefaultAsync(a => a.Id == createParameters.Address.Id, cancellationToken);
+
+                if (addressEntity == null)
+                {
+                    await _dbContext.Addresses
+                        .AddAsync(DatabaseAddress.Map(createParameters.Address), cancellationToken);
+                    await _dbContext.SaveChangesAsync(cancellationToken);
+                }
+            }
+            else
+            {
+                return OperationResult.Fail("Адрес не задан -> обязательно задать!");
+            }
+
+            var inCartStatus = await _dbContext.DeliveryStatuses
+                .FirstOrDefaultAsync(s => s.Name == "в корзине", cancellationToken);
+
+            if (inCartStatus == null)
+            {
+                return OperationResult.Fail("Не найден статус 'в корзине' срочно это исправьте!");
+            }
+            
+            var dbOrder = new DatabaseOrder
+            {
+                UserId = createParameters.User.Id,
+                DeliveryStatusId = inCartStatus.Id,
+                DeliveryAddressId = addressEntity.Id,
+                ProductId = createParameters.ProductId,
+                WharehouseId = createParameters.WarehouseId,
+                Count = createParameters.Count,
+                ProductPrice = whProdEntity.Product.BasePrice,
+                DeliveryPrice = 100, // пусть будет фиксированной без реализации по зонам
+                DeliveryDays = createParameters.Count, // пусть будет фиксированной без реализации по зонам
+                Description = (createParameters.Description ?? null)!,
+                CreatedAt = DateTime.Now,
+                UpdatedAt = DateTime.Now
+            };
+            return OperationResult.Success();
+        }
+        catch (Exception ex)
+        {
+            return OperationResult.Fail($"Ошибка добавления в корзину: {ex.Message};\n{ex.InnerException?.Message}");
+        }
+    }
+
+    public async Task<OperationResult<PaginatedResult<Order>>> GetUserOrders(int userId, SearchRequest<OrderSearchParameters> request, CancellationToken cancellationToken)
     {
         try
         {
@@ -133,7 +207,7 @@ public class OrderRepository : IOrderRepository
         }
     }
 
-    public async Task<OperationResult<PaginatedResult<Order>>> SearchOrders(SearchRequest<OrderParameters> request, CancellationToken cancellationToken)
+    public async Task<OperationResult<PaginatedResult<Order>>> SearchOrders(SearchRequest<OrderSearchParameters> request, CancellationToken cancellationToken)
     {
         try
         {

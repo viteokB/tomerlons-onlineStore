@@ -35,6 +35,19 @@ public class MainPresenter : BasePresenter<IMainView>
 
         View.OpenUserCartDialog += OnOpenUserCartDialog;
         View.OpenAdminOrdersDialog += OnOpenAdminDialog;
+        View.OpenProducts += OnOpenProducts;
+    }
+
+    private void OnOpenProducts()
+    {
+        if (View.User != null)
+        {
+            _navigationService.NavigateToProductsForm(View.User);
+        }
+        else
+        {
+            View.ShowMessage("Невозможно открыть редактор, вы не вошли");
+        }
     }
 
     private void OnOpenAdminDialog()

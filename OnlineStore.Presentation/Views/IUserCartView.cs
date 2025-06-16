@@ -9,7 +9,7 @@ public interface IUserCartView : IModalView
     User CurrentUser { get; set; }
     Order? SelectedOrder { get; set; }
     PaginatedResult<Order> UserOrders { get; set; }
-    SearchRequest<OrderParameters> SearchRequest { get; set; }
+    SearchRequest<OrderSearchParameters> SearchRequest { get; set; }
     
     Func<Task> LoadOrders { get; set; }
     Func<Task> CreateOrder { get; set; }

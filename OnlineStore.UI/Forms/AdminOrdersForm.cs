@@ -15,7 +15,7 @@ public partial class AdminOrdersForm : BaseModalForm, IAdminOrdersView
         set => cmbStatus.SelectedItem = value;
     }
     public PaginatedResult<Order> Orders { get; set; }
-    public SearchRequest<OrderParameters> SearchRequest { get; set; }
+    public SearchRequest<OrderSearchParameters> SearchRequest { get; set; }
     
     public List<DeliveryStatus> AllStatuses 
     { 

@@ -24,5 +24,7 @@ public interface INavigationService
     
     ModalResult NavigateToAdminOrders(User user);
     
+    void NavigateToProductsForm(User user);
+    
     void NavigateToMain();
 }

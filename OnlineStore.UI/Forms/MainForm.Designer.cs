@@ -41,6 +41,7 @@ partial class MainForm
         warehouseDialog = new System.Windows.Forms.Button();
         btnUserCart = new System.Windows.Forms.Button();
         btnAdminOrders = new System.Windows.Forms.Button();
+        btnProductForm = new System.Windows.Forms.Button();
         SuspendLayout();
         // 
         // button1
@@ -143,11 +144,22 @@ partial class MainForm
         btnAdminOrders.UseVisualStyleBackColor = true;
         btnAdminOrders.Click += btnAdminOrders_Click;
         // 
+        // btnProductForm
+        // 
+        btnProductForm.Location = new System.Drawing.Point(339, 262);
+        btnProductForm.Name = "btnProductForm";
+        btnProductForm.Size = new System.Drawing.Size(75, 44);
+        btnProductForm.TabIndex = 10;
+        btnProductForm.Text = "products";
+        btnProductForm.UseVisualStyleBackColor = true;
+        btnProductForm.Click += btnProductForm_Click;
+        // 
         // MainForm
         // 
         AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
         AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
         ClientSize = new System.Drawing.Size(800, 450);
+        Controls.Add(btnProductForm);
         Controls.Add(btnAdminOrders);
         Controls.Add(btnUserCart);
         Controls.Add(warehouseDialog);
@@ -161,6 +173,8 @@ partial class MainForm
         Text = "MainForm";
         ResumeLayout(false);
     }
+
+    private System.Windows.Forms.Button btnProductForm;
 
     private System.Windows.Forms.Button btnUserCart;
     private System.Windows.Forms.Button btnAdminOrders;

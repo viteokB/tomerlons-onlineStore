@@ -1,6 +1,6 @@
 ﻿namespace OnlineStore.Core.Models;
 
-public class OrderParameters
+public class OrderSearchParameters
 {
     // Фильтр по пользователю
     public User? User { get; set; }              // Пользователь, чьи заказы ищем

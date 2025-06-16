@@ -31,7 +31,7 @@ public class UserCartPresenter : BasePresenter<IUserCartView, User>
     public override void Run(User user)
     {
         View.CurrentUser = user;
-        View.SearchRequest = new SearchRequest<OrderParameters>(new OrderParameters(), 10, 0);
+        View.SearchRequest = new SearchRequest<OrderSearchParameters>(new OrderSearchParameters(), 10, 0);
         _ = LoadUserOrders();
         View.Show();
     }

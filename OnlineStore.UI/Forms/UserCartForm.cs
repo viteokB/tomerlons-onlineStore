@@ -10,7 +10,7 @@ public partial class UserCartForm : BaseModalForm, IUserCartView
     public User CurrentUser { get; set; }
     public Order? SelectedOrder { get; set; }
     public PaginatedResult<Order> UserOrders { get; set; }
-    public SearchRequest<OrderParameters> SearchRequest { get; set; }
+    public SearchRequest<OrderSearchParameters> SearchRequest { get; set; }
     
     public Func<Task> LoadOrders { get; set; }
     public Func<Task> CreateOrder { get; set; }

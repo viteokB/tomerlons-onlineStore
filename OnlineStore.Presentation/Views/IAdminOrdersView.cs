@@ -10,7 +10,7 @@ public interface IAdminOrdersView : IModalView
     Order? SelectedOrder { get; set; }
     DeliveryStatus? SelectedStatus { get; set; }
     PaginatedResult<Order> Orders { get; set; }
-    SearchRequest<OrderParameters> SearchRequest { get; set; }
+    SearchRequest<OrderSearchParameters> SearchRequest { get; set; }
     
     List<DeliveryStatus> AllStatuses { get; set; }
     

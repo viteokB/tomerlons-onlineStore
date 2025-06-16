@@ -9,8 +9,13 @@ public interface IOrderService
     Task<OperationResult> CreateOrder(Core.Models.Order order, User currentUser);
     Task<OperationResult> UpdateOrderStatus(int id, DeliveryStatus status, User currentUser);
     Task<OperationResult> DeleteOrder(int id, User currentUser);
-    Task<OperationResult<PaginatedResult<Core.Models.Order>>> GetUserOrders(User currentUser, SearchRequest<OrderParameters> request);
-    Task<OperationResult<PaginatedResult<Core.Models.Order>>> SearchOrders(SearchRequest<OrderParameters> request, User currentUser);
+    
+    Task<OperationResult> PutOrderInUserCard(
+        OrderCreateParameters createParameters,
+        CancellationToken cancellationToken);
+    
+    Task<OperationResult<PaginatedResult<Core.Models.Order>>> GetUserOrders(User currentUser, SearchRequest<OrderSearchParameters> request);
+    Task<OperationResult<PaginatedResult<Core.Models.Order>>> SearchOrders(SearchRequest<OrderSearchParameters> request, User currentUser);
     Task<OperationResult<Core.Models.Order>> GetOrderDetails(int id, User currentUser);
 
     Task<OperationResult<List<DeliveryStatus>>> GetAllStatuses(User currentUser);

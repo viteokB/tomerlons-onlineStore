@@ -19,7 +19,7 @@ public class OrderService : IOrderService
         _statusRepository = statusRepository;
     }
 
-    public async Task<OperationResult> CreateOrder(Core.Models.Order order, User currentUser)
+    public async Task<OperationResult> CreateOrder(Order order, User currentUser)
     {
         if (currentUser == null!)
             return OperationResult.Fail("Пользователь не авторизован");
@@ -57,7 +57,12 @@ public class OrderService : IOrderService
         return await _orderRepository.DeleteOrder(id, CancellationToken.None);
     }
 
-    public async Task<OperationResult<PaginatedResult<Core.Models.Order>>> GetUserOrders(User currentUser, SearchRequest<OrderParameters> request)
+    public Task<OperationResult> PutOrderInUserCard(OrderCreateParameters createParameters, CancellationToken cancellationToken)
+    {
+        return _orderRepository.PutOrderInUserCard(createParameters, cancellationToken);
+    }
+
+    public async Task<OperationResult<PaginatedResult<Core.Models.Order>>> GetUserOrders(User currentUser, SearchRequest<OrderSearchParameters> request)
     {
         if (currentUser == null!)
             return OperationResult<PaginatedResult<Core.Models.Order>>.Fail("Пользователь не авторизован")!;
@@ -65,7 +70,7 @@ public class OrderService : IOrderService
         return await _orderRepository.GetUserOrders(currentUser.Id, request, CancellationToken.None);
     }
 
-    public async Task<OperationResult<PaginatedResult<Core.Models.Order>>> SearchOrders(SearchRequest<OrderParameters> request, User currentUser)
+    public async Task<OperationResult<PaginatedResult<Core.Models.Order>>> SearchOrders(SearchRequest<OrderSearchParameters> request, User currentUser)
     {
         if (!IsAdminOrManager(currentUser))
             return OperationResult<PaginatedResult<Core.Models.Order>>.Fail("Недостаточно прав")!;

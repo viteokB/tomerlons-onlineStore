@@ -27,4 +27,3 @@ public class Product
     public override string ToString()
         => $"Id:{Id}, Name:{Name}";
 }
-
