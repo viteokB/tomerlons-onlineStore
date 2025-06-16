@@ -25,5 +25,5 @@ public class Product
     public DateTime ChangedAt { get; set; }
     
     public override string ToString()
-        => $"Id:{Id}, Name:{Name}";
+        => $"{Name}";
 }

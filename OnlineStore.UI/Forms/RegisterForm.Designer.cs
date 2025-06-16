@@ -40,7 +40,6 @@ partial class RegisterForm
         label3 = new System.Windows.Forms.Label();
         label4 = new System.Windows.Forms.Label();
         repeatPasswordTextBox = new System.Windows.Forms.TextBox();
-        goLoginButton = new System.Windows.Forms.Button();
         label5 = new System.Windows.Forms.Label();
         panel1 = new System.Windows.Forms.Panel();
         panel1.SuspendLayout();
@@ -139,20 +138,6 @@ partial class RegisterForm
         repeatPasswordTextBox.Size = new System.Drawing.Size(220, 27);
         repeatPasswordTextBox.TabIndex = 3;
         // 
-        // goLoginButton
-        // 
-        goLoginButton.BackColor = System.Drawing.Color.DarkOrchid;
-        goLoginButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-        goLoginButton.Font = new System.Drawing.Font("Trebuchet MS", 12F);
-        goLoginButton.ForeColor = System.Drawing.SystemColors.Desktop;
-        goLoginButton.Location = new System.Drawing.Point(250, 420);
-        goLoginButton.Name = "goLoginButton";
-        goLoginButton.Size = new System.Drawing.Size(103, 33);
-        goLoginButton.TabIndex = 5;
-        goLoginButton.Text = "Go login";
-        goLoginButton.UseVisualStyleBackColor = false;
-        goLoginButton.Click += goLoginButton_Click;
-        // 
         // label5
         // 
         label5.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -180,9 +165,8 @@ partial class RegisterForm
         AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
         AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
         BackColor = System.Drawing.Color.RoyalBlue;
-        ClientSize = new System.Drawing.Size(365, 465);
+        ClientSize = new System.Drawing.Size(365, 425);
         Controls.Add(panel1);
-        Controls.Add(goLoginButton);
         Controls.Add(label4);
         Controls.Add(repeatPasswordTextBox);
         Controls.Add(label3);
@@ -210,7 +194,6 @@ partial class RegisterForm
     private System.Windows.Forms.Label label2;
 
     private System.Windows.Forms.Button registerButton;
-    private System.Windows.Forms.Button goLoginButton;
 
     private System.Windows.Forms.TextBox emailTextBox;
     private System.Windows.Forms.TextBox passwordTextBox;

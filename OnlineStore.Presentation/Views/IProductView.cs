@@ -5,7 +5,7 @@ using Type = OnlineStore.Core.Models.Type;
 
 namespace Presentation.Views
 {
-    public interface IProductView : IView
+    public interface IProductView : IModalView
     {
         ProductsParamets SearchParameters { get; set; }
         PaginatedResult<Product> PaginatedProducts { get; set; }

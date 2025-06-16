@@ -46,14 +46,6 @@ public class OrderService : IOrderService
 
     public async Task<OperationResult> DeleteOrder(int id, User currentUser)
     {
-        var orderResult = await _orderRepository.GetOrderById(id, CancellationToken.None);
-        if (!orderResult.IsSuccess)
-            return orderResult;
-
-        // Пользователь может удалять только свои заказы
-        if (!IsAdminOrManager(currentUser) && orderResult.Data.User.Id != currentUser.Id)
-            return OperationResult.Fail("Недостаточно прав");
-
         return await _orderRepository.DeleteOrder(id, CancellationToken.None);
     }
 

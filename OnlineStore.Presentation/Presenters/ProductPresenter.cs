@@ -41,6 +41,7 @@ namespace Presentation.Presenters
             View.TypeSelectedIndexChanged += async (sender, e) => await OnTypeSelectedIndexChanged();
             View.BrandSelectedIndexChanged += async (sender, e) => await OnBrandSelectedIndexChanged();
             View.CountrySelectedIndexChanged += async (sender, e) => await OnCountrySelectedIndexChanged();
+            View.PurchaseProduct += async () => await PurchaseProduct();
         }
 
         public override void Run(User arg)
@@ -224,7 +225,24 @@ namespace Presentation.Presenters
 
         private async Task PurchaseProduct()
         {
-            // Реализация покупки продукта
+            if (View.SelectedProduct == null)
+            {
+                View.ShowError("Выберите продукт для покупки");
+                return;
+            }
+
+            try
+            {
+                // Используем NavigationService для открытия формы покупки
+                _navigationService.NavigateToPurchase(new (View.SelectedProduct, View.CurrentUser));
+        
+                // Обновляем список продуктов после покупки
+                await SearchProducts(_currentPage);
+            }
+            catch (Exception ex)
+            {
+                View.ShowError($"Ошибка при оформлении покупки: {ex.Message}");
+            }
         }
     }
 }

@@ -18,6 +18,7 @@ public class NavigationService : INavigationService
     private readonly Func<UserCartPresenter> _userCartPresenterFactory;
     private readonly Func<AdminOrdersPresenter> _adminOrdersPresenterFactory;
     private readonly Func<ProductPresenter> _productPresenterFactory;
+    private readonly Func<PurchasePresenter> _purchasePresenterFactory;
 
     public NavigationService(
         Func<LoginPresenter> loginPresenterFactory,
@@ -31,7 +32,8 @@ public class NavigationService : INavigationService
         Func<WarehouseEditorPresenter> warehouseEditorPresenterFactory,
         Func<UserCartPresenter> userCartPresenterFactory,
         Func<AdminOrdersPresenter> adminOrdersPresenterFactory,
-        Func<ProductPresenter> productPresenterFactory)
+        Func<ProductPresenter> productPresenterFactory,
+        Func<PurchasePresenter> purchasePresenterFactory)
     {
         _loginPresenterFactory = loginPresenterFactory;
         _registerPresenterFactory = registerPresenterFactory;
@@ -45,6 +47,7 @@ public class NavigationService : INavigationService
         _userCartPresenterFactory = userCartPresenterFactory;
         _adminOrdersPresenterFactory = adminOrdersPresenterFactory;
         _productPresenterFactory = productPresenterFactory;
+        _purchasePresenterFactory = purchasePresenterFactory;
     }
 
     public ComplexModalResult<User> NavigateToLogin()
@@ -121,10 +124,18 @@ public class NavigationService : INavigationService
         return presenter.View.ModalResult;
     }
 
-    public void NavigateToProductsForm(User user)
+    public ModalResult NavigateToProductsForm(User user)
     {
         var presenter = _productPresenterFactory();
         presenter.Run(user);
+        return presenter.View.ModalResult;
+    }
+
+    public ModalResult NavigateToPurchase((Product product, User user) arg)
+    {
+        var presenter = _purchasePresenterFactory();
+        presenter.Run(new ValueTuple<Product, User>(arg.product, arg.user));
+        return presenter.View.ModalResult;
     }
 
     public void NavigateToMain()

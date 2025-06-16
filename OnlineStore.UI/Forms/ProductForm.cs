@@ -1,13 +1,14 @@
 ﻿using OnlineStore.Core.Common.Pagination;
 using OnlineStore.Core.Models;
+using OnlineStore.UI.Forms.Common;
 using Presentation.Views;
 using Type = OnlineStore.Core.Models.Type;
 
 namespace OnlineStore.UI.Forms
 {
-    public partial class ProductForm : Form, IProductView
+    public partial class ProductForm : BaseModalForm<IProductView>, IProductView
     {
-        private const int PageSize = 15;
+        private const int PageSize = 10;
         
         public ProductsParamets SearchParameters { get; set; } = new ProductsParamets();
         public PaginatedResult<Product> PaginatedProducts { get; set; }
@@ -120,6 +121,7 @@ namespace OnlineStore.UI.Forms
             cmbType.SelectedIndexChanged += (sender, e) => TypeSelectedIndexChanged?.Invoke(sender, e);
             cmbBrand.SelectedIndexChanged += (sender, e) => BrandSelectedIndexChanged?.Invoke(sender, e);
             cmbCountry.SelectedIndexChanged += (sender, e) => CountrySelectedIndexChanged?.Invoke(sender, e);
+            btnPurchase.Click += async (sender, e) => await PurchaseProduct?.Invoke();
         }
         
         private void ConfigureComboBoxes()

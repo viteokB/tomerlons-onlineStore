@@ -1,88 +1,85 @@
-﻿// UserCartPresenter.cs
-
-using OnlineStore.Core.Common.Pagination;
+﻿using OnlineStore.Core.Common.Pagination;
 using OnlineStore.Core.Models;
 using OnlineStore.Services.Orders;
 using Presentation.Common;
 using Presentation.NavigationService;
 using Presentation.Views;
 
-namespace Presentation.Presenters;
-
-public class UserCartPresenter : BasePresenter<IUserCartView, User>
+namespace Presentation.Presenters
 {
-    private readonly IOrderService _orderService;
-    private readonly INavigationService _navigationService;
-
-    public UserCartPresenter(
-        IUserCartView view,
-        IOrderService orderService,
-        INavigationService navigationService) : base(view)
+    public class UserCartPresenter : BasePresenter<IUserCartView, User>
     {
-        _orderService = orderService;
-        _navigationService = navigationService;
-        
-        View.LoadOrders = async () => await LoadUserOrders();
-        View.CreateOrder = async () => await CreateNewOrder();
-        View.CancelOrder = async () => await CancelSelectedOrder();
-        View.ViewOrderDetails = async () => await ShowOrderDetails();
-    }
+        private readonly IOrderService _orderService;
 
-    public override void Run(User user)
-    {
-        View.CurrentUser = user;
-        View.SearchRequest = new SearchRequest<OrderSearchParameters>(new OrderSearchParameters(), 10, 0);
-        _ = LoadUserOrders();
-        View.Show();
-    }
-
-    private async Task LoadUserOrders()
-    {
-        var result = await _orderService.GetUserOrders(View.CurrentUser, View.SearchRequest);
-        if (!result.IsSuccess)
-            View.ShowError(result.Message);
-        else
-            View.UserOrders = result.Data;
-    }
-
-    private async Task CreateNewOrder()
-    {
-        // Логика создания нового заказа
-        // Например, можно открыть форму создания заказа
-        // await _navigationService.ShowOrderCreation(View.CurrentUser);
-        View.ShowInfo("Нет реализации");
-    }
-
-    private async Task CancelSelectedOrder()
-    {
-        if (View.SelectedOrder == null)
+        public UserCartPresenter(
+            IUserCartView view,
+            IOrderService orderService) : base(view)
         {
-            View.ShowError("Выберите заказ");
-            return;
+            _orderService = orderService;
+            
+            View.LoadOrders += async () => await LoadUserOrders();
+            View.CancelOrder += async () => await CancelSelectedOrder();
         }
 
-        var result = await _orderService.DeleteOrder(View.SelectedOrder.Id, View.CurrentUser);
-        if (!result.IsSuccess)
-            View.ShowError(result.Message);
-        else
+        public override async void Run(User user)
         {
-            View.ShowInfo("Заказ отменен");
+            View.CurrentUser = user;
             await LoadUserOrders();
+            View.Show();
         }
-    }
 
-    private async Task ShowOrderDetails()
-    {
-        if (View.SelectedOrder == null)
+        private async Task LoadUserOrders()
         {
-            View.ShowError("Выберите заказ");
-            return;
+            try
+            {
+                var request = new SearchRequest<OrderSearchParameters>(
+                    new OrderSearchParameters(),
+                    100, 0); // Получаем все заказы в корзине
+                
+                var result = await _orderService.GetUserOrders(View.CurrentUser, request);
+                
+                if (result.IsSuccess)
+                {
+                    View.UserOrders = result.Data;
+                    View.UpdateOrdersList();
+                }
+                else
+                {
+                    View.ShowError(result.Message);
+                }
+            }
+            catch (Exception ex)
+            {
+                View.ShowError($"Ошибка загрузки заказов: {ex.Message}");
+            }
         }
 
-        var result = await _orderService.GetOrderDetails(View.SelectedOrder.Id, View.CurrentUser);
-        if (!result.IsSuccess)
-            View.ShowError(result.Message);
-        else
-            View.ShowInfo($"Детали заказа #{result.Data.Id}");
+        private async Task CancelSelectedOrder()
+        {
+            if (View.SelectedOrder == null)
+            {
+                View.ShowError("Выберите заказ для отмены");
+                return;
+            }
+
+            try
+            {
+                var result = await _orderService.DeleteOrder(View.SelectedOrder.Id, View.CurrentUser);
+                
+                if (result.IsSuccess)
+                {
+                    View.ShowSuccess("Заказ успешно отменен");
+                    await LoadUserOrders(); // Обновляем список
+                }
+                else
+                {
+                    View.ShowError(result.Message);
+                }
+            }
+            catch (Exception ex)
+            {
+                View.ShowError($"Ошибка отмены заказа: {ex.Message}");
+            }
+        }
     }
 }

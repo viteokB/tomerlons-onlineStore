@@ -1,4 +1,5 @@
-﻿using OnlineStore.Services.Login;
+﻿using OnlineStore.Core.Models;
+using OnlineStore.Services.Login;
 using Presentation.Common;
 using Presentation.NavigationService;
 using Presentation.Views;
@@ -52,15 +53,18 @@ public class MainPresenter : BasePresenter<IMainView>
 
     private void OnOpenAdminDialog()
     {
-        if (View.User != null)
-        {
-            var result = _navigationService.NavigateToAdminOrders(View.User);
-            View.ShowMessage(result.ToString());
-        }
-        else
+        if (View.User == null)
         {
             View.ShowMessage("Невозможно открыть редактор, вы не вошли");
+            return;
         }
+        else if(!IsAdmin(View.User) || !IsAdmin(View.User))
+        {
+            View.ShowMessage("Невозможно открыть редактор, не достаточно прав");
+            return;
+        }
+
+        var result = _navigationService.NavigateToAdminOrders(View.User);
     }
 
     private void OnOpenUserCartDialog()
@@ -68,20 +72,18 @@ public class MainPresenter : BasePresenter<IMainView>
         if (View.User != null)
         {
             var result = _navigationService.NavigateToUserCart(View.User);
-            View.ShowMessage(result.ToString());
         }
         else
         {
             View.ShowMessage("Невозможно открыть редактор, вы не вошли");
         }
-    }
+    } 
 
     private void OnOpenWarehouseRedactorDialog()
     {
         if (View.User != null)
         {
             var result = _navigationService.NavigateToWarehouseRedactor(View.User);
-            View.ShowMessage(result.ToString());
         }
         else
         {
@@ -94,7 +96,6 @@ public class MainPresenter : BasePresenter<IMainView>
         if (View.User != null)
         {
             var result = _navigationService.NavigateToProductRedactor(View.User);
-            View.ShowMessage(result.ToString());
         }
         else
         {
@@ -107,7 +108,6 @@ public class MainPresenter : BasePresenter<IMainView>
         if (View.User != null)
         {
             var result = _navigationService.NavigateToBrandRedactor(View.User);
-            View.ShowMessage(result.ToString());
         }
         else
         {
@@ -120,7 +120,6 @@ public class MainPresenter : BasePresenter<IMainView>
         if (View.User != null)
         {
             var result = _navigationService.NavigateToCountryRedactor(View.User);
-            View.ShowMessage(result.ToString());
         }
         else
         {
@@ -133,7 +132,6 @@ public class MainPresenter : BasePresenter<IMainView>
         if (View.User != null)
         {
             var result = _navigationService.NavigateToTypeRedactor(View.User);
-            View.ShowMessage(result.ToString());
         }
         else
         {
@@ -178,5 +176,15 @@ public class MainPresenter : BasePresenter<IMainView>
         {
             View.ShowMessage("Регистрация завершена успешно!");
         }
+    }
+    
+    private bool IsAdmin(User user)
+    {
+        return user?.Role?.Name?.ToLower() == "админ";
+    }
+
+    private bool IsManager(User user)
+    {
+        return user?.Role?.Name?.ToLower() == "менеджер";
     }
 }

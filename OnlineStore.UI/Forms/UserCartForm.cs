@@ -3,66 +3,90 @@ using OnlineStore.Core.Models;
 using OnlineStore.UI.Forms.Common;
 using Presentation.Views;
 
-namespace OnlineStore.UI.Forms;
-
-public partial class UserCartForm : BaseModalForm, IUserCartView
+namespace OnlineStore.UI.Forms
 {
-    public User CurrentUser { get; set; }
-    public Order? SelectedOrder { get; set; }
-    public PaginatedResult<Order> UserOrders { get; set; }
-    public SearchRequest<OrderSearchParameters> SearchRequest { get; set; }
-    
-    public Func<Task> LoadOrders { get; set; }
-    public Func<Task> CreateOrder { get; set; }
-    public Func<Task> CancelOrder { get; set; }
-    public Func<Task> ViewOrderDetails { get; set; }
-
-    public UserCartForm()
+    public partial class UserCartForm : BaseModalForm, IUserCartView
     {
-        InitializeComponent();
-        ConfigureDataGridView();
-        BindEvents();
-    }
+        public User CurrentUser { get; set; }
+        public Order? SelectedOrder => dataGridView.CurrentRow?.DataBoundItem as Order;
+        public PaginatedResult<Order> UserOrders { get; set; }
+        
+        public event Func<Task> LoadOrders;
+        public event Func<Task> CancelOrder;
 
-    private void ConfigureDataGridView()
-    {
-        ordersDataGridView.AutoGenerateColumns = false;
-        ordersDataGridView.SelectionChanged += (s, e) => 
+        public UserCartForm()
         {
-            SelectedOrder = ordersDataGridView.CurrentRow?.DataBoundItem as Order;
-        };
-    }
+            InitializeComponent();
+            ConfigureDataGridView();
+            InitializeControls();
+        }
 
-    private void BindEvents()
-    {
-        btnLoad.Click += async (s, e) => await LoadOrders.Invoke();
-        btnCreate.Click += async (s, e) => await CreateOrder.Invoke();
-        btnCancel.Click += async (s, e) => await CancelOrder.Invoke();
-        btnDetails.Click += async (s, e) => await ViewOrderDetails.Invoke();
-    }
-
-    public void ShowError(string message)
-    {
-        MessageBox.Show(this, message, @"Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
-    }
-
-    public void ShowInfo(string message)
-    {
-        MessageBox.Show(this, message, @"Информация", MessageBoxButtons.OK, MessageBoxIcon.Information);
-    }
-
-    private void UserCartForm_Load(object sender, EventArgs e)
-    {
-        _ = LoadOrders.Invoke();
-        BindOrdersData();
-    }
-
-    private void BindOrdersData()
-    {
-        if (UserOrders != null!)
+        private void ConfigureDataGridView()
         {
-            ordersDataGridView.DataSource = UserOrders.Results;
-            lblPageInfo.Text = @$"Показано {UserOrders.Results.Count} из {UserOrders.Pagination.TotalCount}";
+            dataGridView.AutoGenerateColumns = false;
+            dataGridView.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            
+            dataGridView.Columns.AddRange(
+                new DataGridViewTextBoxColumn { 
+                    Name = "Id", 
+                    DataPropertyName = "Id", 
+                    HeaderText = "ID", 
+                    Width = 50 
+                },
+                new DataGridViewTextBoxColumn { 
+                    Name = "ProductName", 
+                    DataPropertyName = "Product", 
+                    HeaderText = "Товар", 
+                    Width = 150 
+                },
+                new DataGridViewTextBoxColumn { 
+                    Name = "Count", 
+                    DataPropertyName = "Count", 
+                    HeaderText = "Кол-во", 
+                    Width = 60 
+                },
+                new DataGridViewTextBoxColumn { 
+                    Name = "Price", 
+                    DataPropertyName = "ProductPrice", 
+                    HeaderText = "Цена", 
+                    Width = 80 
+                },
+                new DataGridViewTextBoxColumn { 
+                    Name = "CreatedAt", 
+                    DataPropertyName = "CreatedAt", 
+                    HeaderText = "Дата", 
+                    Width = 120 
+                }
+            );
+        }
+
+        private void InitializeControls()
+        {
+            btnRefresh.Click += async (s, e) => await LoadOrders?.Invoke();
+            btnCancelOrder.Click += async (s, e) => await CancelOrder?.Invoke();
+        }
+
+        public void UpdateOrdersList()
+        {
+            dataGridView.DataSource = UserOrders?.Results;
+            lblTotal.Text = $"Всего: {UserOrders?.Results.Count ?? 0}";
+        }
+
+        public void ShowError(string message)
+        {
+            MessageBox.Show(this, message, "Ошибка", 
+                MessageBoxButtons.OK, MessageBoxIcon.Error);
+        }
+
+        public void ShowSuccess(string message)
+        {
+            MessageBox.Show(this, message, "Успех", 
+                MessageBoxButtons.OK, MessageBoxIcon.Information);
+        }
+
+        private void UserCartForm_Load(object sender, EventArgs e)
+        {
+            _ = LoadOrders?.Invoke();
         }
     }
 }

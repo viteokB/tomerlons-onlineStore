@@ -225,7 +225,7 @@ partial class AuthorForm
         label5.Name = "label5";
         label5.Size = new System.Drawing.Size(516, 177);
         label5.TabIndex = 0;
-        label5.Text = "    Оконное приложение на Windows Forms\r\n    Онлайн-магазин автодеталей";
+        label5.Text = "    Оконное приложение на Windows Forms\r\n    Онлайн-магазин автодеталей\r\n    Версия: v0.666";
         // 
         // AuthorForm
         // 

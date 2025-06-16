@@ -2,20 +2,19 @@
 using OnlineStore.Core.Models;
 using Presentation.Common;
 
-namespace Presentation.Views;
-
-public interface IUserCartView : IModalView
+namespace Presentation.Views
 {
-    User CurrentUser { get; set; }
-    Order? SelectedOrder { get; set; }
-    PaginatedResult<Order> UserOrders { get; set; }
-    SearchRequest<OrderSearchParameters> SearchRequest { get; set; }
-    
-    Func<Task> LoadOrders { get; set; }
-    Func<Task> CreateOrder { get; set; }
-    Func<Task> CancelOrder { get; set; }
-    Func<Task> ViewOrderDetails { get; set; }
-    
-    void ShowError(string message);
-    void ShowInfo(string message);
+    public interface IUserCartView : IModalView
+    {
+        User CurrentUser { get; set; }
+        Order? SelectedOrder { get; }
+        PaginatedResult<Order> UserOrders { get; set; }
+        
+        event Func<Task> LoadOrders;
+        event Func<Task> CancelOrder;
+        
+        void ShowError(string message);
+        void ShowSuccess(string message);
+        void UpdateOrdersList();
+    }
 }

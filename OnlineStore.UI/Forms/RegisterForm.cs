@@ -91,11 +91,6 @@ public partial class RegisterForm : Form, IRegisterView
         }
     }
 
-    private void goLoginButton_Click(object sender, EventArgs e)
-    {
-        OpenLoginForm?.Invoke();
-    }
-
     public ModalResult ModalResult { get; set; }
     
     public void SetModalResult(ModalResult modalResult)

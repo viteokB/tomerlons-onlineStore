@@ -37,9 +37,11 @@ public class DatabaseAddress :
             Country = from.Country,
             City = from.City,
             Street = from.Street,
-            HouseNumber = from.HouseNumber,
-            ApartmentNumber = from.ApartmentNumber,
-            Coordinate = new Coordinate(from.Latitude, from.Longitude),
+            HouseNumber = from.HouseNumber == null ?
+                null : from.HouseNumber.ToString(),
+            ApartmentNumber = from.ApartmentNumber?.ToString(),
+            Coordinate = from.Longitude == null || from.Latitude == null ?
+                null : new Coordinate(from.Latitude, from.Longitude),
         };
     }
 
@@ -50,10 +52,11 @@ public class DatabaseAddress :
             Country = from.Country,
             City = from.City,
             Street = from.Street,
-            HouseNumber = from.HouseNumber,
+            HouseNumber = from.HouseNumber == null ?
+                null : from.HouseNumber.ToString(),
             ApartmentNumber = from.ApartmentNumber,
-            Latitude = from.Coordinate.Latitude,
-            Longitude = from.Coordinate.Longitude 
+            Latitude = from.Coordinate == null? -1 : from.Coordinate.Latitude,
+            Longitude = from.Coordinate == null? -1 : from.Coordinate.Longitude,
         };
     }
 }

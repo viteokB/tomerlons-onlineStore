@@ -59,7 +59,7 @@ public class DatabaseOrder :
             DeliveryAddress = DatabaseAddress.Map(from.DeliveryAddress),
             Product = DatabaseProduct.Map(from.Product),
             Warehouse = DatabaseWharehouse.Map(from.Wharehouse),
-            ChangedBy = DatabaseUser.Map(from.ChangedByUser),
+            ChangedBy = from.ChangedByUser == null? null : DatabaseUser.Map(from.ChangedByUser),
             Count = from.Count,
             ProductPrice = from.ProductPrice,
             DeliveryPrice = from.DeliveryPrice,

@@ -19,8 +19,6 @@ public interface IRegisterView : IModalView
     public event Func<bool> IsValidEmail;
     
     public event Func<bool> IsValidRole;
-
-    public event Action OpenLoginForm;
     
     public event Func<Task> RegisterAsync;
     

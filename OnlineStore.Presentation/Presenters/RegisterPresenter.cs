@@ -22,14 +22,7 @@ public class RegisterPresenter : BasePresenter<IRegisterView, List<string>>
         View.IsValidRepeatedPassword += () => ValidateRepeatedPassword(View.Password, View.RepeatedPassword);
         View.IsValidEmail += () => ValidateEmail(View.Email);
         View.IsValidRole += () => ValidateRole(View.Role);
-        View.OpenLoginForm += OpenLoginForm;
         View.RegisterAsync += async () => await RegisterAsync(View.Role, View.Email, View.Password);
-    }
-    
-    private void OpenLoginForm()
-    {
-        _navigationService
-            .NavigateToLogin();
     }
 
     private bool ValidateRepeatedPassword(string password, string repeatedPassword)

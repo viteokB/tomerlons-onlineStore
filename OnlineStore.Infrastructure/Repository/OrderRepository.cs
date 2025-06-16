@@ -4,6 +4,7 @@ using OnlineStore.Core.Common;
 using OnlineStore.Core.Common.Pagination;
 using OnlineStore.Core.Interfaces;
 using OnlineStore.Core.Models;
+using OnlineStore.Core.Models.WhareHouse;
 using OnlineStore.Repository.Models;
 
 namespace OnlineStore.Repository.Repository;
@@ -93,71 +94,80 @@ public class OrderRepository : IOrderRepository
     {
         try
         {
+            // Проверка наличия товара на складе
             var whProdEntity = await _dbContext.WarehousesProducts
                 .Include(wh => wh.Product)
                 .FirstOrDefaultAsync(w => 
-                        w.WharehouseId == createParameters.WarehouseId && w.ProductId == createParameters.ProductId,
+                        w.WharehouseId == createParameters.WarehouseId && 
+                        w.ProductId == createParameters.ProductId,
                     cancellationToken);
 
             if (whProdEntity == null)
-            {
                 return OperationResult.Fail("Склада с таким товаром нет");
-            }
+            
             if (whProdEntity.Count < createParameters.Count)
-            {
-                return OperationResult.Fail("Невозможно положить в корзину, товара на складе меньше чем вы выбрали");
-            }
+                return OperationResult.Fail("Недостаточно товара на складе");
+            
             if (!whProdEntity.Product.IsActive)
-            {
-                return OperationResult.Fail("Невозможно положить в корзину, товара не выпущен на продажу");
-            }
+                return OperationResult.Fail("Товар не доступен для продажи");
 
-            DatabaseAddress? addressEntity = null;
-            if (createParameters.Address != null)
-            {
-                addressEntity = await _dbContext.Addresses
-                    .FirstOrDefaultAsync(a => a.Id == createParameters.Address.Id, cancellationToken);
+            // Обработка адреса
+            if (createParameters.Address == null)
+                return OperationResult.Fail("Адрес обязателен");
 
-                if (addressEntity == null)
-                {
-                    await _dbContext.Addresses
-                        .AddAsync(DatabaseAddress.Map(createParameters.Address), cancellationToken);
-                    await _dbContext.SaveChangesAsync(cancellationToken);
-                }
+            DatabaseAddress addressEntity;
+            
+            // Если адрес новый (Id = 0)
+            if (createParameters.Address.Id == 0)
+            {
+                addressEntity = DatabaseAddress.Map(createParameters.Address);
+                await _dbContext.Addresses.AddAsync(addressEntity, cancellationToken);
+                await _dbContext.SaveChangesAsync(cancellationToken);
+                
+                // Теперь addressEntity содержит сгенерированный Id
             }
             else
             {
-                return OperationResult.Fail("Адрес не задан -> обязательно задать!");
+                // Если адрес существует - проверяем его
+                addressEntity = await _dbContext.Addresses
+                    .FirstOrDefaultAsync(a => a.Id == createParameters.Address.Id, cancellationToken);
+                    
+                if (addressEntity == null)
+                    return OperationResult.Fail("Указанный адрес не найден");
             }
 
+            // Получаем статус "в корзине"
             var inCartStatus = await _dbContext.DeliveryStatuses
-                .FirstOrDefaultAsync(s => s.Name == "в корзине", cancellationToken);
-
+                .FirstOrDefaultAsync(s => s.Name.ToLower() == "в корзине", cancellationToken);
+                
             if (inCartStatus == null)
-            {
-                return OperationResult.Fail("Не найден статус 'в корзине' срочно это исправьте!");
-            }
-            
+                return OperationResult.Fail("Статус 'в корзине' не настроен в системе");
+
+            // Создаем заказ
             var dbOrder = new DatabaseOrder
             {
                 UserId = createParameters.User.Id,
                 DeliveryStatusId = inCartStatus.Id,
-                DeliveryAddressId = addressEntity.Id,
+                DeliveryAddressId = addressEntity.Id, // Используем Id сохраненного адреса
                 ProductId = createParameters.ProductId,
                 WharehouseId = createParameters.WarehouseId,
                 Count = createParameters.Count,
                 ProductPrice = whProdEntity.Product.BasePrice,
-                DeliveryPrice = 100, // пусть будет фиксированной без реализации по зонам
-                DeliveryDays = createParameters.Count, // пусть будет фиксированной без реализации по зонам
-                Description = (createParameters.Description ?? null)!,
+                DeliveryPrice = 100,
+                DeliveryDays = createParameters.Count,
+                Description = createParameters.Description ?? string.Empty,
                 CreatedAt = DateTime.Now,
                 UpdatedAt = DateTime.Now
             };
+
+            await _dbContext.DatabaseOrders.AddAsync(dbOrder, cancellationToken);
+            await _dbContext.SaveChangesAsync(cancellationToken);
+
             return OperationResult.Success();
         }
         catch (Exception ex)
         {
-            return OperationResult.Fail($"Ошибка добавления в корзину: {ex.Message};\n{ex.InnerException?.Message}");
+            return OperationResult.Fail($"Ошибка: {ex.Message}");
         }
     }
 
@@ -169,6 +179,9 @@ public class OrderRepository : IOrderRepository
                 .Include(o => o.User)
                 .Include(o => o.DeliveryStatus)
                 .Include(o => o.Product)
+                .Include(o => o.Wharehouse)
+                .Include(o => o.ChangedByUser)
+                .Include(o => o.DeliveryAddress)
                 .Where(o => o.UserId == userId);
 
             if (request.Query != null)
@@ -188,12 +201,44 @@ public class OrderRepository : IOrderRepository
                 .OrderByDescending(o => o.CreatedAt)
                 .Skip(request.Offset.Value)
                 .Take(request.Limit)
-                .Select(o => DatabaseOrder.Map(o))
                 .ToListAsync(cancellationToken);
+
+            List<Order> orders = new List<Order>();
+            
+            foreach (var o in results)
+            {
+                orders.Add(new Order()
+                {
+                    Id = o.Id,
+                    User = null,
+                    DeliveryAddress = DatabaseAddress.Map(o.DeliveryAddress),
+                    DeliveryStatus = DatabaseDeliveryStatus.Map(o.DeliveryStatus),
+                    Warehouse = new Warehouse
+                    {
+                        Id = o.Wharehouse.Id,
+                        IsActive = o.Wharehouse.IsActive,
+                        Name = o.Wharehouse.Name,
+                        Address = null,
+                    },
+                    ChangedBy = null,
+                    Count = o.Count,
+                    Product = new Product
+                    {
+                        Name = o.Product.Name,
+                        CatalogNumber = o.Product.CatalogNumber
+                    },
+                    ProductPrice = o.ProductPrice,
+                    DeliveryPrice = o.DeliveryPrice,
+                    DeliveryDays = o.DeliveryDays,
+                    Description = o.Description,
+                    CreatedAt = o.CreatedAt,
+                    UpdatedAt = o.UpdatedAt
+                });
+            }
 
             return OperationResult<PaginatedResult<Order>>.Success(
                 new PaginatedResult<Order>(
-                    results,
+                    orders,
                     new PaginationMetadata(
                         request.Offset + request.Limit < totalCount ? request.Offset + request.Limit : null,
                         request.Offset + request.Limit < totalCount,
@@ -203,7 +248,7 @@ public class OrderRepository : IOrderRepository
         }
         catch (Exception ex)
         {
-            return OperationResult<PaginatedResult<Order>>.Fail($"Ошибка при получении заказов: {ex.Message}");
+            return OperationResult<PaginatedResult<Order>>.Fail($"Ошибка при получении заказов: {ex.Message};\n{ex.InnerException?.Message}");
         }
     }
 

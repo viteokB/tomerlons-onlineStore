@@ -209,7 +209,7 @@ public class WarehouseRepository : IWarehouseRepository
         try
         {
             var result = await _wharehouseProductsDbSet
-                .FirstOrDefaultAsync(w => w.Id == warehouseId && w.ProductId == productId, cancellationToken);
+                .FirstOrDefaultAsync(w => w.WharehouseId == warehouseId && w.ProductId == productId, cancellationToken);
             if (result == null)
                 return OperationResult<int>.Success(0);
 

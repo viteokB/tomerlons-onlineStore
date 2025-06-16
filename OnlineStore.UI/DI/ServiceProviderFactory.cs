@@ -69,6 +69,7 @@ public static class ServiceProviderFactory
         services.AddTransient<IUserCartView, UserCartForm>();
         services.AddTransient<IAdminOrdersView, AdminOrdersForm>();
         services.AddTransient<IProductView, ProductForm>();
+        services.AddTransient<IPurchaseView, PurchaseForm>();
         
         // Регистрация Presenters
         services.AddTransient<LoginPresenter>();
@@ -83,6 +84,7 @@ public static class ServiceProviderFactory
         services.AddTransient<UserCartPresenter>();
         services.AddTransient<AdminOrdersPresenter>();
         services.AddTransient<ProductPresenter>();
+        services.AddTransient<PurchasePresenter>();
         
         // Регистрация фабрик презентеров
         services.AddTransient<Func<LoginPresenter>>(provider => 
@@ -120,5 +122,8 @@ public static class ServiceProviderFactory
         
         services.AddTransient<Func<ProductPresenter>>(provider =>
             provider.GetRequiredService<ProductPresenter>);
+        
+        services.AddTransient<Func<PurchasePresenter>>(provider =>
+            provider.GetRequiredService<PurchasePresenter>);
     }
 }

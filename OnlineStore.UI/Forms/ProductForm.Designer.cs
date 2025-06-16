@@ -40,6 +40,7 @@ partial class ProductForm
         cmbType = new System.Windows.Forms.ComboBox();
         cmbBrand = new System.Windows.Forms.ComboBox();
         cmbCountry = new System.Windows.Forms.ComboBox();
+        btnPurchase = new System.Windows.Forms.Button();
         ((System.ComponentModel.ISupportInitialize)dataGridView).BeginInit();
         SuspendLayout();
         // 
@@ -54,7 +55,7 @@ partial class ProductForm
         // 
         // btnSearch
         // 
-        btnSearch.Location = new System.Drawing.Point(578, 397);
+        btnSearch.Location = new System.Drawing.Point(486, 397);
         btnSearch.Name = "btnSearch";
         btnSearch.Size = new System.Drawing.Size(90, 41);
         btnSearch.TabIndex = 1;
@@ -63,7 +64,7 @@ partial class ProductForm
         // 
         // btnPrevPage
         // 
-        btnPrevPage.Location = new System.Drawing.Point(375, 397);
+        btnPrevPage.Location = new System.Drawing.Point(315, 397);
         btnPrevPage.Name = "btnPrevPage";
         btnPrevPage.Size = new System.Drawing.Size(75, 41);
         btnPrevPage.TabIndex = 2;
@@ -72,7 +73,7 @@ partial class ProductForm
         // 
         // btnNextPage
         // 
-        btnNextPage.Location = new System.Drawing.Point(472, 397);
+        btnNextPage.Location = new System.Drawing.Point(396, 397);
         btnNextPage.Name = "btnNextPage";
         btnNextPage.Size = new System.Drawing.Size(84, 41);
         btnNextPage.TabIndex = 3;
@@ -117,11 +118,21 @@ partial class ProductForm
         cmbCountry.Size = new System.Drawing.Size(147, 28);
         cmbCountry.TabIndex = 8;
         // 
+        // btnPurchase
+        // 
+        btnPurchase.Location = new System.Drawing.Point(582, 397);
+        btnPurchase.Name = "btnPurchase";
+        btnPurchase.Size = new System.Drawing.Size(98, 41);
+        btnPurchase.TabIndex = 9;
+        btnPurchase.Text = "btnPurchase ";
+        btnPurchase.UseVisualStyleBackColor = true;
+        // 
         // ProductForm
         // 
         AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
         AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-        ClientSize = new System.Drawing.Size(698, 450);
+        ClientSize = new System.Drawing.Size(708, 450);
+        Controls.Add(btnPurchase);
         Controls.Add(cmbCountry);
         Controls.Add(cmbBrand);
         Controls.Add(cmbType);
@@ -136,6 +147,8 @@ partial class ProductForm
         ResumeLayout(false);
         PerformLayout();
     }
+
+    private System.Windows.Forms.Button btnPurchase;
 
     private System.Windows.Forms.ComboBox cmbCountry;
 
