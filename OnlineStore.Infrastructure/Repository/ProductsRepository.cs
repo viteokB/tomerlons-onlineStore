@@ -12,11 +12,14 @@ public class ProductsRepository : IProductsRepository
     private readonly OnlineStoreDbContext _dbContext;
     
     private readonly DbSet<DatabaseProduct> _databaseProducts;
+    
+    private readonly DbSet<DatabaseProductHistory> _productHistory;
 
     public ProductsRepository(OnlineStoreDbContext dbContext)
     {
         _dbContext = dbContext;
         _databaseProducts = dbContext.Products;
+        _productHistory = dbContext.ProductsHistory;
     }
     
     public async Task<OperationResult> AddProduct(Product product, CancellationToken cancellationToken)
@@ -28,7 +31,7 @@ public class ProductsRepository : IProductsRepository
         {
             var exsist = await _databaseProducts
                 .FirstOrDefaultAsync(p => p.CatalogNumber == product.CatalogNumber, cancellationToken);
-
+            
             if (exsist != null)
             {
                 return OperationResult.Fail("С таким артикулом товар уже есть");
@@ -49,6 +52,9 @@ public class ProductsRepository : IProductsRepository
             };
             
             await _databaseProducts.AddAsync(newProduct, cancellationToken);
+            await _dbContext.SaveChangesAsync(cancellationToken);
+            // Добавление истории изменений
+            await _productHistory.AddAsync(new DatabaseProductHistory(newProduct), cancellationToken);
             await _dbContext.SaveChangesAsync(cancellationToken);
             return OperationResult.Success();
         }
@@ -82,6 +88,10 @@ public class ProductsRepository : IProductsRepository
             entity.ChangedAt = DateTime.Now;
             _dbContext.Update(entity);
             await _dbContext.SaveChangesAsync(cancellationToken);
+            // Добавление истории изменений
+            await _productHistory.AddAsync(new DatabaseProductHistory(product), cancellationToken);
+            await _dbContext.SaveChangesAsync(cancellationToken);
+            
             return OperationResult.Success();
         }
         catch (Exception ex)

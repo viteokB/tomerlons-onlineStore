@@ -6,25 +6,25 @@ public class DatabaseProductHistory
 {
     public int Id { get; set; }
     
-    public int TypeId { get; set; }
+    public int? TypeId { get; set; }
     
     public int ProductId { get; set; }
     
     public DatabaseProduct Product { get; set; } = null!;
     
-    public DatabaseType Type { get; set; } = null!;
+    public DatabaseType? Type { get; set; } = null!;
     
-    public int CountryId { get; set; }
+    public int? CountryId { get; set; }
     
-    public DatabaseCountry Country { get; set; } = null!;
+    public DatabaseCountry? Country { get; set; } = null!;
     
-    public int ChangedById { get; set; }
+    public int? ChangedById { get; set; }
     
-    public DatabaseUser ChangedBy { get; set; } = null!;
+    public DatabaseUser? ChangedBy { get; set; } = null!;
     
-    public int BrandId { get; set; }
+    public int? BrandId { get; set; }
     
-    public DatabaseBrand Brand { get; set; } = null!;
+    public DatabaseBrand? Brand { get; set; } = null!;
     
     public string Name { get; set; } = null!;
 
@@ -37,4 +37,32 @@ public class DatabaseProductHistory
     public bool IsActive { get; set; }
     
     public DateTime ChangedAt { get; set; }
+
+    public DatabaseProductHistory(DatabaseProduct product)
+    {
+        TypeId = product.Type?.Id;
+        CountryId = product.Country?.Id;
+        BrandId = product.Brand?.Id;
+        Name = product.Name;
+        PhotoPath = product.PhotoPath;
+        CatalogNumber = product.CatalogNumber;
+        BasePrice = product.BasePrice;
+        IsActive = product.IsActive;
+        ChangedById = product.ChangedBy?.Id;
+        ChangedAt = product.ChangedAt;
+    }
+    
+    public DatabaseProductHistory(Product product)
+    {
+        TypeId = product.Type?.Id;
+        CountryId = product.Country?.Id;
+        BrandId = product.Brand?.Id;
+        Name = product.Name;
+        PhotoPath = product.PhotoPath;
+        CatalogNumber = product.CatalogNumber;
+        BasePrice = product.BasePrice;
+        IsActive = product.IsActive;
+        ChangedById = product.ChangedBy?.Id;
+        ChangedAt = product.ChangedAt;
+    }
 }
