@@ -112,11 +112,6 @@ namespace Presentation.Presenters
                 {
                     View.UpdateWarehousesHistoryChart(warehouseHistoryResult.Data);
                 }
-
-                if (orderHistoryResult.IsSuccess)
-                {
-                    View.UpdateOrdersHistoryChart(orderHistoryResult.Data);
-                }
             }
             catch (Exception ex)
             {

@@ -20,7 +20,6 @@ public partial class StatisticForm : BaseModalForm<IProductStatisticsView>, IPro
 
     public CartesianChart PriceHistoryChart => priceHistoryChart;
     public CartesianChart WarehouseHistoryChart => warehouseHistoryChart;
-    public CartesianChart OrdersHistoryChart => ordersHistoryChart;
 
     public DateTime StartDate => dtpStartDate.Value;
     public DateTime EndDate => dtpEndDate.Value;
@@ -177,21 +176,6 @@ public partial class StatisticForm : BaseModalForm<IProductStatisticsView>, IPro
         WarehouseHistoryChart.Series = new ISeries[] { series };
     }
 
-    public void UpdateOrdersHistoryChart(PaginatedResult<OrderHistory> paginatedResult)
-    {
-        if (paginatedResult?.Results == null) return;
-
-        var series = new ColumnSeries<OrderHistory>
-        {
-            Values = paginatedResult.Results.OrderBy(x => x.CreatedAt).ToList(),
-            Mapping = (history, index) => new(history.CreatedAt.ToOADate(), history.Count),
-            Name = "Заказы",
-            DataLabelsFormatter = point => $"{DateTime.FromOADate(point.Model.UpdatedAt.ToOADate()):dd.MM.yyyy}: {point.Model.Count} шт."
-        };
-
-        OrdersHistoryChart.Series = new ISeries[] { series };
-    }
-
     public void ShowError(string message)
     {
         MessageBox.Show(this, message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -245,17 +229,6 @@ public partial class StatisticForm : BaseModalForm<IProductStatisticsView>, IPro
             }
         };
 
-        OrdersHistoryChart.Series = new ISeries[]
-        {
-            new ColumnSeries<OrderHistory>
-            {
-                Values = null,
-                Mapping = (history, index) => new(history.CreatedAt.ToOADate(), history.Count),
-                Name = "Заказы",
-                DataLabelsFormatter = point => $"{DateTime.FromOADate(point.Model.UpdatedAt.ToOADate()):dd.MM.yyyy}: {point.Model.Count} шт."
-            }
-        };
-
         // Настройка осей для отображения дат
         var dateAxis = new Axis
         {
@@ -265,6 +238,5 @@ public partial class StatisticForm : BaseModalForm<IProductStatisticsView>, IPro
 
         PriceHistoryChart.XAxes = new[] { dateAxis };
         WarehouseHistoryChart.XAxes = new[] { dateAxis };
-        OrdersHistoryChart.XAxes = new[] { dateAxis };
     }
 }

@@ -22,7 +22,6 @@ namespace Presentation.Views
 
         void UpdatePriceHistoryChart(PaginatedResult<ProductHistory> paginatedResult);
         void UpdateWarehousesHistoryChart(PaginatedResult<WarehouseProductHistory> paginatedResult);
-        void UpdateOrdersHistoryChart(PaginatedResult<OrderHistory> paginatedResult);
         
         void ShowError(string message);
         void ShowLoading();

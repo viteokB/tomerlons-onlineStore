@@ -10,7 +10,15 @@ namespace OnlineStore.Repository.Migrations
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-
+            migrationBuilder.InsertData(
+                table: "delivery_status",
+                columns: new[] { "name", "IsActive", "description" },
+                values: new object[,]
+                {
+                    {
+                        "в корзине", true, "Заказ добавлен в корзину"
+                    }
+                });
         }
 
         /// <inheritdoc />

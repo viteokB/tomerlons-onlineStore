@@ -36,7 +36,6 @@ partial class StatisticForm
         dtpEndDate = new DateTimePicker();
         priceHistoryChart = new LiveChartsCore.SkiaSharpView.WinForms.CartesianChart();
         warehouseHistoryChart = new LiveChartsCore.SkiaSharpView.WinForms.CartesianChart();
-        ordersHistoryChart = new LiveChartsCore.SkiaSharpView.WinForms.CartesianChart();
         label1 = new Label();
         label2 = new Label();
         productsComboBox = new ComboBox();
@@ -45,9 +44,9 @@ partial class StatisticForm
         // 
         // btnApplyFilter
         // 
-        btnApplyFilter.Location = new Point(504, 12);
+        btnApplyFilter.Location = new Point(451, 12);
         btnApplyFilter.Name = "btnApplyFilter";
-        btnApplyFilter.Size = new Size(105, 52);
+        btnApplyFilter.Size = new Size(191, 71);
         btnApplyFilter.TabIndex = 0;
         btnApplyFilter.Text = "применить фильтр";
         btnApplyFilter.UseVisualStyleBackColor = true;
@@ -71,55 +70,47 @@ partial class StatisticForm
         priceHistoryChart.Location = new Point(26, 128);
         priceHistoryChart.MatchAxesScreenDataRatio = false;
         priceHistoryChart.Name = "priceHistoryChart";
-        priceHistoryChart.Size = new Size(583, 188);
+        priceHistoryChart.Size = new Size(616, 238);
         priceHistoryChart.TabIndex = 3;
         // 
         // warehouseHistoryChart
         // 
-        warehouseHistoryChart.Location = new Point(26, 353);
+        warehouseHistoryChart.Location = new Point(26, 425);
         warehouseHistoryChart.MatchAxesScreenDataRatio = false;
         warehouseHistoryChart.Name = "warehouseHistoryChart";
-        warehouseHistoryChart.Size = new Size(583, 188);
+        warehouseHistoryChart.Size = new Size(635, 224);
         warehouseHistoryChart.TabIndex = 4;
-        // 
-        // ordersHistoryChart
-        // 
-        ordersHistoryChart.Location = new Point(26, 589);
-        ordersHistoryChart.MatchAxesScreenDataRatio = false;
-        ordersHistoryChart.Name = "ordersHistoryChart";
-        ordersHistoryChart.Size = new Size(583, 188);
-        ordersHistoryChart.TabIndex = 5;
         // 
         // label1
         // 
         label1.AutoSize = true;
-        label1.Location = new Point(26, 94);
+        label1.Location = new Point(241, 105);
         label1.Name = "label1";
-        label1.Size = new Size(124, 20);
+        label1.Size = new Size(197, 20);
         label1.TabIndex = 6;
-        label1.Text = "priceHistoryChart";
+        label1.Text = "Изменение цены продукта";
         // 
         // label2
         // 
         label2.AutoSize = true;
-        label2.Location = new Point(26, 319);
+        label2.Location = new Point(218, 369);
         label2.Name = "label2";
-        label2.Size = new Size(162, 20);
+        label2.Size = new Size(242, 20);
         label2.TabIndex = 7;
-        label2.Text = "warehouseHistoryChart";
+        label2.Text = "Изменение количества на складе";
         // 
         // productsComboBox
         // 
         productsComboBox.FormattingEnabled = true;
-        productsComboBox.Location = new Point(218, 55);
+        productsComboBox.Location = new Point(176, 55);
         productsComboBox.Name = "productsComboBox";
-        productsComboBox.Size = new Size(203, 28);
+        productsComboBox.Size = new Size(245, 28);
         productsComboBox.TabIndex = 8;
         // 
         // label3
         // 
         label3.AutoSize = true;
-        label3.Location = new Point(143, 58);
+        label3.Location = new Point(101, 58);
         label3.Name = "label3";
         label3.Size = new Size(69, 20);
         label3.TabIndex = 9;
@@ -129,12 +120,11 @@ partial class StatisticForm
         // 
         AutoScaleDimensions = new SizeF(8F, 20F);
         AutoScaleMode = AutoScaleMode.Font;
-        ClientSize = new Size(698, 790);
+        ClientSize = new Size(680, 661);
         Controls.Add(label3);
         Controls.Add(productsComboBox);
         Controls.Add(label2);
         Controls.Add(label1);
-        Controls.Add(ordersHistoryChart);
         Controls.Add(warehouseHistoryChart);
         Controls.Add(priceHistoryChart);
         Controls.Add(dtpEndDate);
@@ -153,7 +143,6 @@ partial class StatisticForm
     private DateTimePicker dtpEndDate;
     private LiveChartsCore.SkiaSharpView.WinForms.CartesianChart priceHistoryChart;
     private LiveChartsCore.SkiaSharpView.WinForms.CartesianChart warehouseHistoryChart;
-    private LiveChartsCore.SkiaSharpView.WinForms.CartesianChart ordersHistoryChart;
     private Label label1;
     private Label label2;
     private ComboBox productsComboBox;

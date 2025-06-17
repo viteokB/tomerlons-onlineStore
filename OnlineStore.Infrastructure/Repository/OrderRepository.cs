@@ -1,5 +1,4 @@
-﻿// OrderRepository.cs
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using OnlineStore.Core.Common;
 using OnlineStore.Core.Common.Pagination;
 using OnlineStore.Core.Interfaces;
@@ -24,51 +23,134 @@ public class OrderRepository : IOrderRepository
 
     public async Task<OperationResult> AddOrder(Order order, CancellationToken cancellationToken)
     {
+        using var transaction = await _dbContext.Database.BeginTransactionAsync(cancellationToken);
+        
         try
         {
-            var dbOrder = new DatabaseOrder
-            {
-                UserId = order.User.Id,
-                DeliveryStatusId = order.DeliveryStatus.Id,
-                DeliveryAddressId = order.DeliveryAddress.Id,
-                ProductId = order.Product.Id,
-                WharehouseId = order.Warehouse.Id,
-                Count = order.Count,
-                ProductPrice = order.ProductPrice,
-                DeliveryPrice = order.DeliveryPrice,
-                DeliveryDays = order.DeliveryDays,
-                Description = order.Description,
-                CreatedAt = DateTime.UtcNow,
-                UpdatedAt = DateTime.UtcNow
-            };
+            // Проверка существования связанных сущностей
+            if (!await _dbContext.Users.AnyAsync(u => u.Id == order.User.Id, cancellationToken))
+                return OperationResult.Fail("Пользователь не найден");
+            
+            if (!await _dbContext.DeliveryStatuses.AnyAsync(d => d.Id == order.DeliveryStatus.Id, cancellationToken))
+                return OperationResult.Fail("Статус доставки не найден");
+            
+            if (!await _dbContext.Addresses.AnyAsync(a => a.Id == order.DeliveryAddress.Id, cancellationToken))
+                return OperationResult.Fail("Адрес доставки не найден");
+            
+            if (!await _dbContext.Products.AnyAsync(p => p.Id == order.Product.Id, cancellationToken))
+                return OperationResult.Fail("Продукт не найден");
+            
+            if (!await _dbContext.Warehouses.AnyAsync(w => w.Id == order.Warehouse.Id, cancellationToken))
+                return OperationResult.Fail("Склад не найден");
+
+            var dbOrder = DatabaseOrder.Map(order);
+            dbOrder.CreatedAt = DateTime.UtcNow;
+            dbOrder.UpdatedAt = DateTime.UtcNow;
 
             await _orders.AddAsync(dbOrder, cancellationToken);
+            await _dbContext.SaveChangesAsync(cancellationToken); // Сохраняем, чтобы получить ID
+
+            // Добавляем запись в историю
+            var history = new DatabaseOrderHistory
+            {
+                OrderId = dbOrder.Id,
+                UserId = dbOrder.UserId,
+                DeliveryStatusId = dbOrder.DeliveryStatusId,
+                DeliveryAddressId = dbOrder.DeliveryAddressId,
+                ProductId = dbOrder.ProductId,
+                WharehouseId = dbOrder.WharehouseId,
+                ChangedById = dbOrder.ChangedById,
+                Count = dbOrder.Count,
+                ProductPrice = dbOrder.ProductPrice,
+                DeliveryPrice = dbOrder.DeliveryPrice,
+                DeliveryDays = dbOrder.DeliveryDays,
+                Description = dbOrder.Description,
+                CreatedAt = dbOrder.CreatedAt,
+                UpdatedAt = dbOrder.UpdatedAt
+            };
+
+            await _orderHistory.AddAsync(history, cancellationToken);
             await _dbContext.SaveChangesAsync(cancellationToken);
+            
+            await transaction.CommitAsync(cancellationToken);
             return OperationResult.Success();
         }
         catch (Exception ex)
         {
+            await transaction.RollbackAsync(cancellationToken);
             return OperationResult.Fail($"Ошибка при создании заказа: {ex.Message}");
         }
     }
 
     public async Task<OperationResult> UpdateOrder(int id, Order order, CancellationToken cancellationToken)
     {
+        using var transaction = await _dbContext.Database.BeginTransactionAsync(cancellationToken);
+        
         try
         {
-            var dbOrder = await _orders.FindAsync(new object[] { id }, cancellationToken);
-            if (dbOrder == null) return OperationResult.Fail("Заказ не найден");
+            var dbOrder = await _orders
+                .Include(o => o.DeliveryStatus)
+                .Include(o => o.ChangedByUser)
+                .FirstOrDefaultAsync(o => o.Id == id, cancellationToken);
+            
+            if (dbOrder == null) 
+                return OperationResult.Fail("Заказ не найден");
 
+            // Проверка существования нового статуса доставки
+            if (!await _dbContext.DeliveryStatuses.AnyAsync(d => d.Id == order.DeliveryStatus.Id, cancellationToken))
+                return OperationResult.Fail("Новый статус доставки не найден");
+
+            // Проверка существования пользователя, который вносит изменения
+            if (order.ChangedBy != null && 
+                !await _dbContext.Users.AnyAsync(u => u.Id == order.ChangedBy.Id, cancellationToken))
+            {
+                return OperationResult.Fail("Пользователь, вносящий изменения, не найден");
+            }
+
+            // Сохраняем старые значения для истории
+            var oldStatusId = dbOrder.DeliveryStatusId;
+            var oldDescription = dbOrder.Description;
+
+            // Обновляем заказ
             dbOrder.DeliveryStatusId = order.DeliveryStatus.Id;
             dbOrder.Description = order.Description;
             dbOrder.UpdatedAt = DateTime.UtcNow;
             dbOrder.ChangedById = order.ChangedBy?.Id;
 
+            _dbContext.Update(dbOrder);
             await _dbContext.SaveChangesAsync(cancellationToken);
+
+            // Добавляем запись в историю только если были изменения
+            if (oldStatusId != dbOrder.DeliveryStatusId || oldDescription != dbOrder.Description)
+            {
+                var history = new DatabaseOrderHistory
+                {
+                    OrderId = dbOrder.Id,
+                    UserId = dbOrder.UserId,
+                    DeliveryStatusId = dbOrder.DeliveryStatusId,
+                    DeliveryAddressId = dbOrder.DeliveryAddressId,
+                    ProductId = dbOrder.ProductId,
+                    WharehouseId = dbOrder.WharehouseId,
+                    ChangedById = dbOrder.ChangedById,
+                    Count = dbOrder.Count,
+                    ProductPrice = dbOrder.ProductPrice,
+                    DeliveryPrice = dbOrder.DeliveryPrice,
+                    DeliveryDays = dbOrder.DeliveryDays,
+                    Description = dbOrder.Description,
+                    CreatedAt = dbOrder.CreatedAt,
+                    UpdatedAt = dbOrder.UpdatedAt
+                };
+
+                await _orderHistory.AddAsync(history, cancellationToken);
+                await _dbContext.SaveChangesAsync(cancellationToken);
+            }
+
+            await transaction.CommitAsync(cancellationToken);
             return OperationResult.Success();
         }
         catch (Exception ex)
         {
+            await transaction.RollbackAsync(cancellationToken);
             return OperationResult.Fail($"Ошибка при обновлении заказа: {ex.Message}");
         }
     }
@@ -90,10 +172,12 @@ public class OrderRepository : IOrderRepository
         }
     }
 
-    public async Task<OperationResult> PutOrderInUserCard(
+      public async Task<OperationResult> PutOrderInUserCard(
         OrderCreateParameters createParameters,
         CancellationToken cancellationToken) 
     {
+        using var transaction = await _dbContext.Database.BeginTransactionAsync(cancellationToken);
+        
         try
         {
             // Проверка наличия товара на складе
@@ -125,8 +209,6 @@ public class OrderRepository : IOrderRepository
                 addressEntity = DatabaseAddress.Map(createParameters.Address);
                 await _dbContext.Addresses.AddAsync(addressEntity, cancellationToken);
                 await _dbContext.SaveChangesAsync(cancellationToken);
-                
-                // Теперь addressEntity содержит сгенерированный Id
             }
             else
             {
@@ -145,32 +227,58 @@ public class OrderRepository : IOrderRepository
             if (inCartStatus == null)
                 return OperationResult.Fail("Статус 'в корзине' не настроен в системе");
 
+            // Проверка существования пользователя
+            if (!await _dbContext.Users.AnyAsync(u => u.Id == createParameters.User.Id, cancellationToken))
+                return OperationResult.Fail("Пользователь не найден");
+
             // Создаем заказ
             var dbOrder = new DatabaseOrder
             {
                 UserId = createParameters.User.Id,
                 DeliveryStatusId = inCartStatus.Id,
-                DeliveryAddressId = addressEntity.Id, // Используем Id сохраненного адреса
+                DeliveryAddressId = addressEntity.Id,
                 ProductId = createParameters.ProductId,
                 WharehouseId = createParameters.WarehouseId,
                 Count = createParameters.Count,
                 ProductPrice = whProdEntity.Product.BasePrice,
-                DeliveryPrice = 100,
-                DeliveryDays = createParameters.Count,
+                DeliveryPrice = 100, // Примерная стоимость доставки
+                DeliveryDays = createParameters.Count, // Примерное количество дней доставки
                 Description = createParameters.Description ?? string.Empty,
-                CreatedAt = DateTime.Now,
-                UpdatedAt = DateTime.Now
+                CreatedAt = DateTime.UtcNow,
+                UpdatedAt = DateTime.UtcNow
             };
 
             await _orders.AddAsync(dbOrder, cancellationToken);
-            // Добавление истории
-            await _orderHistory.AddAsync(DatabaseOrderHistory.CreateHistory(dbOrder), cancellationToken);
-            await _dbContext.SaveChangesAsync(cancellationToken);
+            await _dbContext.SaveChangesAsync(cancellationToken); // Сохраняем, чтобы получить ID
 
+            // Добавляем запись в историю
+            var history = new DatabaseOrderHistory
+            {
+                OrderId = dbOrder.Id,
+                UserId = dbOrder.UserId,
+                DeliveryStatusId = dbOrder.DeliveryStatusId,
+                DeliveryAddressId = dbOrder.DeliveryAddressId,
+                ProductId = dbOrder.ProductId,
+                WharehouseId = dbOrder.WharehouseId,
+                ChangedById = dbOrder.ChangedById,
+                Count = dbOrder.Count,
+                ProductPrice = dbOrder.ProductPrice,
+                DeliveryPrice = dbOrder.DeliveryPrice,
+                DeliveryDays = dbOrder.DeliveryDays,
+                Description = dbOrder.Description,
+                CreatedAt = dbOrder.CreatedAt,
+                UpdatedAt = dbOrder.UpdatedAt
+            };
+
+            await _orderHistory.AddAsync(history, cancellationToken);
+            await _dbContext.SaveChangesAsync(cancellationToken);
+            
+            await transaction.CommitAsync(cancellationToken);
             return OperationResult.Success();
         }
         catch (Exception ex)
         {
+            await transaction.RollbackAsync(cancellationToken);
             return OperationResult.Fail($"Ошибка: {ex.Message}");
         }
     }
