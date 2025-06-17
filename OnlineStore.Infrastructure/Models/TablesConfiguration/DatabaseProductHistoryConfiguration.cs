@@ -10,11 +10,24 @@ public class DatabaseProductHistoryConfiguration : IEntityTypeConfiguration<Data
         builder.ToTable("products_history");
         builder.HasKey(x => x.Id);
         
+        builder.Property(x => x.Id)
+            .HasColumnName("id")
+            .ValueGeneratedOnAdd()
+            .IsRequired();
+
         builder.Property(x => x.ProductId)
-            .HasColumnName("product_history_id");
+            .HasColumnName("product_id")
+            .IsRequired();
+
+        builder.HasOne(x => x.Product)
+            .WithMany(x => x.ProductHistories)
+            .HasForeignKey(x => x.ProductId)
+            .IsRequired(true)
+            .OnDelete(DeleteBehavior.NoAction);
 
         builder.Property(x => x.TypeId)
-            .HasColumnType("type_id");
+            .HasColumnName("type_id")
+            .IsRequired(false);
                 
         builder.HasOne(x => x.Type)
             .WithMany()
@@ -22,17 +35,9 @@ public class DatabaseProductHistoryConfiguration : IEntityTypeConfiguration<Data
             .IsRequired(false)
             .OnDelete(DeleteBehavior.SetNull);
         
-        builder.Property(x => x.ProductId)
-            .HasColumnType("product_id");
-
-        builder.HasOne(x => x.Product)
-            .WithMany(x => x.ProductHistories)
-            .HasForeignKey(x => x.ProductId)
-            .IsRequired(true)
-            .OnDelete(DeleteBehavior.NoAction);
-        
         builder.Property(x => x.CountryId)
-            .HasColumnType("country_id");
+            .HasColumnName("country_id")
+            .IsRequired(false);
         
         builder.HasOne(x => x.Country)
             .WithMany()
@@ -41,7 +46,8 @@ public class DatabaseProductHistoryConfiguration : IEntityTypeConfiguration<Data
             .OnDelete(DeleteBehavior.SetNull);
         
         builder.Property(x => x.ChangedById)
-            .HasColumnType("changed_by");
+            .HasColumnName("changed_by")
+            .IsRequired(false);
         
         builder.HasOne(x => x.ChangedBy)
             .WithMany()
@@ -50,7 +56,8 @@ public class DatabaseProductHistoryConfiguration : IEntityTypeConfiguration<Data
             .OnDelete(DeleteBehavior.SetNull);
         
         builder.Property(x => x.BrandId)
-            .HasColumnType("brand_id");
+            .HasColumnName("brand_id")
+            .IsRequired(false);
         
         builder.HasOne(x => x.Brand)
             .WithMany()
@@ -59,30 +66,30 @@ public class DatabaseProductHistoryConfiguration : IEntityTypeConfiguration<Data
             .OnDelete(DeleteBehavior.SetNull);
 
         builder.Property(x => x.Name)
-            .HasColumnType("name")
-            .HasColumnType("nvarchar(100)")
+            .HasColumnName("name")
+            .HasMaxLength(100)
             .IsRequired();
         
         builder.Property(x => x.PhotoPath)
-            .HasColumnType("photo_path")
-            .HasColumnType("nvarchar(150)")
+            .HasColumnName("photo_path")
+            .HasMaxLength(150)
             .IsRequired(false);
         
         builder.Property(x => x.CatalogNumber)
-            .HasColumnType("catalog_number")
-            .HasColumnType("nvarchar(100)")
+            .HasColumnName("catalog_number")
+            .HasMaxLength(100)
             .IsRequired();
         
         builder.Property(x => x.BasePrice)
-            .HasColumnType("base_price")
+            .HasColumnName("base_price")
             .IsRequired();
         
         builder.Property(x => x.IsActive)
-            .HasColumnType("is_active")
+            .HasColumnName("is_active")
             .IsRequired();
         
         builder.Property(x => x.ChangedAt)
-            .HasColumnType("changed_at")
+            .HasColumnName("changed_at")
             .IsRequired();
     }
 }

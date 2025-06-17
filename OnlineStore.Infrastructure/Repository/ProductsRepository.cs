@@ -29,14 +29,37 @@ public class ProductsRepository : IProductsRepository
         
         try
         {
-            var exsist = await _databaseProducts
+            // Проверка существования товара с таким артикулом
+            var exist = await _databaseProducts
                 .FirstOrDefaultAsync(p => p.CatalogNumber == product.CatalogNumber, cancellationToken);
             
-            if (exsist != null)
+            if (exist != null)
             {
-                return OperationResult.Fail("С таким артикулом товар уже есть");
+                return OperationResult.Fail("Товар с таким артикулом уже существует");
             }
             
+            // Проверка существования связанных объектов
+            if (product.Type?.Id != null && !await _dbContext.Types.AnyAsync(t => t.Id == product.Type.Id, cancellationToken))
+            {
+                return OperationResult.Fail("Указанный тип не существует");
+            }
+            
+            if (product.Country?.Id != null && !await _dbContext.Countries.AnyAsync(c => c.Id == product.Country.Id, cancellationToken))
+            {
+                return OperationResult.Fail("Указанная страна не существует");
+            }
+            
+            if (product.Brand?.Id != null && !await _dbContext.Brands.AnyAsync(b => b.Id == product.Brand.Id, cancellationToken))
+            {
+                return OperationResult.Fail("Указанный бренд не существует");
+            }
+            
+            if (product.ChangedBy?.Id != null && !await _dbContext.Users.AnyAsync(u => u.Id == product.ChangedBy.Id, cancellationToken))
+            {
+                return OperationResult.Fail("Указанный пользователь не существует");
+            }
+            
+            // Создание нового продукта
             var newProduct = new DatabaseProduct
             {
                 TypeId = product.Type?.Id,
@@ -48,14 +71,32 @@ public class ProductsRepository : IProductsRepository
                 BasePrice = product.BasePrice,
                 IsActive = product.IsActive,
                 ChangedById = product.ChangedBy?.Id,
-                ChangedAt = product.ChangedAt
+                ChangedAt = DateTime.UtcNow // Используем текущее время
             };
             
+            // Добавление продукта
             await _databaseProducts.AddAsync(newProduct, cancellationToken);
-            // Добавление истории изменений
-            var history = DatabaseProductHistory.CreateHistory(product);
+            await _dbContext.SaveChangesAsync(cancellationToken);
+            
+            // После сохранения продукта (когда у него появится ID) добавляем историю
+            var history = new DatabaseProductHistory
+            {
+                ProductId = newProduct.Id, // Теперь ID существует
+                TypeId = newProduct.TypeId,
+                CountryId = newProduct.CountryId,
+                BrandId = newProduct.BrandId,
+                Name = newProduct.Name,
+                PhotoPath = newProduct.PhotoPath,
+                CatalogNumber = newProduct.CatalogNumber,
+                BasePrice = newProduct.BasePrice,
+                IsActive = newProduct.IsActive,
+                ChangedById = newProduct.ChangedById,
+                ChangedAt = newProduct.ChangedAt
+            };
+            
             await _productHistory.AddAsync(history, cancellationToken);
             await _dbContext.SaveChangesAsync(cancellationToken);
+            
             return OperationResult.Success();
         }
         catch (Exception ex)

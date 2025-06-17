@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using OnlineStore.Repository.Models;
 
 namespace OnlineStore.Repository.Models.TablesConfiguration;
 
@@ -13,6 +14,7 @@ public class DatabaseOrderHistoryConfiguration : IEntityTypeConfiguration<Databa
 
         builder.Property(x => x.Id)
             .HasColumnName("id")
+            .ValueGeneratedOnAdd()
             .IsRequired();
 
         builder.Property(x => x.OrderId)

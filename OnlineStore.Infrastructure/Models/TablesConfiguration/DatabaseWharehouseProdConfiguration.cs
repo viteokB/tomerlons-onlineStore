@@ -9,10 +9,12 @@ public class DatabaseWharehouseProdConfiguration : IEntityTypeConfiguration<Data
     {
         builder.ToTable("warehouse_products");
 
-        builder.Property(x => x.ProductId)
-            .HasColumnName("id");
-        
         builder.HasKey(x => x.Id);
+        
+        builder.Property(x => x.Id)
+            .HasColumnName("id")
+            .ValueGeneratedOnAdd()
+            .IsRequired();
         
         builder.Property(x => x.ProductId)
             .HasColumnName("product_id")
@@ -21,28 +23,35 @@ public class DatabaseWharehouseProdConfiguration : IEntityTypeConfiguration<Data
         builder.HasOne(x => x.Product)
             .WithMany(x => x.WhProducts)
             .HasForeignKey(x => x.ProductId)
-            .OnDelete(DeleteBehavior.Cascade);
+            .IsRequired(true)
+            .OnDelete(DeleteBehavior.NoAction);
 
-        builder.Property(x => x.ProductId)
-            .HasColumnName("product_id");
+        builder.Property(x => x.WharehouseId)
+            .HasColumnName("warehouse_id")
+            .IsRequired();
         
         builder.HasOne(x => x.Wharehouse)
             .WithMany(x => x.WhProducts)
             .HasForeignKey(x => x.WharehouseId)
-            .OnDelete(DeleteBehavior.Cascade);
+            .IsRequired(true)
+            .OnDelete(DeleteBehavior.NoAction);
         
         builder.Property(x => x.ChangedById)
-            .HasColumnName("changed_by");
+            .HasColumnName("changed_by")
+            .IsRequired(false);
         
         builder.HasOne(x => x.ChangedBy)
             .WithMany()
             .HasForeignKey(x => x.ChangedById)
+            .IsRequired(false)
             .OnDelete(DeleteBehavior.SetNull);
         
         builder.Property(x => x.Count)
-            .HasColumnName("count");
+            .HasColumnName("count")
+            .IsRequired();
 
         builder.Property(x => x.ChangedAt)
-            .HasColumnName("changed_at");
+            .HasColumnName("changed_at")
+            .IsRequired();
     }
 }

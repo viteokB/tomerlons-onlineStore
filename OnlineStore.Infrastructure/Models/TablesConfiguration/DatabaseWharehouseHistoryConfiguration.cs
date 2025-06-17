@@ -13,6 +13,7 @@ public class DatabaseWharehouseProdHistoryConfiguration : IEntityTypeConfigurati
 
         builder.Property(x => x.Id)
             .HasColumnName("id")
+            .ValueGeneratedOnAdd()
             .IsRequired();
 
         builder.Property(x => x.WarehouseProdId)

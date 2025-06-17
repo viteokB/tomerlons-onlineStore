@@ -226,52 +226,90 @@ public class WarehouseRepository : IWarehouseRepository
     }
 
     public async Task<OperationResult> UpdateWarehouseProductCount(
-        int warehouseId, int productId, int changedById, int count, CancellationToken cancellationToken)
+    int warehouseId, int productId, int changedById, int count, CancellationToken cancellationToken)
     {
         if (count < 0)
-            return OperationResult.Fail($"Число продукции товара не может быть меньше 0");
-        
+            return OperationResult.Fail("Количество продукции не может быть отрицательным");
+
         try
         {
-            var wharehouse = await _wharehouseDbSet
-                .FirstOrDefaultAsync(w => w.Id == warehouseId, cancellationToken);
+            // Проверка существования склада
+            var warehouseExists = await _wharehouseDbSet
+                .AnyAsync(w => w.Id == warehouseId, cancellationToken);
+            if (!warehouseExists)
+                return OperationResult.Fail("Указанный склад не существует");
 
-            if (wharehouse == null)
+            // Проверка существования продукта
+            var productExists = await _dbContext.Products
+                .AnyAsync(p => p.Id == productId, cancellationToken);
+            if (!productExists)
+                return OperationResult.Fail("Указанный продукт не существует");
+
+            // Проверка существования пользователя
+            var userExists = await _dbContext.Users
+                .AnyAsync(u => u.Id == changedById, cancellationToken);
+            if (!userExists)
+                return OperationResult.Fail("Указанный пользователь не существует");
+
+            // Начинаем транзакцию
+            using var transaction = await _dbContext.Database.BeginTransactionAsync(cancellationToken);
+
+            try
             {
-                return OperationResult.Fail("Такого склада не существует");
-            }
+                // Поиск или создание записи о продукте на складе
+                var warehouseProduct = await _wharehouseProductsDbSet
+                    .FirstOrDefaultAsync(wp => wp.WharehouseId == warehouseId && wp.ProductId == productId,
+                        cancellationToken);
 
-            var product = await _dbContext.Products
-                .FirstOrDefaultAsync(p => p.Id == productId, cancellationToken);
-
-            var wharehouseProduct = await _wharehouseProductsDbSet
-                .FirstOrDefaultAsync(wp => wp.WharehouseId == warehouseId && wp.ProductId == productId,
-                    cancellationToken);
-
-            if (wharehouseProduct != null)
-            {
-                wharehouseProduct.Count = count;
-                _dbContext.Update(wharehouseProduct);
-                await _wharehouseProdHistories.AddAsync(DatabaseWharehouseProdHistory.CreateHistory(wharehouseProduct), cancellationToken);
-                await _dbContext.SaveChangesAsync(cancellationToken);
-            }
-            else
-            {
-                wharehouseProduct = new DatabaseWharehouseProducts
+                if (warehouseProduct != null)
                 {
+                    // Обновление существующей записи
+                    warehouseProduct.Count = count;
+                    warehouseProduct.ChangedById = changedById;
+                    warehouseProduct.ChangedAt = DateTime.UtcNow;
+                    _dbContext.Update(warehouseProduct);
+                }
+                else
+                {
+                    // Создание новой записи
+                    warehouseProduct = new DatabaseWharehouseProducts
+                    {
+                        ProductId = productId,
+                        WharehouseId = warehouseId,
+                        ChangedById = changedById,
+                        Count = count,
+                        ChangedAt = DateTime.UtcNow
+                    };
+                    await _wharehouseProductsDbSet.AddAsync(warehouseProduct, cancellationToken);
+                }
+
+                // Сохраняем изменения, чтобы получить ID для warehouseProduct
+                await _dbContext.SaveChangesAsync(cancellationToken);
+
+                // Создаем запись истории
+                var history = new DatabaseWharehouseProdHistory
+                {
+                    WarehouseProdId = warehouseProduct.Id,
                     ProductId = productId,
                     WharehouseId = warehouseId,
                     ChangedById = changedById,
                     Count = count,
-                    ChangedAt = DateTime.Now
+                    ChangedAt = DateTime.UtcNow
                 };
-                await _wharehouseProductsDbSet.AddAsync(wharehouseProduct, cancellationToken);
-                await _wharehouseProdHistories
-                    .AddAsync(DatabaseWharehouseProdHistory.CreateHistory(wharehouseProduct), cancellationToken);
+
+                await _wharehouseProdHistories.AddAsync(history, cancellationToken);
                 await _dbContext.SaveChangesAsync(cancellationToken);
+
+                // Фиксируем транзакцию
+                await transaction.CommitAsync(cancellationToken);
+
+                return OperationResult.Success();
             }
-            
-            return OperationResult.Success();
+            catch
+            {
+                await transaction.RollbackAsync(cancellationToken);
+                throw;
+            }
         }
         catch (Exception ex)
         {

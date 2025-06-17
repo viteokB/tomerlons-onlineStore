@@ -42,6 +42,7 @@ public class DatabaseProductHistory
     {
         return new DatabaseProductHistory()
         {
+            ProductId = product.Id,
             TypeId = product.Type?.Id,
             CountryId = product.Country?.Id,
             BrandId = product.Brand?.Id,
@@ -59,6 +60,7 @@ public class DatabaseProductHistory
     {
         return new DatabaseProductHistory()
         {
+            ProductId = product.Id,
             TypeId = product.Type?.Id,
             CountryId = product.Country?.Id,
             BrandId = product.Brand?.Id,

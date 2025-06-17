@@ -34,6 +34,7 @@ public class DatabaseWharehouseProdHistory
         {
             ProductId = whProducts.ProductId,
             WharehouseId = whProducts.WharehouseId,
+            WarehouseProdId = whProducts.Id,
             ChangedById = whProducts.ChangedById,
             Count = whProducts.Count,
             ChangedAt = DateTime.Now,
