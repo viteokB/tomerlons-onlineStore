@@ -27,6 +27,8 @@ public interface INavigationService
     ModalResult NavigateToProductsForm(User user);
     
     ModalResult NavigateToPurchase((Product product, User user) arg);
-    
+
+    ModalResult NavigateToStatisticForm(User user);
+
     void NavigateToMain();
 }

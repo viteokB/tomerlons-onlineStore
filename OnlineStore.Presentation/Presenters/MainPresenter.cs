@@ -37,6 +37,19 @@ public class MainPresenter : BasePresenter<IMainView>
         View.OpenUserCartDialog += OnOpenUserCartDialog;
         View.OpenAdminOrdersDialog += OnOpenAdminDialog;
         View.OpenProducts += OnOpenProducts;
+        View.OpenStatistics += OnOpenStatistics;
+    }
+
+    private void OnOpenStatistics()
+    {
+        if (View.User != null)
+        {
+            _navigationService.NavigateToStatisticForm(View.User);
+        }
+        else
+        {
+            View.ShowMessage("Невозможно открыть дэшборд, вы не вошли");
+        }
     }
 
     private void OnOpenProducts()

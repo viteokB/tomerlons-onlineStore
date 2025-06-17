@@ -52,9 +52,9 @@ public class ProductsRepository : IProductsRepository
             };
             
             await _databaseProducts.AddAsync(newProduct, cancellationToken);
-            await _dbContext.SaveChangesAsync(cancellationToken);
             // Добавление истории изменений
-            await _productHistory.AddAsync(new DatabaseProductHistory(newProduct), cancellationToken);
+            var history = DatabaseProductHistory.CreateHistory(product);
+            await _productHistory.AddAsync(history, cancellationToken);
             await _dbContext.SaveChangesAsync(cancellationToken);
             return OperationResult.Success();
         }
@@ -87,9 +87,8 @@ public class ProductsRepository : IProductsRepository
             entity.IsActive = product.IsActive;
             entity.ChangedAt = DateTime.Now;
             _dbContext.Update(entity);
-            await _dbContext.SaveChangesAsync(cancellationToken);
             // Добавление истории изменений
-            await _productHistory.AddAsync(new DatabaseProductHistory(product), cancellationToken);
+            await _productHistory.AddAsync(DatabaseProductHistory.CreateHistory(product), cancellationToken);
             await _dbContext.SaveChangesAsync(cancellationToken);
             
             return OperationResult.Success();
@@ -119,6 +118,33 @@ public class ProductsRepository : IProductsRepository
         }
     }
 
+    public async Task<OperationResult<Product>> GetProductById(int id, CancellationToken cancellationToken)
+    {
+        try
+        {
+            var entity = await _databaseProducts
+                .AsNoTracking() // Recommended for read-only operations
+                .Include(p => p.Country)
+                .Include(p => p.Brand)
+                .Include(p => p.Type)
+                .Include(p => p.ChangedBy)
+                .Include(p => p.ChangedBy.Role)
+                .Include(p => p.Brand.Country)
+                .FirstOrDefaultAsync(p => p.Id == id, cancellationToken);
+
+            if (entity == null)
+            {
+                OperationResult<Product>.Fail($"Продукт с id {id} не найден");
+            }
+            
+            return OperationResult<Product>.Success(DatabaseProduct.Map(entity));
+        }
+        catch (Exception ex)
+        {
+            return OperationResult<Product>.Fail(ex.InnerException?.Message ?? ex.Message);
+        }
+    }
+
     public async Task<OperationResult<PaginatedResult<Product>>> SearchProducts(
         SearchRequest<ProductsParamets> searchRequest, CancellationToken cancellationToken)
     {
@@ -134,15 +160,17 @@ public class ProductsRepository : IProductsRepository
                 .Include(p => p.Brand.Country)
                 .Where(p => p.IsActive == searchRequest.Query.IsActive); // Filter out inactive products by default
 
+            var count = await query.CountAsync(cancellationToken);
+            
             // Apply filters if parameters are provided
             if (searchRequest.Query != null!)
             {
                 if (searchRequest.Query.ProductName != null)
                 {
-                    var searchTerm = $"{searchRequest.Query.ProductName.ToLower()}%";
+                    var searchTerm = $"{searchRequest.Query.ProductName}%";
                     query = query
                         .Where(c =>
-                            EF.Functions.Like(c.Name.ToLower(), searchTerm));
+                            EF.Functions.Like(c.Name, searchTerm));
                 }
                 if (searchRequest.Query.ProductType != null)
                 {

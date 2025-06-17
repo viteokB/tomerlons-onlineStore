@@ -40,6 +40,8 @@ public class DatabaseProduct : IMapWith<DatabaseProduct, Product>, IMapWith<Prod
     
     public ICollection<DatabaseOrder> Orders { get; set; } = new List<DatabaseOrder>();
     
+    public ICollection<DatabaseProductHistory> ProductHistories { get; set; } = new List<DatabaseProductHistory>();
+    
     public static Product Map(DatabaseProduct from)
     {
         return new Product

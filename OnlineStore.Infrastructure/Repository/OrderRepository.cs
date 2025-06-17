@@ -13,10 +13,12 @@ public class OrderRepository : IOrderRepository
 {
     private readonly OnlineStoreDbContext _dbContext;
     private readonly DbSet<DatabaseOrder> _orders;
+    private readonly DbSet<DatabaseOrderHistory> _orderHistory;
 
     public OrderRepository(OnlineStoreDbContext dbContext)
     {
         _dbContext = dbContext;
+        _orderHistory = dbContext.DatabaseOrderHistory;
         _orders = dbContext.DatabaseOrders;
     }
 
@@ -160,7 +162,9 @@ public class OrderRepository : IOrderRepository
                 UpdatedAt = DateTime.Now
             };
 
-            await _dbContext.DatabaseOrders.AddAsync(dbOrder, cancellationToken);
+            await _orders.AddAsync(dbOrder, cancellationToken);
+            // Добавление истории
+            await _orderHistory.AddAsync(DatabaseOrderHistory.CreateHistory(dbOrder), cancellationToken);
             await _dbContext.SaveChangesAsync(cancellationToken);
 
             return OperationResult.Success();

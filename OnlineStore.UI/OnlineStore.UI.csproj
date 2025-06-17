@@ -51,9 +51,14 @@
       <Compile Update="Forms\PurchaseForm.cs">
         <SubType>Form</SubType>
       </Compile>
+      <Compile Update="Forms\HistoryChartForm.cs">
+        <SubType>Form</SubType>
+      </Compile>
+      <Compile Update="Forms\StatisticForm.cs" />
     </ItemGroup>
 
     <ItemGroup>
+      <PackageReference Include="LiveChartsCore.SkiaSharpView.WinForms" Version="2.0.0-rc5.4" />
       <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="9.0.5">
         <PrivateAssets>all</PrivateAssets>
         <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>

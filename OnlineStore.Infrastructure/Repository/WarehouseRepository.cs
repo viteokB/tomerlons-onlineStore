@@ -15,11 +15,13 @@ public class WarehouseRepository : IWarehouseRepository
     private readonly OnlineStoreDbContext _dbContext;
     private readonly DbSet<DatabaseWharehouse> _wharehouseDbSet;
     private readonly DbSet<DatabaseWharehouseProducts> _wharehouseProductsDbSet;
+    private readonly DbSet<DatabaseWharehouseProdHistory> _wharehouseProdHistories;
 
     public WarehouseRepository(OnlineStoreDbContext dbContext)
     {
         _wharehouseProductsDbSet = dbContext.WarehousesProducts;
         _wharehouseDbSet = dbContext.Warehouses;
+        _wharehouseProdHistories = dbContext.WarehousesProductsHistory;
         _dbContext = dbContext;
     }
     
@@ -196,6 +198,7 @@ public class WarehouseRepository : IWarehouseRepository
     public async Task<OperationResult<Warehouse>> GetWarehouse(int id)
     {
         var result = await _wharehouseDbSet
+            .Include(w => w.Address)
             .FirstOrDefaultAsync(w => w.Id == id);
 
         if (result == null)
@@ -249,18 +252,22 @@ public class WarehouseRepository : IWarehouseRepository
             {
                 wharehouseProduct.Count = count;
                 _dbContext.Update(wharehouseProduct);
+                await _wharehouseProdHistories.AddAsync(DatabaseWharehouseProdHistory.CreateHistory(wharehouseProduct), cancellationToken);
                 await _dbContext.SaveChangesAsync(cancellationToken);
             }
             else
             {
-                await _wharehouseProductsDbSet.AddAsync(new DatabaseWharehouseProducts
+                wharehouseProduct = new DatabaseWharehouseProducts
                 {
                     ProductId = productId,
                     WharehouseId = warehouseId,
                     ChangedById = changedById,
                     Count = count,
                     ChangedAt = DateTime.Now
-                }, cancellationToken);
+                };
+                await _wharehouseProductsDbSet.AddAsync(wharehouseProduct, cancellationToken);
+                await _wharehouseProdHistories
+                    .AddAsync(DatabaseWharehouseProdHistory.CreateHistory(wharehouseProduct), cancellationToken);
                 await _dbContext.SaveChangesAsync(cancellationToken);
             }
             

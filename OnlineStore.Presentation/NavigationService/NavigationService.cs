@@ -19,6 +19,7 @@ public class NavigationService : INavigationService
     private readonly Func<AdminOrdersPresenter> _adminOrdersPresenterFactory;
     private readonly Func<ProductPresenter> _productPresenterFactory;
     private readonly Func<PurchasePresenter> _purchasePresenterFactory;
+    private readonly Func<ProductStatisticsPresenter> _productStatisticFactory;
 
     public NavigationService(
         Func<LoginPresenter> loginPresenterFactory,
@@ -33,7 +34,8 @@ public class NavigationService : INavigationService
         Func<UserCartPresenter> userCartPresenterFactory,
         Func<AdminOrdersPresenter> adminOrdersPresenterFactory,
         Func<ProductPresenter> productPresenterFactory,
-        Func<PurchasePresenter> purchasePresenterFactory)
+        Func<PurchasePresenter> purchasePresenterFactory,
+        Func<ProductStatisticsPresenter> productStatisticFactory)
     {
         _loginPresenterFactory = loginPresenterFactory;
         _registerPresenterFactory = registerPresenterFactory;
@@ -48,6 +50,7 @@ public class NavigationService : INavigationService
         _adminOrdersPresenterFactory = adminOrdersPresenterFactory;
         _productPresenterFactory = productPresenterFactory;
         _purchasePresenterFactory = purchasePresenterFactory;
+        _productStatisticFactory = productStatisticFactory;
     }
 
     public ComplexModalResult<User> NavigateToLogin()
@@ -140,4 +143,11 @@ public class NavigationService : INavigationService
 
     public void NavigateToMain()
         => _mainPresenterFactory().Run();
+
+    public ModalResult NavigateToStatisticForm(User user)
+    {
+        var presenter = _productStatisticFactory();
+        presenter.Run(user);
+        return presenter.View.ModalResult;
+    }
 }

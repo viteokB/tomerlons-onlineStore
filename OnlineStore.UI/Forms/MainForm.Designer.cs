@@ -31,24 +31,25 @@ partial class MainForm
     /// </summary>
     private void InitializeComponent()
     {
-        button1 = new System.Windows.Forms.Button();
-        button2 = new System.Windows.Forms.Button();
-        button3 = new System.Windows.Forms.Button();
-        button4 = new System.Windows.Forms.Button();
-        button5 = new System.Windows.Forms.Button();
-        button6 = new System.Windows.Forms.Button();
-        button7 = new System.Windows.Forms.Button();
-        warehouseDialog = new System.Windows.Forms.Button();
-        btnUserCart = new System.Windows.Forms.Button();
-        btnAdminOrders = new System.Windows.Forms.Button();
-        btnProductForm = new System.Windows.Forms.Button();
+        button1 = new Button();
+        button2 = new Button();
+        button3 = new Button();
+        button4 = new Button();
+        button5 = new Button();
+        button6 = new Button();
+        button7 = new Button();
+        warehouseDialog = new Button();
+        btnUserCart = new Button();
+        btnAdminOrders = new Button();
+        btnProductForm = new Button();
+        button8 = new Button();
         SuspendLayout();
         // 
         // button1
         // 
-        button1.Location = new System.Drawing.Point(224, 142);
+        button1.Location = new Point(224, 142);
         button1.Name = "button1";
-        button1.Size = new System.Drawing.Size(75, 36);
+        button1.Size = new Size(75, 36);
         button1.TabIndex = 0;
         button1.Text = "login";
         button1.UseVisualStyleBackColor = true;
@@ -56,9 +57,9 @@ partial class MainForm
         // 
         // button2
         // 
-        button2.Location = new System.Drawing.Point(339, 142);
+        button2.Location = new Point(339, 142);
         button2.Name = "button2";
-        button2.Size = new System.Drawing.Size(75, 36);
+        button2.Size = new Size(75, 36);
         button2.TabIndex = 1;
         button2.Text = "register";
         button2.UseVisualStyleBackColor = true;
@@ -66,9 +67,9 @@ partial class MainForm
         // 
         // button3
         // 
-        button3.Location = new System.Drawing.Point(25, 12);
+        button3.Location = new Point(25, 12);
         button3.Name = "button3";
-        button3.Size = new System.Drawing.Size(75, 36);
+        button3.Size = new Size(75, 36);
         button3.TabIndex = 2;
         button3.Text = "About";
         button3.UseVisualStyleBackColor = true;
@@ -76,9 +77,9 @@ partial class MainForm
         // 
         // button4
         // 
-        button4.Location = new System.Drawing.Point(576, 142);
+        button4.Location = new Point(576, 142);
         button4.Name = "button4";
-        button4.Size = new System.Drawing.Size(115, 36);
+        button4.Size = new Size(115, 36);
         button4.TabIndex = 3;
         button4.Text = "typesRedactor";
         button4.UseVisualStyleBackColor = true;
@@ -86,9 +87,9 @@ partial class MainForm
         // 
         // button5
         // 
-        button5.Location = new System.Drawing.Point(576, 203);
+        button5.Location = new Point(576, 203);
         button5.Name = "button5";
-        button5.Size = new System.Drawing.Size(115, 36);
+        button5.Size = new Size(115, 36);
         button5.TabIndex = 4;
         button5.Text = "countryDialog";
         button5.UseVisualStyleBackColor = true;
@@ -96,9 +97,9 @@ partial class MainForm
         // 
         // button6
         // 
-        button6.Location = new System.Drawing.Point(576, 266);
+        button6.Location = new Point(576, 266);
         button6.Name = "button6";
-        button6.Size = new System.Drawing.Size(115, 36);
+        button6.Size = new Size(115, 36);
         button6.TabIndex = 5;
         button6.Text = "brandDialog";
         button6.UseVisualStyleBackColor = true;
@@ -106,9 +107,9 @@ partial class MainForm
         // 
         // button7
         // 
-        button7.Location = new System.Drawing.Point(576, 88);
+        button7.Location = new Point(576, 88);
         button7.Name = "button7";
-        button7.Size = new System.Drawing.Size(115, 36);
+        button7.Size = new Size(115, 36);
         button7.TabIndex = 6;
         button7.Text = "productRedactory";
         button7.UseVisualStyleBackColor = true;
@@ -116,9 +117,9 @@ partial class MainForm
         // 
         // warehouseDialog
         // 
-        warehouseDialog.Location = new System.Drawing.Point(576, 329);
+        warehouseDialog.Location = new Point(576, 329);
         warehouseDialog.Name = "warehouseDialog";
-        warehouseDialog.Size = new System.Drawing.Size(115, 36);
+        warehouseDialog.Size = new Size(115, 36);
         warehouseDialog.TabIndex = 7;
         warehouseDialog.Text = "warehouseDialog";
         warehouseDialog.UseVisualStyleBackColor = true;
@@ -126,9 +127,9 @@ partial class MainForm
         // 
         // btnUserCart
         // 
-        btnUserCart.Location = new System.Drawing.Point(339, 199);
+        btnUserCart.Location = new Point(339, 199);
         btnUserCart.Name = "btnUserCart";
-        btnUserCart.Size = new System.Drawing.Size(75, 44);
+        btnUserCart.Size = new Size(75, 44);
         btnUserCart.TabIndex = 8;
         btnUserCart.Text = "User cart";
         btnUserCart.UseVisualStyleBackColor = true;
@@ -136,9 +137,9 @@ partial class MainForm
         // 
         // btnAdminOrders
         // 
-        btnAdminOrders.Location = new System.Drawing.Point(576, 380);
+        btnAdminOrders.Location = new Point(576, 380);
         btnAdminOrders.Name = "btnAdminOrders";
-        btnAdminOrders.Size = new System.Drawing.Size(115, 44);
+        btnAdminOrders.Size = new Size(115, 44);
         btnAdminOrders.TabIndex = 9;
         btnAdminOrders.Text = "Admin orders";
         btnAdminOrders.UseVisualStyleBackColor = true;
@@ -146,19 +147,30 @@ partial class MainForm
         // 
         // btnProductForm
         // 
-        btnProductForm.Location = new System.Drawing.Point(339, 262);
+        btnProductForm.Location = new Point(339, 262);
         btnProductForm.Name = "btnProductForm";
-        btnProductForm.Size = new System.Drawing.Size(75, 44);
+        btnProductForm.Size = new Size(75, 44);
         btnProductForm.TabIndex = 10;
         btnProductForm.Text = "products";
         btnProductForm.UseVisualStyleBackColor = true;
         btnProductForm.Click += btnProductForm_Click;
         // 
+        // button8
+        // 
+        button8.Location = new Point(576, 32);
+        button8.Name = "button8";
+        button8.Size = new Size(115, 36);
+        button8.TabIndex = 11;
+        button8.Text = "dashboard";
+        button8.UseVisualStyleBackColor = true;
+        button8.Click += button8_Click;
+        // 
         // MainForm
         // 
-        AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
-        AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-        ClientSize = new System.Drawing.Size(800, 450);
+        AutoScaleDimensions = new SizeF(8F, 20F);
+        AutoScaleMode = AutoScaleMode.Font;
+        ClientSize = new Size(800, 450);
+        Controls.Add(button8);
         Controls.Add(btnProductForm);
         Controls.Add(btnAdminOrders);
         Controls.Add(btnUserCart);
@@ -170,6 +182,7 @@ partial class MainForm
         Controls.Add(button3);
         Controls.Add(button2);
         Controls.Add(button1);
+        Name = "MainForm";
         Text = "MainForm";
         ResumeLayout(false);
     }
@@ -180,7 +193,7 @@ partial class MainForm
     private System.Windows.Forms.Button btnAdminOrders;
 
     private System.Windows.Forms.Button warehouseDialog;
-
+    
     private System.Windows.Forms.Button button7;
 
     private System.Windows.Forms.Button button6;
@@ -195,4 +208,6 @@ partial class MainForm
     private System.Windows.Forms.Button button2;
 
     #endregion
+
+    private Button button8;
 }

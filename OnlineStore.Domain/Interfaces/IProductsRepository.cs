@@ -12,6 +12,8 @@ public interface IProductsRepository
     
     public Task<OperationResult> DeleteProduct(int? id, CancellationToken cancellationToken);
     
+    public Task<OperationResult<Product>> GetProductById(int id, CancellationToken cancellationToken);
+    
     public Task<OperationResult<PaginatedResult<Product>>> SearchProducts(
         SearchRequest<ProductsParamets> searchRequest, CancellationToken cancellationToken);
 }

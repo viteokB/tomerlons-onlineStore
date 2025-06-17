@@ -2,6 +2,7 @@
 using Microsoft.Extensions.DependencyInjection;
 using OnlineStore.Repository;
 using OnlineStore.Services.DeliveryService;
+using OnlineStore.Services.HistoryService;
 using OnlineStore.Services.Login;
 using OnlineStore.Services.Orders;
 using OnlineStore.Services.Products;
@@ -48,6 +49,8 @@ public static class ServiceProviderFactory
         services.AddScoped<IWarehouseService, WarehouseService>();
         services.AddScoped<IDeliveryService, DeliveryService>();
         services.AddScoped<IOrderService, OrderService>();
+        services.AddScoped<IOrderService, OrderService>();
+        services.AddScoped<IHistoryService, HistoryService>();
     }
     
     private static void RegisterPresentation(
@@ -70,7 +73,8 @@ public static class ServiceProviderFactory
         services.AddTransient<IAdminOrdersView, AdminOrdersForm>();
         services.AddTransient<IProductView, ProductForm>();
         services.AddTransient<IPurchaseView, PurchaseForm>();
-        
+        services.AddTransient<IProductStatisticsView, StatisticForm>();
+
         // Регистрация Presenters
         services.AddTransient<LoginPresenter>();
         services.AddTransient<RegisterPresenter>();
@@ -85,7 +89,8 @@ public static class ServiceProviderFactory
         services.AddTransient<AdminOrdersPresenter>();
         services.AddTransient<ProductPresenter>();
         services.AddTransient<PurchasePresenter>();
-        
+        services.AddTransient<ProductStatisticsPresenter>();
+
         // Регистрация фабрик презентеров
         services.AddTransient<Func<LoginPresenter>>(provider => 
             provider.GetRequiredService<LoginPresenter>);
@@ -125,5 +130,8 @@ public static class ServiceProviderFactory
         
         services.AddTransient<Func<PurchasePresenter>>(provider =>
             provider.GetRequiredService<PurchasePresenter>);
+
+        services.AddTransient<Func<ProductStatisticsPresenter>>(provider =>
+            provider.GetRequiredService<ProductStatisticsPresenter>);
     }
 }

@@ -28,6 +28,8 @@ public interface IMainView : IView
     
     public event Action  OpenProducts;
     
+    public event Action OpenStatistics;
+    
     public User? User { get; set; }
     
     void ShowError(string message);

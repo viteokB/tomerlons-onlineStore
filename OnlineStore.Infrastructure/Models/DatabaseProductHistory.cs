@@ -8,11 +8,11 @@ public class DatabaseProductHistory
     
     public int? TypeId { get; set; }
     
+    public DatabaseType? Type { get; set; } = null!;
+    
     public int ProductId { get; set; }
     
     public DatabaseProduct Product { get; set; } = null!;
-    
-    public DatabaseType? Type { get; set; } = null!;
     
     public int? CountryId { get; set; }
     
@@ -28,7 +28,7 @@ public class DatabaseProductHistory
     
     public string Name { get; set; } = null!;
 
-    public string PhotoPath { get; set; } = null!;
+    public string? PhotoPath { get; set; } = null!;
 
     public string CatalogNumber { get; set; } = null!;
 
@@ -38,31 +38,37 @@ public class DatabaseProductHistory
     
     public DateTime ChangedAt { get; set; }
 
-    public DatabaseProductHistory(DatabaseProduct product)
+    public static DatabaseProductHistory CreateHistory(DatabaseProduct product)
     {
-        TypeId = product.Type?.Id;
-        CountryId = product.Country?.Id;
-        BrandId = product.Brand?.Id;
-        Name = product.Name;
-        PhotoPath = product.PhotoPath;
-        CatalogNumber = product.CatalogNumber;
-        BasePrice = product.BasePrice;
-        IsActive = product.IsActive;
-        ChangedById = product.ChangedBy?.Id;
-        ChangedAt = product.ChangedAt;
+        return new DatabaseProductHistory()
+        {
+            TypeId = product.Type?.Id,
+            CountryId = product.Country?.Id,
+            BrandId = product.Brand?.Id,
+            Name = product.Name,
+            PhotoPath = product.PhotoPath,
+            CatalogNumber = product.CatalogNumber,
+            BasePrice = product.BasePrice,
+            IsActive = product.IsActive,
+            ChangedById = product.ChangedBy?.Id,
+            ChangedAt = product.ChangedAt,
+        };
     }
     
-    public DatabaseProductHistory(Product product)
+    public static DatabaseProductHistory CreateHistory(Product product)
     {
-        TypeId = product.Type?.Id;
-        CountryId = product.Country?.Id;
-        BrandId = product.Brand?.Id;
-        Name = product.Name;
-        PhotoPath = product.PhotoPath;
-        CatalogNumber = product.CatalogNumber;
-        BasePrice = product.BasePrice;
-        IsActive = product.IsActive;
-        ChangedById = product.ChangedBy?.Id;
-        ChangedAt = product.ChangedAt;
+        return new DatabaseProductHistory()
+        {
+            TypeId = product.Type?.Id,
+            CountryId = product.Country?.Id,
+            BrandId = product.Brand?.Id,
+            Name = product.Name,
+            PhotoPath = product.PhotoPath,
+            CatalogNumber = product.CatalogNumber,
+            BasePrice = product.BasePrice,
+            IsActive = product.IsActive,
+            ChangedById = product.ChangedBy?.Id,
+            ChangedAt = product.ChangedAt,
+        };
     }
 }

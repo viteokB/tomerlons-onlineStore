@@ -39,6 +39,8 @@ public partial class MainForm : Form, IMainView
     public event Action? OpenAdminOrdersDialog;
     
     public event Action? OpenProducts;
+    
+    public event Action? OpenStatistics;
 
     public User User { get; set; }
 
@@ -85,6 +87,11 @@ public partial class MainForm : Form, IMainView
     private void button7_Click(object sender, EventArgs e)
     {
         OpenProductRedactorDialog?.Invoke();
+    }
+    
+    private void button8_Click(object sender, EventArgs e)
+    {
+        OpenStatistics?.Invoke();
     }
 
     private void warehouseDialog_Click(object sender, EventArgs e)

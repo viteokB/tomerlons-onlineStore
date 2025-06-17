@@ -295,82 +295,146 @@ namespace OnlineStore.Repository.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("INTEGER")
+                        .HasColumnName("id");
 
-                    b.Property<int>("ChangedById")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("ChangedByUserId")
-                        .HasColumnType("INTEGER");
+                    b.Property<int?>("ChangedById")
+                        .HasColumnType("INTEGER")
+                        .HasColumnName("changed_by");
 
                     b.Property<int>("Count")
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("INTEGER")
+                        .HasColumnName("count");
 
                     b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("TEXT");
+                        .HasColumnType("TEXT")
+                        .HasColumnName("created_at");
+
+                    b.Property<int?>("DatabaseAddressId")
+                        .HasColumnType("INTEGER");
 
                     b.Property<int>("DeliveryAddressId")
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("INTEGER")
+                        .HasColumnName("delivery_address_id");
 
                     b.Property<int>("DeliveryDays")
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("INTEGER")
+                        .HasColumnName("delivery_days");
 
                     b.Property<float>("DeliveryPrice")
-                        .HasColumnType("REAL");
+                        .HasColumnType("decimal(18,2)")
+                        .HasColumnName("delivery_price");
 
                     b.Property<int>("DeliveryStatusId")
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("INTEGER")
+                        .HasColumnName("delivery_status_id");
 
                     b.Property<string>("Description")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.Property<int>("OrderHistoryId")
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("nvarchar(500)")
+                        .HasColumnName("description");
 
                     b.Property<int>("OrderId")
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("INTEGER")
+                        .HasColumnName("order_id");
 
                     b.Property<int>("ProductId")
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("INTEGER")
+                        .HasColumnName("product_id");
 
                     b.Property<float>("ProductPrice")
-                        .HasColumnType("REAL");
-
-                    b.Property<int>("TypeId")
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("decimal(18,2)")
+                        .HasColumnName("product_price");
 
                     b.Property<DateTime>("UpdatedAt")
-                        .HasColumnType("TEXT");
+                        .HasColumnType("TEXT")
+                        .HasColumnName("updated_at");
 
                     b.Property<int?>("UserId")
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("INTEGER")
+                        .HasColumnName("user_id");
 
                     b.Property<int>("WharehouseId")
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("INTEGER")
+                        .HasColumnName("warehouse_id");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ChangedByUserId");
+                    b.HasIndex("ChangedById");
+
+                    b.HasIndex("DatabaseAddressId");
 
                     b.HasIndex("DeliveryAddressId");
 
                     b.HasIndex("DeliveryStatusId");
 
-                    b.HasIndex("OrderHistoryId");
+                    b.HasIndex("OrderId");
 
                     b.HasIndex("ProductId");
-
-                    b.HasIndex("TypeId");
 
                     b.HasIndex("UserId");
 
                     b.HasIndex("WharehouseId");
 
-                    b.ToTable("DatabaseOrderHistory");
+                    b.ToTable("order_history", (string)null);
                 });
 
             modelBuilder.Entity("OnlineStore.Repository.Models.DatabaseProduct", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<float>("BasePrice")
+                        .HasColumnType("base_price");
+
+                    b.Property<int?>("BrandId")
+                        .HasColumnType("brand_id");
+
+                    b.Property<string>("CatalogNumber")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<DateTime>("ChangedAt")
+                        .HasColumnType("changed_at");
+
+                    b.Property<int?>("ChangedById")
+                        .HasColumnType("changed_by");
+
+                    b.Property<int?>("CountryId")
+                        .HasColumnType("country_id");
+
+                    b.Property<int?>("DatabaseWharehouseProdHistoryId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("is_active");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("PhotoPath")
+                        .HasColumnType("nvarchar(150)");
+
+                    b.Property<int?>("TypeId")
+                        .HasColumnType("type_id");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("BrandId");
+
+                    b.HasIndex("ChangedById");
+
+                    b.HasIndex("CountryId");
+
+                    b.HasIndex("DatabaseWharehouseProdHistoryId");
+
+                    b.HasIndex("TypeId");
+
+                    b.ToTable("products", (string)null);
+                });
+
+            modelBuilder.Entity("OnlineStore.Repository.Models.DatabaseProductHistory", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -405,63 +469,12 @@ namespace OnlineStore.Repository.Migrations
                     b.Property<string>("PhotoPath")
                         .HasColumnType("nvarchar(150)");
 
+                    b.Property<int>("ProductId")
+                        .HasColumnType("product_id")
+                        .HasColumnName("product_history_id");
+
                     b.Property<int?>("TypeId")
                         .HasColumnType("type_id");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("BrandId");
-
-                    b.HasIndex("ChangedById");
-
-                    b.HasIndex("CountryId");
-
-                    b.HasIndex("TypeId");
-
-                    b.ToTable("products", (string)null);
-                });
-
-            modelBuilder.Entity("OnlineStore.Repository.Models.DatabaseProductHistory", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
-
-                    b.Property<float>("BasePrice")
-                        .HasColumnType("REAL");
-
-                    b.Property<int>("BrandId")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<string>("CatalogNumber")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.Property<DateTime>("ChangedAt")
-                        .HasColumnType("TEXT");
-
-                    b.Property<int>("ChangedById")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("CountryId")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<bool>("IsActive")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("PhotoPath")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.Property<int>("ProductId")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("TypeId")
-                        .HasColumnType("INTEGER");
 
                     b.HasKey("Id");
 
@@ -475,7 +488,7 @@ namespace OnlineStore.Repository.Migrations
 
                     b.HasIndex("TypeId");
 
-                    b.ToTable("ProductsHistory");
+                    b.ToTable("products_history", (string)null);
                 });
 
             modelBuilder.Entity("OnlineStore.Repository.Models.DatabaseRole", b =>
@@ -589,28 +602,32 @@ namespace OnlineStore.Repository.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("INTEGER")
+                        .HasColumnName("id");
 
                     b.Property<DateTime>("ChangedAt")
-                        .HasColumnType("TEXT");
+                        .HasColumnType("TEXT")
+                        .HasColumnName("changed_at");
 
-                    b.Property<int>("ChangedById")
-                        .HasColumnType("INTEGER");
+                    b.Property<int?>("ChangedById")
+                        .HasColumnType("INTEGER")
+                        .HasColumnName("changed_by");
 
                     b.Property<int>("Count")
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("INTEGER")
+                        .HasColumnName("count");
 
                     b.Property<int>("ProductId")
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("INTEGER")
+                        .HasColumnName("product_id");
 
                     b.Property<int>("WarehouseProdId")
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("INTEGER")
+                        .HasColumnName("warehouse_prod_id");
 
                     b.Property<int>("WharehouseId")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("WharehouseProductsId")
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("INTEGER")
+                        .HasColumnName("warehouse_id");
 
                     b.HasKey("Id");
 
@@ -618,11 +635,11 @@ namespace OnlineStore.Repository.Migrations
 
                     b.HasIndex("ProductId");
 
+                    b.HasIndex("WarehouseProdId");
+
                     b.HasIndex("WharehouseId");
 
-                    b.HasIndex("WharehouseProductsId");
-
-                    b.ToTable("WarehousesProductsHistory");
+                    b.ToTable("warehouse_products_history", (string)null);
                 });
 
             modelBuilder.Entity("OnlineStore.Repository.Models.DatabaseWharehouseProducts", b =>
@@ -755,48 +772,46 @@ namespace OnlineStore.Repository.Migrations
                 {
                     b.HasOne("OnlineStore.Repository.Models.DatabaseUser", "ChangedByUser")
                         .WithMany()
-                        .HasForeignKey("ChangedByUserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("ChangedById")
+                        .OnDelete(DeleteBehavior.SetNull);
+
+                    b.HasOne("OnlineStore.Repository.Models.DatabaseAddress", null)
+                        .WithMany("Orders")
+                        .HasForeignKey("DatabaseAddressId");
 
                     b.HasOne("OnlineStore.Repository.Models.DatabaseAddress", "DeliveryAddress")
-                        .WithMany("Orders")
+                        .WithMany()
                         .HasForeignKey("DeliveryAddressId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.HasOne("OnlineStore.Repository.Models.DatabaseDeliveryStatus", "DeliveryStatus")
                         .WithMany()
                         .HasForeignKey("DeliveryStatusId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
-                    b.HasOne("OnlineStore.Repository.Models.DatabaseOrderHistory", "OrderHistory")
+                    b.HasOne("OnlineStore.Repository.Models.DatabaseOrder", "Order")
                         .WithMany()
-                        .HasForeignKey("OrderHistoryId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .HasForeignKey("OrderId")
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.HasOne("OnlineStore.Repository.Models.DatabaseProduct", "Product")
                         .WithMany()
                         .HasForeignKey("ProductId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("OnlineStore.Repository.Models.DatabaseType", "Type")
-                        .WithMany()
-                        .HasForeignKey("TypeId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.HasOne("OnlineStore.Repository.Models.DatabaseUser", "User")
                         .WithMany()
-                        .HasForeignKey("UserId");
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.SetNull);
 
                     b.HasOne("OnlineStore.Repository.Models.DatabaseWharehouse", "Wharehouse")
                         .WithMany()
                         .HasForeignKey("WharehouseId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.Navigation("ChangedByUser");
@@ -805,11 +820,9 @@ namespace OnlineStore.Repository.Migrations
 
                     b.Navigation("DeliveryStatus");
 
-                    b.Navigation("OrderHistory");
+                    b.Navigation("Order");
 
                     b.Navigation("Product");
-
-                    b.Navigation("Type");
 
                     b.Navigation("User");
 
@@ -833,6 +846,10 @@ namespace OnlineStore.Repository.Migrations
                         .HasForeignKey("CountryId")
                         .OnDelete(DeleteBehavior.SetNull);
 
+                    b.HasOne("OnlineStore.Repository.Models.DatabaseWharehouseProdHistory", null)
+                        .WithMany("Products")
+                        .HasForeignKey("DatabaseWharehouseProdHistoryId");
+
                     b.HasOne("OnlineStore.Repository.Models.DatabaseType", "Type")
                         .WithMany("Products")
                         .HasForeignKey("TypeId")
@@ -852,32 +869,28 @@ namespace OnlineStore.Repository.Migrations
                     b.HasOne("OnlineStore.Repository.Models.DatabaseBrand", "Brand")
                         .WithMany()
                         .HasForeignKey("BrandId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.SetNull);
 
                     b.HasOne("OnlineStore.Repository.Models.DatabaseUser", "ChangedBy")
                         .WithMany()
                         .HasForeignKey("ChangedById")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.SetNull);
 
                     b.HasOne("OnlineStore.Repository.Models.DatabaseCountry", "Country")
                         .WithMany()
                         .HasForeignKey("CountryId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.SetNull);
 
                     b.HasOne("OnlineStore.Repository.Models.DatabaseProduct", "Product")
-                        .WithMany()
+                        .WithMany("ProductHistories")
                         .HasForeignKey("ProductId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.HasOne("OnlineStore.Repository.Models.DatabaseType", "Type")
                         .WithMany()
                         .HasForeignKey("TypeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.SetNull);
 
                     b.Navigation("Brand");
 
@@ -917,25 +930,24 @@ namespace OnlineStore.Repository.Migrations
                     b.HasOne("OnlineStore.Repository.Models.DatabaseUser", "ChangedBy")
                         .WithMany()
                         .HasForeignKey("ChangedById")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.SetNull);
 
                     b.HasOne("OnlineStore.Repository.Models.DatabaseProduct", "Product")
                         .WithMany()
                         .HasForeignKey("ProductId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.HasOne("OnlineStore.Repository.Models.DatabaseWharehouseProducts", "WharehouseProducts")
+                        .WithMany()
+                        .HasForeignKey("WarehouseProdId")
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.HasOne("OnlineStore.Repository.Models.DatabaseWharehouseProducts", "Wharehouse")
                         .WithMany()
                         .HasForeignKey("WharehouseId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("OnlineStore.Repository.Models.DatabaseWharehouseProducts", "WharehouseProducts")
-                        .WithMany()
-                        .HasForeignKey("WharehouseProductsId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.Navigation("ChangedBy");
@@ -1001,6 +1013,8 @@ namespace OnlineStore.Repository.Migrations
                 {
                     b.Navigation("Orders");
 
+                    b.Navigation("ProductHistories");
+
                     b.Navigation("WhProducts");
                 });
 
@@ -1019,6 +1033,11 @@ namespace OnlineStore.Repository.Migrations
                     b.Navigation("WhOrders");
 
                     b.Navigation("WhProducts");
+                });
+
+            modelBuilder.Entity("OnlineStore.Repository.Models.DatabaseWharehouseProdHistory", b =>
+                {
+                    b.Navigation("Products");
                 });
 #pragma warning restore 612, 618
         }
